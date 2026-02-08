@@ -20,12 +20,19 @@ export class EventSummary {
   protected readonly firstEvent = computed(() => {
     const events = this.primaryEvent()?.events;
     if (!events || events.length === 0) return null;
-    return events[0];
+    // Return chronologically first event (earliest date)
+    return [...events].sort((a, b) => 
+      new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime()
+    )[0];
   });
   
   protected readonly lastEvent = computed(() => {
     const events = this.primaryEvent()?.events;
     if (!events || events.length === 0) return null;
-    return events[events.length - 1];
+    // Return chronologically last event (latest date)
+    const sorted = [...events].sort((a, b) => 
+      new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime()
+    );
+    return sorted[sorted.length - 1];
   });
 }
