@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Deploy to gh-pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx angular-cli-ghpages --dir=dist/ittackit-event-viewer --branch=gh-pages --repo="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" --name="github-actions" --email="github-actions@github.com"
