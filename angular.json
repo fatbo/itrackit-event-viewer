@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ittackit-event-viewer": {
+    "itrackit-event-viewer": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ittackit-event-viewer:build:production"
+              "buildTarget": "itrackit-event-viewer:build:production"
             },
             "development": {
-              "buildTarget": "ittackit-event-viewer:build:development"
+              "buildTarget": "itrackit-event-viewer:build:development"
             }
           },
           "defaultConfiguration": "development"
