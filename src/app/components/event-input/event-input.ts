@@ -249,12 +249,5 @@ export class EventInput implements OnInit {
       console.error('Failed to load demo data:', error);
     }
   }
-
-  private processJsonInputInternal(jsonString: string, clearDemoFlag: boolean = true): void {
-    if (clearDemoFlag) {
-      this.isDemoData.set(false);
-    }
-    this.processJsonInput(jsonString);
-  }
 }
 
