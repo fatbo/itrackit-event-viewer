@@ -1,0 +1,98 @@
+<div class="event-comparison-container">
+  @if (hasComparison()) {
+    <h2>Event Comparison</h2>
+    
+    @if (differences().length > 0) {
+      <div class="differences-section">
+        <h3>Key Differences</h3>
+        <ul class="differences-list">
+          @for (diff of differences(); track diff) {
+            <li>{{ diff }}</li>
+          }
+        </ul>
+      </div>
+    } @else {
+      <div class="no-differences">
+        <p>✓ No major differences detected between the two shipments.</p>
+      </div>
+    }
+    
+    <div class="comparison-grid">
+      <div class="comparison-column">
+        <h3 class="column-header primary">Primary Event</h3>
+        <div class="shipment-info">
+          @if (primaryEvent()?.shipmentId) {
+            <div class="info-item">
+              <strong>Shipment ID:</strong> {{ primaryEvent()?.shipmentId }}
+            </div>
+          }
+          @if (primaryEvent()?.origin) {
+            <div class="info-item">
+              <strong>Origin:</strong> {{ primaryEvent()?.origin }}
+            </div>
+          }
+          @if (primaryEvent()?.destination) {
+            <div class="info-item">
+              <strong>Destination:</strong> {{ primaryEvent()?.destination }}
+            </div>
+          }
+          <div class="info-item">
+            <strong>Total Events:</strong> {{ primarySortedEvents().length }}
+          </div>
+        </div>
+        
+        <div class="events-list">
+          @for (event of primarySortedEvents(); track event.eventDateTime) {
+            <div class="event-card">
+              <div class="event-type">{{ event.eventType }}</div>
+              <div class="event-date">{{ event.eventDateTime | date:'short' }}</div>
+              @if (event.location) {
+                <div class="event-location">📍 {{ event.location }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+      
+      <div class="comparison-column">
+        <h3 class="column-header secondary">Secondary Event</h3>
+        <div class="shipment-info">
+          @if (secondaryEvent()?.shipmentId) {
+            <div class="info-item">
+              <strong>Shipment ID:</strong> {{ secondaryEvent()?.shipmentId }}
+            </div>
+          }
+          @if (secondaryEvent()?.origin) {
+            <div class="info-item">
+              <strong>Origin:</strong> {{ secondaryEvent()?.origin }}
+            </div>
+          }
+          @if (secondaryEvent()?.destination) {
+            <div class="info-item">
+              <strong>Destination:</strong> {{ secondaryEvent()?.destination }}
+            </div>
+          }
+          <div class="info-item">
+            <strong>Total Events:</strong> {{ secondarySortedEvents().length }}
+          </div>
+        </div>
+        
+        <div class="events-list">
+          @for (event of secondarySortedEvents(); track event.eventDateTime) {
+            <div class="event-card">
+              <div class="event-type">{{ event.eventType }}</div>
+              <div class="event-date">{{ event.eventDateTime | date:'short' }}</div>
+              @if (event.location) {
+                <div class="event-location">📍 {{ event.location }}</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="no-comparison">
+      <p>Load a secondary event to enable comparison. Use the toggle button in the input section above to switch to "Secondary Event".</p>
+    </div>
+  }
+</div>

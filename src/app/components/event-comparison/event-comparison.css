@@ -1,0 +1,143 @@
+.event-comparison-container {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #2196F3;
+  padding-bottom: 10px;
+}
+
+h3 {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.differences-section {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.differences-list {
+  margin: 10px 0 0 20px;
+  color: #856404;
+}
+
+.differences-list li {
+  margin: 8px 0;
+}
+
+.no-differences {
+  background: #d4edda;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.no-differences p {
+  color: #155724;
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.comparison-column {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.column-header {
+  padding: 15px;
+  color: white;
+  margin: 0;
+}
+
+.column-header.primary {
+  background: #2196F3;
+}
+
+.column-header.secondary {
+  background: #4CAF50;
+}
+
+.shipment-info {
+  padding: 20px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.info-item {
+  margin: 8px 0;
+  color: #333;
+}
+
+.events-list {
+  padding: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.event-card {
+  background: #f9f9f9;
+  border-left: 4px solid #2196F3;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.secondary .event-card {
+  border-left-color: #4CAF50;
+}
+
+.event-type {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.event-date {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.event-location {
+  color: #555;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.no-comparison {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.no-comparison p {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
