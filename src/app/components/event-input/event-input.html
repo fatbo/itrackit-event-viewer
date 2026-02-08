@@ -1,0 +1,46 @@
+<div class="event-input-container">
+  <h2>Shipment Event Input</h2>
+  
+  <div class="input-toggle">
+    <button (click)="toggleEventType()" class="toggle-btn">
+      {{ isPrimary() ? 'Primary Event' : 'Secondary Event (for comparison)' }}
+    </button>
+  </div>
+  
+  <div class="input-section">
+    <h3>Paste JSON Data</h3>
+    <textarea 
+      [(ngModel)]="jsonInput"
+      placeholder="Paste your shipment event JSON here..."
+      rows="10"
+      class="json-textarea"
+    ></textarea>
+    <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
+      Load JSON
+    </button>
+  </div>
+  
+  <div class="divider">OR</div>
+  
+  <div class="input-section">
+    <h3>Upload JSON File</h3>
+    <input 
+      type="file" 
+      accept=".json"
+      (change)="onFileSelected($event)"
+      class="file-input"
+    />
+  </div>
+  
+  @if (errorMessage()) {
+    <div class="error-message">
+      {{ errorMessage() }}
+    </div>
+  }
+  
+  <div class="actions">
+    <button (click)="clearAll()" class="clear-btn">
+      Clear All
+    </button>
+  </div>
+</div>

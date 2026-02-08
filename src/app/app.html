@@ -1,0 +1,18 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title() }}</h1>
+    <p class="subtitle">Ocean Shipment Event Timeline Viewer</p>
+  </header>
+  
+  <main class="app-main">
+    <app-event-input></app-event-input>
+    <app-event-summary></app-event-summary>
+    <app-event-timeline></app-event-timeline>
+    <app-event-comparison></app-event-comparison>
+  </main>
+  
+  <footer class="app-footer">
+    <p>© 2026 ITTackIT Event Viewer - Support Tool for Ocean Shipment Tracking</p>
+  </footer>
+</div>
+<router-outlet />

@@ -1,0 +1,48 @@
+<div class="event-timeline-container">
+  @if (primaryEvent() && sortedEvents().length > 0) {
+    <h2>Event Timeline</h2>
+    
+    <div class="timeline">
+      @for (event of sortedEvents(); track event.eventDateTime) {
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="timeline-icon">{{ getEventIcon(event.eventType) }}</div>
+          </div>
+          <div class="timeline-content">
+            <div class="event-header">
+              <h3 class="event-type">{{ event.eventType }}</h3>
+              <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
+            </div>
+            <p class="event-description">{{ event.description }}</p>
+            <div class="event-details">
+              @if (event.location) {
+                <span class="detail-item">
+                  <strong>Location:</strong> {{ event.location }}
+                </span>
+              }
+              @if (event.vessel) {
+                <span class="detail-item">
+                  <strong>Vessel:</strong> {{ event.vessel }}
+                </span>
+              }
+              @if (event.voyage) {
+                <span class="detail-item">
+                  <strong>Voyage:</strong> {{ event.voyage }}
+                </span>
+              }
+              @if (event.status) {
+                <span class="detail-item">
+                  <strong>Status:</strong> {{ event.status }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (primaryEvent()) {
+    <div class="no-events">
+      <p>No events found in the shipment data.</p>
+    </div>
+  }
+</div>

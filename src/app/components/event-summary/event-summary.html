@@ -1,0 +1,72 @@
+<div class="event-summary-container">
+  @if (primaryEvent()) {
+    <h2>Shipment Summary</h2>
+    
+    <div class="summary-grid">
+      @if (primaryEvent()?.shipmentId) {
+        <div class="summary-item">
+          <span class="label">Shipment ID:</span>
+          <span class="value">{{ primaryEvent()?.shipmentId }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.bookingNumber) {
+        <div class="summary-item">
+          <span class="label">Booking Number:</span>
+          <span class="value">{{ primaryEvent()?.bookingNumber }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.containerNumber) {
+        <div class="summary-item">
+          <span class="label">Container Number:</span>
+          <span class="value">{{ primaryEvent()?.containerNumber }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.carrier) {
+        <div class="summary-item">
+          <span class="label">Carrier:</span>
+          <span class="value">{{ primaryEvent()?.carrier }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.origin) {
+        <div class="summary-item">
+          <span class="label">Origin:</span>
+          <span class="value">{{ primaryEvent()?.origin }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.destination) {
+        <div class="summary-item">
+          <span class="label">Destination:</span>
+          <span class="value">{{ primaryEvent()?.destination }}</span>
+        </div>
+      }
+      
+      <div class="summary-item">
+        <span class="label">Total Events:</span>
+        <span class="value">{{ eventCount() }}</span>
+      </div>
+      
+      @if (firstEvent()) {
+        <div class="summary-item">
+          <span class="label">First Event:</span>
+          <span class="value">{{ firstEvent()?.eventType }} - {{ firstEvent()?.eventDateTime | date:'medium' }}</span>
+        </div>
+      }
+      
+      @if (lastEvent()) {
+        <div class="summary-item">
+          <span class="label">Latest Event:</span>
+          <span class="value">{{ lastEvent()?.eventType }} - {{ lastEvent()?.eventDateTime | date:'medium' }}</span>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="no-data">
+      <p>No shipment data loaded. Please paste or upload JSON data above.</p>
+    </div>
+  }
+</div>
