@@ -1,4 +1,4 @@
-# ITTackIT Event Viewer
+# iTrackiT Shipment Viewer
 
 An Angular frontend application for viewing and comparing ocean shipment event timelines. This support tool allows users to visualize shipment events, view detailed timelines, and compare multiple shipments side by side.
 
@@ -138,4 +138,4 @@ src/
 
 ## License
 
-This project is part of the ITTackIT support tools suite.
+This project is part of the iTrackiT support tools suite.

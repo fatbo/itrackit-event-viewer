@@ -12,5 +12,5 @@ import { EventComparison } from './components/event-comparison/event-comparison'
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ITTackIT Event Viewer');
+  protected readonly title = signal('iTrackiT Shipment Viewer');
 }
