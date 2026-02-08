@@ -61,7 +61,88 @@ The build artifacts will be stored in the `dist/` directory.
 
 ### JSON Data Format
 
-The application expects shipment data in the following JSON format:
+The application supports two JSON formats:
+
+#### 1. OpShipmentEventRaw Format (OpenAPI Spec)
+
+The primary format based on the OnePort HK Smart Tracker Collector OpenAPI specification:
+
+```json
+{
+  "id": "1234567890",
+  "version": 1,
+  "eventId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+  "source": "oneport",
+  "blNo": "AMQ0325766",
+  "bookingNo": "BOOK0325766",
+  "shippingLine": "CMDU",
+  "containerNo": "SZLU9011734",
+  "containerSize": "45",
+  "containerType": "r1",
+  "shipmentType": "IM",
+  "containerISOCode": "45RT",
+  "pol": {
+    "unLocationCode": "CNYTN",
+    "unLocationName": "Yantian, CN",
+    "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL"
+  },
+  "pod": {
+    "unLocationCode": "HKHKG",
+    "unLocationName": "Hong Kong, CN",
+    "facilityName": "HONG KONG INTERNATIONAL TERMINAL"
+  },
+  "equipmentEvents": [
+    {
+      "eventCode": "AL",
+      "eventName": "Loaded on Vessel",
+      "locationType": "POL",
+      "eventTime": "2025-02-20T10:30:00+08:00",
+      "timeType": "A",
+      "containerStatus": "F",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "unLocationCode": "CNYTN",
+        "unLocationName": "Yantian, CN"
+      }
+    }
+  ],
+  "transportEvents": [
+    {
+      "eventCode": "VD",
+      "eventName": "Vessel Departure",
+      "locationType": "POL",
+      "eventTime": "2025-02-20T14:00:00+08:00",
+      "timeType": "A",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "unLocationCode": "CNYTN",
+        "unLocationName": "Yantian, CN"
+      }
+    }
+  ]
+}
+```
+
+**Key Features of OpShipmentEventRaw Format:**
+- **Event Grouping**: Equipment events are automatically grouped by event type, location, and location type
+- **Multiple Time Types**: Events can have Actual (A), Estimated (E), or Planned (G) times, displayed together
+- **Event Codes**: Standard event codes (AL, UV, OG, IG, VD, VA, etc.) with human-readable names
+- **Detailed Location**: Location information includes facility codes, names, and UN location codes
+- **Container Status**: Equipment events include container status (Full/Empty)
+
+See `public/sample-opshipmenteventraw.json` for a complete example.
+
+#### 2. Legacy ShipmentData Format
+
+The simplified legacy format for backward compatibility:
 
 ```json
 {
@@ -91,6 +172,8 @@ The application expects shipment data in the following JSON format:
   ]
 }
 ```
+
+The application automatically detects which format is being used and processes it accordingly.
 
 ### Steps to Use
 

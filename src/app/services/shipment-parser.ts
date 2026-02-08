@@ -11,6 +11,44 @@ import {
   providedIn: 'root',
 })
 export class ShipmentParser {
+  // Constants for mapping
+  private readonly CONTAINER_STATUS_MAP: { [key: string]: string } = {
+    F: 'Full',
+    E: 'Empty',
+  };
+
+  private readonly TIME_TYPE_MAP: { [key: string]: string } = {
+    A: 'Actual',
+    E: 'Estimated',
+    G: 'Planned',
+  };
+
+  private readonly EVENT_CODE_MAP: { [key: string]: string } = {
+    OG: 'Gate Out',
+    IG: 'Gate In',
+    AE: 'Arrived at Export',
+    VD: 'Vessel Departure',
+    VA: 'Vessel Arrival',
+    UV: 'Unloaded from Vessel',
+    AL: 'Loaded on Vessel',
+    UR: 'Unloaded from Rail',
+    RD: 'Rail Departure',
+    RA: 'Rail Arrival',
+    TA: 'Truck Arrival',
+    CT: 'Container Terminal',
+    RT: 'Return to Terminal',
+    SS: 'Shipment Status',
+    ZZ: 'Other',
+    PD: 'Port Discharge',
+  };
+
+  private readonly LOCATION_TYPE_MAP: { [key: string]: string } = {
+    POL: 'Port of Loading',
+    POD: 'Port of Discharge',
+    POT: 'Port of Transhipment',
+    POC: 'Port of Call',
+  };
+
   /**
    * Converts OpShipmentEventRaw format to ShipmentData format for display
    */
@@ -35,7 +73,7 @@ export class ShipmentParser {
     // Build ShipmentData object
     return {
       shipmentId: raw.id,
-      bookingNumber: raw.bookingNo || raw.bookingNo,
+      bookingNumber: raw.bookingNo,
       containerNumber: raw.containerNo,
       carrier: raw.shippingLine,
       origin: raw.pol ? this.formatLocation(raw.pol) : undefined,
@@ -184,8 +222,7 @@ export class ShipmentParser {
     }
 
     if (event.containerStatus) {
-      const statusMap: { [key: string]: string } = { F: 'Full', E: 'Empty' };
-      parts.push(`(${statusMap[event.containerStatus]} container)`);
+      parts.push(`(${this.CONTAINER_STATUS_MAP[event.containerStatus]} container)`);
     }
 
     if (event.modeOfTransport) {
@@ -198,51 +235,6 @@ export class ShipmentParser {
     }
 
     return parts.length > 0 ? parts.join(' ') : 'Equipment event';
-  }
-
-  private convertTransportEvent(event: OpTransportEvent): ShipmentEvent {
-    return {
-      eventType: this.getEventTypeName(event.eventCode, event.eventName),
-      eventDateTime: event.eventTime,
-      location: this.formatLocation(event.location),
-      description: this.buildEventDescription(event),
-      vessel: event.conveyanceInfo?.conveyanceName,
-      voyage: event.conveyanceInfo?.conveyanceNumber,
-      status: this.formatTimeType(event.timeType),
-      // Additional fields for reference
-      eventCode: event.eventCode,
-      locationType: event.locationType,
-      timeType: event.timeType,
-      modeOfTransport: event.modeOfTransport,
-      facilityCode: event.location.facilityCode,
-      facilityName: event.location.facilityName,
-      unLocationCode: event.location.unLocationCode,
-      unLocationName: event.location.unLocationName,
-      dataProvider: event.DataProvider,
-    };
-  }
-
-  private convertEquipmentEvent(event: OpEquipmentEvent): ShipmentEvent {
-    return {
-      eventType: this.getEventTypeName(event.eventCode, event.eventName),
-      eventDateTime: event.eventTime,
-      location: this.formatLocation(event.location),
-      description: this.buildEquipmentEventDescription(event),
-      vessel: event.conveyanceInfo?.conveyanceName,
-      voyage: event.conveyanceInfo?.conveyanceNumber,
-      status: this.formatContainerStatus(event.containerStatus, event.timeType),
-      // Additional fields for reference
-      eventCode: event.eventCode,
-      locationType: event.locationType,
-      timeType: event.timeType,
-      containerStatus: event.containerStatus,
-      modeOfTransport: event.modeOfTransport,
-      facilityCode: event.location.facilityCode,
-      facilityName: event.location.facilityName,
-      unLocationCode: event.location.unLocationCode,
-      unLocationName: event.location.unLocationName,
-      dataProvider: event.DataProvider,
-    };
   }
 
   private formatLocation(location: any): string {
@@ -269,26 +261,7 @@ export class ShipmentParser {
     }
 
     // Fallback to event code mappings
-    const eventCodeMap: { [key: string]: string } = {
-      OG: 'Gate Out',
-      IG: 'Gate In',
-      AE: 'Arrived at Export',
-      VD: 'Vessel Departure',
-      VA: 'Vessel Arrival',
-      UV: 'Unloaded from Vessel',
-      AL: 'Loaded on Vessel',
-      UR: 'Unloaded from Rail',
-      RD: 'Rail Departure',
-      RA: 'Rail Arrival',
-      TA: 'Truck Arrival',
-      CT: 'Container Terminal',
-      RT: 'Return to Terminal',
-      SS: 'Shipment Status',
-      ZZ: 'Other',
-      PD: 'Port Discharge',
-    };
-
-    return eventCodeMap[eventCode] || eventCode;
+    return this.EVENT_CODE_MAP[eventCode] || eventCode;
   }
 
   private buildEventDescription(event: OpTransportEvent): string {
@@ -303,49 +276,39 @@ export class ShipmentParser {
     }
 
     if (event.locationType) {
-      const locationTypeMap: { [key: string]: string } = {
-        POL: 'Port of Loading',
-        POD: 'Port of Discharge',
-        POT: 'Port of Transhipment',
-        POC: 'Port of Call',
-      };
-      parts.push(`at ${locationTypeMap[event.locationType] || event.locationType}`);
+      parts.push(`at ${this.LOCATION_TYPE_MAP[event.locationType] || event.locationType}`);
     }
 
     return parts.length > 0 ? parts.join(' ') : 'Transport event';
   }
 
-  private buildEquipmentEventDescription(event: OpEquipmentEvent): string {
-    const parts: string[] = [];
-
-    if (event.eventName) {
-      parts.push(event.eventName);
-    }
-
-    if (event.containerStatus) {
-      const statusMap = { F: 'Full', E: 'Empty' };
-      parts.push(`(${statusMap[event.containerStatus]} container)`);
-    }
-
-    if (event.modeOfTransport) {
-      parts.push(`via ${event.modeOfTransport}`);
-    }
-
-    return parts.length > 0 ? parts.join(' ') : 'Equipment event';
+  private convertTransportEvent(event: OpTransportEvent): ShipmentEvent {
+    return {
+      eventType: this.getEventTypeName(event.eventCode, event.eventName),
+      eventDateTime: event.eventTime,
+      location: this.formatLocation(event.location),
+      description: this.buildEventDescription(event),
+      vessel: event.conveyanceInfo?.conveyanceName,
+      voyage: event.conveyanceInfo?.conveyanceNumber,
+      status: this.formatTimeType(event.timeType),
+      // Additional fields for reference
+      eventCode: event.eventCode,
+      locationType: event.locationType,
+      timeType: event.timeType,
+      modeOfTransport: event.modeOfTransport,
+      facilityCode: event.location.facilityCode,
+      facilityName: event.location.facilityName,
+      unLocationCode: event.location.unLocationCode,
+      unLocationName: event.location.unLocationName,
+      dataProvider: event.DataProvider,
+    };
   }
 
   private formatTimeType(timeType: string): string {
-    const timeTypeMap: { [key: string]: string } = {
-      A: 'Actual',
-      E: 'Estimated',
-      G: 'Planned',
-    };
-    return timeTypeMap[timeType] || timeType;
+    return this.TIME_TYPE_MAP[timeType] || timeType;
   }
 
   private formatContainerStatus(containerStatus: string, timeType: string): string {
-    const statusMap: { [key: string]: string } = { F: 'Full', E: 'Empty' };
-    const timeMap: { [key: string]: string } = { A: 'Actual', E: 'Estimated', G: 'Planned' };
-    return `${statusMap[containerStatus] || containerStatus} - ${timeMap[timeType] || timeType}`;
+    return `${this.CONTAINER_STATUS_MAP[containerStatus] || containerStatus} - ${this.TIME_TYPE_MAP[timeType] || timeType}`;
   }
 }
