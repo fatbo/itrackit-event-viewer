@@ -1,13 +1,13 @@
 {
-  "name": "ittackit-event-viewer",
+  "name": "itrackit-event-viewer",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href /ittackit-event-viewer/",
+    "build": "ng build --base-href /itrackit-event-viewer/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng deploy --base-href /ittackit-event-viewer/"
+    "deploy": "ng deploy --base-href /itrackit-event-viewer/"
   },
   "prettier": {
     "printWidth": 100,
