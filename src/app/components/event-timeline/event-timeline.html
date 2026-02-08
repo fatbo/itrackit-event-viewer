@@ -14,10 +14,46 @@
               <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
             </div>
             <p class="event-description">{{ event.description }}</p>
+            
+            @if (event.actualTime || event.estimatedTime || event.plannedTime) {
+              <div class="event-times">
+                @if (event.actualTime) {
+                  <div class="time-item actual">
+                    <strong>Actual:</strong> {{ event.actualTime | date:'medium' }}
+                  </div>
+                }
+                @if (event.estimatedTime) {
+                  <div class="time-item estimated">
+                    <strong>Estimated:</strong> {{ event.estimatedTime | date:'medium' }}
+                  </div>
+                }
+                @if (event.plannedTime) {
+                  <div class="time-item planned">
+                    <strong>Planned:</strong> {{ event.plannedTime | date:'medium' }}
+                  </div>
+                }
+              </div>
+            }
+            
             <div class="event-details">
               @if (event.location) {
                 <span class="detail-item">
                   <strong>Location:</strong> {{ event.location }}
+                </span>
+              }
+              @if (event.eventCode) {
+                <span class="detail-item">
+                  <strong>Event Code:</strong> {{ event.eventCode }}
+                </span>
+              }
+              @if (event.locationType) {
+                <span class="detail-item">
+                  <strong>Location Type:</strong> {{ event.locationType }}
+                </span>
+              }
+              @if (event.modeOfTransport) {
+                <span class="detail-item">
+                  <strong>Transport Mode:</strong> {{ event.modeOfTransport }}
                 </span>
               }
               @if (event.vessel) {
@@ -30,9 +66,24 @@
                   <strong>Voyage:</strong> {{ event.voyage }}
                 </span>
               }
+              @if (event.containerStatus) {
+                <span class="detail-item">
+                  <strong>Container Status:</strong> {{ event.containerStatus }}
+                </span>
+              }
               @if (event.status) {
                 <span class="detail-item">
                   <strong>Status:</strong> {{ event.status }}
+                </span>
+              }
+              @if (event.facilityName) {
+                <span class="detail-item">
+                  <strong>Facility:</strong> {{ event.facilityName }}
+                </span>
+              }
+              @if (event.dataProvider) {
+                <span class="detail-item">
+                  <strong>Data Provider:</strong> {{ event.dataProvider }}
                 </span>
               }
             </div>

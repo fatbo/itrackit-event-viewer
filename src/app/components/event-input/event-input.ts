@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { ShipmentData } from '../../models/shipment-event.model';
+import { ShipmentParser } from '../../services/shipment-parser';
 
 @Component({
   selector: 'app-event-input',
@@ -15,7 +16,10 @@ export class EventInput {
   protected readonly errorMessage = signal('');
   protected readonly isPrimary = signal(true);
   
-  constructor(private eventDataService: EventData) {}
+  constructor(
+    private eventDataService: EventData,
+    private parser: ShipmentParser
+  ) {}
   
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -44,18 +48,30 @@ export class EventInput {
   
   private processJsonInput(jsonString: string): void {
     try {
-      const data = JSON.parse(jsonString) as ShipmentData;
+      const parsedData = JSON.parse(jsonString);
+      let shipmentData: ShipmentData;
+      
+      // Check if it's OpShipmentEventRaw format
+      if (this.parser.isOpShipmentEventRaw(parsedData)) {
+        shipmentData = this.parser.parseOpShipmentEventRaw(parsedData);
+      } else if (this.parser.isShipmentData(parsedData)) {
+        // Already in ShipmentData format
+        shipmentData = parsedData;
+      } else {
+        this.errorMessage.set('Invalid shipment data format. Please provide either OpShipmentEventRaw or ShipmentData format.');
+        return;
+      }
       
       // Validate that it has events array
-      if (!data.events || !Array.isArray(data.events)) {
-        this.errorMessage.set('Invalid shipment data: missing events array');
+      if (!shipmentData.events || !Array.isArray(shipmentData.events)) {
+        this.errorMessage.set('Invalid shipment data: no events found');
         return;
       }
       
       if (this.isPrimary()) {
-        this.eventDataService.setPrimaryEvent(data);
+        this.eventDataService.setPrimaryEvent(shipmentData);
       } else {
-        this.eventDataService.setSecondaryEvent(data);
+        this.eventDataService.setSecondaryEvent(shipmentData);
       }
       
       this.errorMessage.set('');
