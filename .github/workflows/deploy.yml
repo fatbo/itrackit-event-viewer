@@ -30,4 +30,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx angular-cli-ghpages --dir=dist/ittackit-event-viewer --branch=gh-pages --repo="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" --name="github-actions" --email="github-actions@github.com"
+          npx angular-cli-ghpages --dir=dist/ittackit-event-viewer/browser --branch=gh-pages --repo="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" --name="github-actions" --email="github-actions@github.com"
