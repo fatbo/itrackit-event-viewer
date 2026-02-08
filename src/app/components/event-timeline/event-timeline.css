@@ -89,6 +89,48 @@ h2 {
   line-height: 1.5;
 }
 
+.event-times {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 15px 0;
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  border-left: 3px solid #4CAF50;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+}
+
+.time-item.actual {
+  color: #2e7d32;
+}
+
+.time-item.actual strong {
+  color: #1b5e20;
+}
+
+.time-item.estimated {
+  color: #ef6c00;
+}
+
+.time-item.estimated strong {
+  color: #e65100;
+}
+
+.time-item.planned {
+  color: #1976d2;
+}
+
+.time-item.planned strong {
+  color: #0d47a1;
+}
+
 .event-details {
   display: flex;
   flex-wrap: wrap;

@@ -1,0 +1,138 @@
+{
+  "id": "1234567890",
+  "version": 1,
+  "egateNo": "OP-00052919",
+  "eventId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+  "eventTime": "2025-02-20T00:30+08:00",
+  "source": "oneport",
+  "blNo": "AMQ0325766",
+  "bookingNo": "BOOK0325766",
+  "shippingLine": "CMDU",
+  "containerNo": "SZLU9011734",
+  "containerSize": "45",
+  "containerType": "r1",
+  "shipmentType": "IM",
+  "containerISOCode": "45RT",
+  "containerWeight": "20000",
+  "pscNo": "208928029892",
+  "sealNo": ["CMA22309", "SEAL12345"],
+  "dg": ["2092/22"],
+  "dmg": ["LEFT"],
+  "createDate": "2025-02-19T10:00:00+08:00",
+  "modifyDate": "2025-02-20T00:30:00+08:00",
+  "pol": {
+    "facilityCode": "YICT",
+    "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
+    "unLocationCode": "CNYTN",
+    "unLocationName": "Yantian, CN"
+  },
+  "pod": {
+    "facilityCode": "HIT",
+    "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
+    "unLocationCode": "HKHKG",
+    "unLocationName": "Hong Kong, CN"
+  },
+  "transportEvents": [
+    {
+      "eventCode": "VD",
+      "eventName": "Vessel Departure",
+      "locationType": "POL",
+      "eventTime": "2025-02-20T14:00:00+08:00",
+      "timeType": "A",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "facilityCode": "YICT",
+        "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
+        "unLocationCode": "CNYTN",
+        "unLocationName": "Yantian, CN"
+      },
+      "DataProvider": "Carrier",
+      "DataProviderPriority": 1
+    },
+    {
+      "eventCode": "VA",
+      "eventName": "Vessel Arrival",
+      "locationType": "POD",
+      "eventTime": "2025-02-22T19:23:21+08:00",
+      "timeType": "A",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "facilityCode": "HIT",
+        "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
+        "unLocationCode": "HKHKG",
+        "unLocationName": "Hong Kong, CN"
+      },
+      "DataProvider": "Port",
+      "DataProviderPriority": 2
+    }
+  ],
+  "equipmentEvents": [
+    {
+      "eventCode": "AL",
+      "eventName": "Loaded on Vessel",
+      "locationType": "POL",
+      "eventTime": "2025-02-20T10:30:00+08:00",
+      "timeType": "A",
+      "containerStatus": "F",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "facilityCode": "YICT",
+        "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
+        "unLocationCode": "CNYTN",
+        "unLocationName": "Yantian, CN"
+      },
+      "DataProvider": "Port",
+      "DataProviderPriority": 1
+    },
+    {
+      "eventCode": "UV",
+      "eventName": "Unloaded From Vessel",
+      "locationType": "POD",
+      "eventTime": "2025-02-22T19:00:00+08:00",
+      "timeType": "A",
+      "containerStatus": "F",
+      "modeOfTransport": "Ocean",
+      "conveyanceInfo": {
+        "conveyanceName": "CNC CHEETAH",
+        "conveyanceNumber": "0XW80S1NC"
+      },
+      "location": {
+        "facilityCode": "HIT",
+        "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
+        "unLocationCode": "HKHKG",
+        "unLocationName": "Hong Kong, CN"
+      },
+      "DataProvider": "Port",
+      "DataProviderPriority": 1
+    },
+    {
+      "eventCode": "OG",
+      "eventName": "Gate Out",
+      "locationType": "POD",
+      "eventTime": "2025-02-23T08:15:00+08:00",
+      "timeType": "A",
+      "containerStatus": "F",
+      "modeOfTransport": "Truck",
+      "location": {
+        "facilityCode": "HIT",
+        "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
+        "unLocationCode": "HKHKG",
+        "unLocationName": "Hong Kong, CN"
+      },
+      "DataProvider": "Port",
+      "DataProviderPriority": 1
+    }
+  ]
+}

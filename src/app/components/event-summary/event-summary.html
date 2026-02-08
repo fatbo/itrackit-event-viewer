@@ -10,6 +10,13 @@
         </div>
       }
       
+      @if (primaryEvent()?.blNo) {
+        <div class="summary-item">
+          <span class="label">BL Number:</span>
+          <span class="value">{{ primaryEvent()?.blNo }}</span>
+        </div>
+      }
+      
       @if (primaryEvent()?.bookingNumber) {
         <div class="summary-item">
           <span class="label">Booking Number:</span>
@@ -24,24 +31,52 @@
         </div>
       }
       
+      @if (primaryEvent()?.containerSize || primaryEvent()?.containerType) {
+        <div class="summary-item">
+          <span class="label">Container Size/Type:</span>
+          <span class="value">{{ primaryEvent()?.containerSize || '' }} {{ primaryEvent()?.containerType || '' }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.containerISOCode) {
+        <div class="summary-item">
+          <span class="label">Container ISO Code:</span>
+          <span class="value">{{ primaryEvent()?.containerISOCode }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.shipmentType) {
+        <div class="summary-item">
+          <span class="label">Shipment Type:</span>
+          <span class="value">{{ primaryEvent()?.shipmentType }}</span>
+        </div>
+      }
+      
       @if (primaryEvent()?.carrier) {
         <div class="summary-item">
-          <span class="label">Carrier:</span>
+          <span class="label">Shipping Line:</span>
           <span class="value">{{ primaryEvent()?.carrier }}</span>
         </div>
       }
       
       @if (primaryEvent()?.origin) {
         <div class="summary-item">
-          <span class="label">Origin:</span>
+          <span class="label">Origin (POL):</span>
           <span class="value">{{ primaryEvent()?.origin }}</span>
         </div>
       }
       
       @if (primaryEvent()?.destination) {
         <div class="summary-item">
-          <span class="label">Destination:</span>
+          <span class="label">Destination (POD):</span>
           <span class="value">{{ primaryEvent()?.destination }}</span>
+        </div>
+      }
+      
+      @if (primaryEvent()?.source) {
+        <div class="summary-item">
+          <span class="label">Source:</span>
+          <span class="value">{{ primaryEvent()?.source }}</span>
         </div>
       }
       

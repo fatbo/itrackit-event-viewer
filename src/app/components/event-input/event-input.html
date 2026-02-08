@@ -1,4 +1,24 @@
 <div class="event-input-container">
+  @if (isDemoData()) {
+    <div class="demo-banner">
+      <div class="demo-icon">🎯</div>
+      <div class="demo-content">
+        <strong>Demo Mode:</strong> You're viewing sample shipment data below. 
+        <button (click)="clearAll()" class="dismiss-demo">Clear Demo</button>
+      </div>
+    </div>
+  }
+
+  <div class="usage-tips">
+    <h3>💡 How to Use This Tool</h3>
+    <ul>
+      <li><strong>View Demo:</strong> Sample shipment data is loaded automatically to help you explore features</li>
+      <li><strong>Load Your Data:</strong> Paste JSON data below or upload a JSON file to view your shipment events</li>
+      <li><strong>Compare Shipments:</strong> Toggle to "Secondary Event" to load a second shipment for side-by-side comparison</li>
+      <li><strong>Supported Formats:</strong> OpShipmentEventRaw (OpenAPI spec) or legacy ShipmentData format</li>
+    </ul>
+  </div>
+  
   <h2>Shipment Event Input</h2>
   
   <div class="input-toggle">
