@@ -24,23 +24,23 @@ export class EventInput implements OnInit {
     "version": 1,
     "egateNo": "OP-00052919",
     "eventId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-    "eventTime": "2025-02-20T00:30+08:00",
+    "eventTime": "2025-02-18T08:00+08:00",
     "source": "oneport",
     "blNo": "AMQ0325766",
     "bookingNo": "BOOK0325766",
     "shippingLine": "CMDU",
     "containerNo": "SZLU9011734",
-    "containerSize": "45",
-    "containerType": "r1",
-    "shipmentType": "IM" as const,
-    "containerISOCode": "45RT",
-    "containerWeight": "20000",
+    "containerSize": "40",
+    "containerType": "HC",
+    "shipmentType": "TS" as const,
+    "containerISOCode": "42G1",
+    "containerWeight": "22500",
     "pscNo": "208928029892",
-    "sealNo": ["CMA22309", "SEAL12345"],
-    "dg": ["2092/22"],
-    "dmg": ["LEFT"],
-    "createDate": "2025-02-19T10:00:00+08:00",
-    "modifyDate": "2025-02-20T00:30:00+08:00",
+    "sealNo": ["CMA22309", "SEAL12345", "LOCK00789"],
+    "dg": ["3/1234", "8/2809"],
+    "dmg": ["DENT-LEFT", "SCRATCH-ROOF"],
+    "createDate": "2025-02-17T10:00:00+08:00",
+    "modifyDate": "2025-03-05T12:00:00+08:00",
     "pol": {
       "facilityCode": "YICT",
       "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
@@ -48,22 +48,23 @@ export class EventInput implements OnInit {
       "unLocationName": "Yantian, CN"
     },
     "pod": {
-      "facilityCode": "HIT",
-      "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
-      "unLocationCode": "HKHKG",
-      "unLocationName": "Hong Kong, CN"
+      "facilityCode": "APM",
+      "facilityName": "APM TERMINALS ROTTERDAM",
+      "unLocationCode": "NLRTM",
+      "unLocationName": "Rotterdam, NL"
     },
     "transportEvents": [
       {
+        "seq": 1,
         "eventCode": "VD",
         "eventName": "Vessel Departure",
         "locationType": "POL",
-        "eventTime": "2025-02-20T14:00:00+08:00",
+        "eventTime": "2025-02-18T14:00:00+08:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
-          "conveyanceName": "CNC CHEETAH",
-          "conveyanceNumber": "0XW80S1NC"
+          "conveyanceName": "CMA CGM ZHENG HE",
+          "conveyanceNumber": "0FA51S1MA"
         },
         "location": {
           "facilityCode": "YICT",
@@ -75,38 +76,140 @@ export class EventInput implements OnInit {
         "DataProviderPriority": 1
       },
       {
+        "seq": 2,
         "eventCode": "VA",
         "eventName": "Vessel Arrival",
-        "locationType": "POD",
-        "eventTime": "2025-02-22T19:23:21+08:00",
+        "locationType": "POT",
+        "eventTime": "2025-02-21T06:30:00+08:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
-          "conveyanceName": "CNC CHEETAH",
-          "conveyanceNumber": "0XW80S1NC"
+          "conveyanceName": "CMA CGM ZHENG HE",
+          "conveyanceNumber": "0FA51S1MA"
         },
         "location": {
-          "facilityCode": "HIT",
-          "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
-          "unLocationCode": "HKHKG",
-          "unLocationName": "Hong Kong, CN"
+          "facilityCode": "SGPSA",
+          "facilityName": "PSA SINGAPORE TERMINAL",
+          "unLocationCode": "SGSIN",
+          "unLocationName": "Singapore, SG"
         },
         "DataProvider": "Port",
         "DataProviderPriority": 2
+      },
+      {
+        "seq": 3,
+        "eventCode": "VD",
+        "eventName": "Vessel Departure",
+        "locationType": "POT",
+        "eventTime": "2025-02-22T20:00:00+08:00",
+        "timeType": "A",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "SGPSA",
+          "facilityName": "PSA SINGAPORE TERMINAL",
+          "unLocationCode": "SGSIN",
+          "unLocationName": "Singapore, SG"
+        },
+        "DataProvider": "Carrier",
+        "DataProviderPriority": 1
+      },
+      {
+        "seq": 4,
+        "eventCode": "VA",
+        "eventName": "Vessel Arrival",
+        "locationType": "POT",
+        "eventTime": "2025-02-28T09:15:00+03:00",
+        "timeType": "A",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "JTCPT",
+          "facilityName": "JEDDAH CONTAINER PORT TERMINAL",
+          "unLocationCode": "SAJED",
+          "unLocationName": "Jeddah, SA"
+        },
+        "DataProvider": "Port",
+        "DataProviderPriority": 2
+      },
+      {
+        "seq": 5,
+        "eventCode": "VD",
+        "eventName": "Vessel Departure",
+        "locationType": "POT",
+        "eventTime": "2025-03-01T04:00:00+03:00",
+        "timeType": "A",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "JTCPT",
+          "facilityName": "JEDDAH CONTAINER PORT TERMINAL",
+          "unLocationCode": "SAJED",
+          "unLocationName": "Jeddah, SA"
+        },
+        "DataProvider": "Carrier",
+        "DataProviderPriority": 1
+      },
+      {
+        "seq": 6,
+        "eventCode": "VA",
+        "eventName": "Vessel Arrival",
+        "locationType": "POD",
+        "eventTime": "2025-03-06T08:00:00+01:00",
+        "timeType": "E",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "APM",
+          "facilityName": "APM TERMINALS ROTTERDAM",
+          "unLocationCode": "NLRTM",
+          "unLocationName": "Rotterdam, NL"
+        },
+        "DataProvider": "Carrier",
+        "DataProviderPriority": 1
       }
     ],
     "equipmentEvents": [
       {
+        "eventCode": "IG",
+        "eventName": "Gate In",
+        "locationType": "POL",
+        "eventTime": "2025-02-17T15:00:00+08:00",
+        "timeType": "A",
+        "containerStatus": "F",
+        "modeOfTransport": "Truck",
+        "location": {
+          "facilityCode": "YICT",
+          "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
+          "unLocationCode": "CNYTN",
+          "unLocationName": "Yantian, CN"
+        },
+        "DataProvider": "Port",
+        "DataProviderPriority": 1
+      },
+      {
         "eventCode": "AL",
         "eventName": "Loaded on Vessel",
         "locationType": "POL",
-        "eventTime": "2025-02-20T10:30:00+08:00",
+        "eventTime": "2025-02-18T10:30:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
-          "conveyanceName": "CNC CHEETAH",
-          "conveyanceNumber": "0XW80S1NC"
+          "conveyanceName": "CMA CGM ZHENG HE",
+          "conveyanceNumber": "0FA51S1MA"
         },
         "location": {
           "facilityCode": "YICT",
@@ -120,37 +223,100 @@ export class EventInput implements OnInit {
       {
         "eventCode": "UV",
         "eventName": "Unloaded From Vessel",
-        "locationType": "POD",
-        "eventTime": "2025-02-22T19:00:00+08:00",
+        "locationType": "POT",
+        "eventTime": "2025-02-21T10:00:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
-          "conveyanceName": "CNC CHEETAH",
-          "conveyanceNumber": "0XW80S1NC"
+          "conveyanceName": "CMA CGM ZHENG HE",
+          "conveyanceNumber": "0FA51S1MA"
         },
         "location": {
-          "facilityCode": "HIT",
-          "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
-          "unLocationCode": "HKHKG",
-          "unLocationName": "Hong Kong, CN"
+          "facilityCode": "SGPSA",
+          "facilityName": "PSA SINGAPORE TERMINAL",
+          "unLocationCode": "SGSIN",
+          "unLocationName": "Singapore, SG"
         },
         "DataProvider": "Port",
         "DataProviderPriority": 1
       },
       {
+        "eventCode": "AL",
+        "eventName": "Loaded on Vessel",
+        "locationType": "POT",
+        "eventTime": "2025-02-22T16:00:00+08:00",
+        "timeType": "A",
+        "containerStatus": "F",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "SGPSA",
+          "facilityName": "PSA SINGAPORE TERMINAL",
+          "unLocationCode": "SGSIN",
+          "unLocationName": "Singapore, SG"
+        },
+        "DataProvider": "Port",
+        "DataProviderPriority": 1
+      },
+      {
+        "eventCode": "UV",
+        "eventName": "Unloaded From Vessel",
+        "locationType": "POD",
+        "eventTime": "2025-03-06T14:00:00+01:00",
+        "timeType": "E",
+        "containerStatus": "F",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "APM",
+          "facilityName": "APM TERMINALS ROTTERDAM",
+          "unLocationCode": "NLRTM",
+          "unLocationName": "Rotterdam, NL"
+        },
+        "DataProvider": "Carrier",
+        "DataProviderPriority": 1
+      },
+      {
+        "eventCode": "UV",
+        "eventName": "Unloaded From Vessel",
+        "locationType": "POD",
+        "eventTime": "2025-03-06T16:30:00+01:00",
+        "timeType": "G",
+        "containerStatus": "F",
+        "modeOfTransport": "Ocean",
+        "conveyanceInfo": {
+          "conveyanceName": "CMA CGM JACQUES SAADE",
+          "conveyanceNumber": "0FA52W1MA"
+        },
+        "location": {
+          "facilityCode": "APM",
+          "facilityName": "APM TERMINALS ROTTERDAM",
+          "unLocationCode": "NLRTM",
+          "unLocationName": "Rotterdam, NL"
+        },
+        "DataProvider": "Port",
+        "DataProviderPriority": 2
+      },
+      {
         "eventCode": "OG",
         "eventName": "Gate Out",
         "locationType": "POD",
-        "eventTime": "2025-02-23T08:15:00+08:00",
-        "timeType": "A",
+        "eventTime": "2025-03-07T09:00:00+01:00",
+        "timeType": "E",
         "containerStatus": "F",
         "modeOfTransport": "Truck",
         "location": {
-          "facilityCode": "HIT",
-          "facilityName": "HONG KONG INTERNATIONAL TERMINAL",
-          "unLocationCode": "HKHKG",
-          "unLocationName": "Hong Kong, CN"
+          "facilityCode": "APM",
+          "facilityName": "APM TERMINALS ROTTERDAM",
+          "unLocationCode": "NLRTM",
+          "unLocationName": "Rotterdam, NL"
         },
         "DataProvider": "Port",
         "DataProviderPriority": 1

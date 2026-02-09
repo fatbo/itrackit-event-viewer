@@ -1,6 +1,16 @@
 <div class="event-summary-container">
   @if (primaryEvent()) {
-    <h2>Shipment Summary</h2>
+    <div class="summary-header">
+      <h2>Shipment Summary</h2>
+      <div class="indicator-pills">
+        @if (hasDangerousGoods()) {
+          <span class="pill pill-dg" title="Contains Dangerous Goods">⚠ DG</span>
+        }
+        @if (hasDamages()) {
+          <span class="pill pill-dmg" title="Damage Reported">🔴 DMG</span>
+        }
+      </div>
+    </div>
     
     <div class="summary-grid">
       @if (primaryEvent()?.shipmentId) {
@@ -70,6 +80,39 @@
         <div class="summary-item">
           <span class="label">Destination (POD):</span>
           <span class="value">{{ primaryEvent()?.destination }}</span>
+        </div>
+      }
+
+      @if (primaryEvent()?.sealNo?.length) {
+        <div class="summary-item">
+          <span class="label">Seal Numbers:</span>
+          <span class="value">
+            @for (seal of primaryEvent()?.sealNo; track seal) {
+              <span class="seal-tag">🔒 {{ seal }}</span>
+            }
+          </span>
+        </div>
+      }
+
+      @if (hasDangerousGoods()) {
+        <div class="summary-item summary-item-dg">
+          <span class="label">Dangerous Goods (DG):</span>
+          <span class="value">
+            @for (code of primaryEvent()?.dg; track code) {
+              <span class="pill pill-dg-inline">⚠ {{ code }}</span>
+            }
+          </span>
+        </div>
+      }
+
+      @if (hasDamages()) {
+        <div class="summary-item summary-item-dmg">
+          <span class="label">Damages (DMG):</span>
+          <span class="value">
+            @for (damage of primaryEvent()?.dmg; track damage) {
+              <span class="pill pill-dmg-inline">🔴 {{ damage }}</span>
+            }
+          </span>
         </div>
       }
       

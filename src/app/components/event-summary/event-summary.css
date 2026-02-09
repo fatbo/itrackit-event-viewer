@@ -5,18 +5,61 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-  color: #333;
-  margin: 0 0 12px 0;
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
   border-bottom: 2px solid #2196F3;
   padding-bottom: 8px;
+}
+
+h2 {
+  color: #333;
+  margin: 0;
   font-size: 1.05em;
+}
+
+.indicator-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.pill-dg,
+.pill-dg-inline {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+}
+
+.pill-dmg,
+.pill-dmg-inline {
+  background: #fce4ec;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.pill-dg-inline,
+.pill-dmg-inline {
+  margin-right: 4px;
 }
 
 .summary-grid {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .summary-item {
@@ -26,6 +69,28 @@ h2 {
   background: #f5f5f5;
   border-radius: 4px;
   border-left: 3px solid #2196F3;
+}
+
+.summary-item-dg {
+  background: #fff8e1;
+  border-left-color: #ff9800;
+}
+
+.summary-item-dmg {
+  background: #fce4ec;
+  border-left-color: #e53935;
+}
+
+.seal-tag {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.85em;
+  margin-right: 4px;
+  margin-top: 2px;
 }
 
 .label {
