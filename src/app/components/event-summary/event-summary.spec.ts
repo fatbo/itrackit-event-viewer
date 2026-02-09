@@ -30,7 +30,7 @@ describe('EventSummary', () => {
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
-    const status = fixture.componentInstance['shipmentStatus']?.();
+    const status = fixture.componentInstance.shipmentStatus();
     expect(status?.label).toBe('In Transit');
   });
 
@@ -54,8 +54,41 @@ describe('EventSummary', () => {
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
-    const status = fixture.componentInstance['shipmentStatus']?.();
-    expect(status?.label).toBe('Limited Tracking (Hong Kong Only)');
+    const status = fixture.componentInstance.shipmentStatus();
+    expect(status?.label).toBe('Limited Tracking');
+  });
+
+  it('keeps limited tracking when only Hong Kong actual events are present', () => {
+    const fixture = TestBed.createComponent(EventSummary);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [
+        {
+          eventType: 'Gate Out',
+          eventDateTime: '2025-01-10T08:00:00Z',
+          description: 'Gate out at Hong Kong.',
+          eventCode: 'OG',
+          locationType: 'POL',
+          timeType: 'A',
+          unLocationCode: 'HKHKG',
+        },
+        {
+          eventType: 'Loaded on Vessel',
+          eventDateTime: '2025-01-11T08:00:00Z',
+          description: 'Loaded at Hong Kong.',
+          eventCode: 'AL',
+          locationType: 'POL',
+          timeType: 'A',
+          unLocationCode: 'HKHKG',
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const status = fixture.componentInstance.shipmentStatus();
+    expect(status?.label).toBe('Limited Tracking');
   });
 
   it('marks shipments completed when POL gate events exist with other actual updates', () => {
@@ -87,7 +120,21 @@ describe('EventSummary', () => {
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
-    const status = fixture.componentInstance['shipmentStatus']?.();
+    const status = fixture.componentInstance.shipmentStatus();
     expect(status?.label).toBe('Completed');
+  });
+
+  it('shows status unavailable when there are no events', () => {
+    const fixture = TestBed.createComponent(EventSummary);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const status = fixture.componentInstance.shipmentStatus();
+    expect(status?.label).toBe('Status Unavailable');
   });
 });

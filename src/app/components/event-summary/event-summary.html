@@ -6,10 +6,10 @@
         @if (shipmentStatus()) {
           <span
             class="pill pill-status"
-            [ngClass]="'pill-status-' + shipmentStatus()?.tone"
-            [title]="shipmentStatus()?.description"
+            [ngClass]="'pill-status-' + shipmentStatus().tone"
+            [title]="shipmentStatus().description"
           >
-            {{ shipmentStatus()?.label }}
+            {{ shipmentStatus().label }}
           </span>
         }
         @if (hasDangerousGoods()) {
@@ -25,11 +25,11 @@
       @if (shipmentStatus()) {
         <div
           class="summary-item summary-item-status"
-          [ngClass]="'summary-item-status-' + shipmentStatus()?.tone"
+          [ngClass]="'summary-item-status-' + shipmentStatus().tone"
         >
           <span class="label">Shipment Status:</span>
-          <span class="value">{{ shipmentStatus()?.label }}</span>
-          <span class="status-note">{{ shipmentStatus()?.description }}</span>
+          <span class="value">{{ shipmentStatus().label }}</span>
+          <span class="status-note">{{ shipmentStatus().description }}</span>
         </div>
       }
       @if (primaryEvent()?.shipmentId) {

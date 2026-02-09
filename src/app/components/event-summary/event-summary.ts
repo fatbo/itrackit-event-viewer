@@ -38,7 +38,7 @@ export class EventSummary {
     return Array.isArray(dmg) && dmg.length > 0;
   });
 
-  protected readonly shipmentStatus = computed<ShipmentStatusInfo | null>(() => {
+  readonly shipmentStatus = computed<ShipmentStatusInfo>(() => {
     const events = this.primaryEvent()?.events;
     if (!events || events.length === 0) {
       return {
@@ -61,15 +61,15 @@ export class EventSummary {
     const hasHongKongPolGate = polGateEvents.some((event) => this.isHongKongLocation(event));
     if (hasHongKongPolGate && !this.hasActualEventsOutsideHongKong(events)) {
       return {
-        label: 'Limited Tracking (Hong Kong Only)',
-        description: 'Tracking ends after the actual gate event in Hong Kong.',
+        label: 'Limited Tracking',
+        description: 'Only actual events in Hong Kong have been recorded so far.',
         tone: 'limited',
       };
     }
 
     return {
       label: 'Completed',
-      description: 'Actual gate-in/out recorded at the port of loading.',
+      description: 'Actual gate in/out recorded at the port of loading.',
       tone: 'completed',
     };
   });
@@ -120,8 +120,7 @@ export class EventSummary {
     return events.some(
       (event) =>
         this.isActualEvent(event) &&
-        !!event.unLocationCode &&
-        event.unLocationCode.toUpperCase() !== this.HONG_KONG_LOCATION_CODE
+        event.unLocationCode?.toUpperCase() !== this.HONG_KONG_LOCATION_CODE
     );
   }
 }
