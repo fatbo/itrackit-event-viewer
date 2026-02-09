@@ -54,6 +54,9 @@
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   animation: slideDown 0.25s ease-out;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .input-panel-hidden {

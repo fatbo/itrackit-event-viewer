@@ -76,14 +76,24 @@ export class EventTimeline {
     return portOrder.map(code => portMap.get(code)!);
   });
 
+  private hasValidDate(event: ShipmentEvent): boolean {
+    return !!event.eventDateTime && !isNaN(new Date(event.eventDateTime).getTime());
+  }
+
   protected readonly sortedEvents = computed(() => {
     const events = this.primaryEvent()?.events;
     if (!events) return [];
     
-    // Sort events by date (oldest first)
-    return [...events].sort((a, b) => {
-      return new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime();
-    });
+    // Only include events with a valid eventDateTime
+    return events
+      .filter(e => this.hasValidDate(e))
+      .sort((a, b) => new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime());
+  });
+
+  protected readonly undatedEvents = computed(() => {
+    const events = this.primaryEvent()?.events;
+    if (!events) return [];
+    return events.filter(e => !this.hasValidDate(e));
   });
 
   readonly eventIndexLabels = computed(() =>

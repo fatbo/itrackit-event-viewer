@@ -315,6 +315,11 @@ h2 {
   color: #1565c0;
 }
 
+.port-time.unknown {
+  color: #9e9e9e;
+  font-style: italic;
+}
+
 .time-type-badge {
   font-size: 0.85em;
   padding: 0 4px;
@@ -361,4 +366,50 @@ h2 {
   .timeline-index {
     position: static;
   }
+}
+
+/* Undated Events */
+.undated-events {
+  margin-top: 20px;
+  padding: 14px;
+  background: #fdf6ec;
+  border-radius: 8px;
+  border: 1px solid #f0dfc0;
+}
+
+.undated-events-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #7a5c1f;
+  margin: 0 0 4px 0;
+}
+
+.undated-events-hint {
+  font-size: 0.75em;
+  color: #9e8a5a;
+  margin: 0 0 12px 0;
+  font-style: italic;
+}
+
+.undated-event-card {
+  background: white;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border-left: 3px solid #e0a800;
+  margin-bottom: 8px;
+}
+
+.undated-event-card:last-child {
+  margin-bottom: 0;
+}
+
+.undated-event-card .event-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.timeline-icon-inline {
+  font-size: 1.1em;
 }
