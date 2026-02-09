@@ -77,7 +77,7 @@ describe('ShipmentParser', () => {
     expect(data.events[0].location).toContain('(CNYTN)');
   });
 
-  it('omits estimated times when actual times are available', () => {
+  it('keeps estimated times alongside actual times', () => {
     const data = parser.parseOpShipmentEventRaw({
       ...baseRaw,
       equipmentEvents: [
@@ -103,7 +103,7 @@ describe('ShipmentParser', () => {
     });
 
     expect(data.events[0].actualTime).toBe('2025-02-20T10:30:00+08:00');
-    expect(data.events[0].estimatedTime).toBeUndefined();
-    expect(data.events[0].timeDetails ?? '').not.toContain('Estimated');
+    expect(data.events[0].estimatedTime).toBe('2025-02-20T12:00:00+08:00');
+    expect(data.events[0].timeDetails ?? '').toContain('Estimated');
   });
 });
