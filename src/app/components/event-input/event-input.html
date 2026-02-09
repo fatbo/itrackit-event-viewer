@@ -1,4 +1,13 @@
 <div class="event-input-container">
+  <div class="input-header">
+    <h2>Shipment Event Input</h2>
+    @if (onClose) {
+      <button class="close-btn" (click)="onClose()">
+        ✕ Close
+      </button>
+    }
+  </div>
+  
   @if (isDemoData()) {
     <div class="demo-banner">
       <div class="demo-icon">🎯</div>
@@ -17,8 +26,6 @@
       <li><strong>Formats:</strong> OpShipmentEventRaw (OpenAPI) or ShipmentData</li>
     </ul>
   </div>
-  
-  <h2>Shipment Event Input</h2>
   
   <div class="input-toggle">
     <button (click)="toggleEventType()" class="toggle-btn">

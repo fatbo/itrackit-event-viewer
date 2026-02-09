@@ -1,4 +1,4 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, OnInit, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
@@ -12,6 +12,8 @@ import { ShipmentParser } from '../../services/shipment-parser';
   styleUrl: './event-input.css',
 })
 export class EventInput implements OnInit {
+  @Input() onClose?: () => void;
+  
   protected readonly jsonInput = signal('');
   protected readonly errorMessage = signal('');
   protected readonly isPrimary = signal(true);
