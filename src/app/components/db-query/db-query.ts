@@ -1,4 +1,4 @@
-import { Component, signal, Input } from '@angular/core';
+import { Component, signal, computed, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MongoDbService, MongoDbConfig, QueryField } from '../../services/mongodb.service';
@@ -123,12 +123,10 @@ export class DbQuery {
     }
   }
 
-  get canConnect(): boolean {
-    return (
-      !!this.apiUrl().trim() &&
-      !!this.database().trim() &&
-      !!this.username().trim() &&
-      !this.mongoDb.connecting()
-    );
-  }
+  readonly canConnect = computed(() =>
+    !!this.apiUrl().trim() &&
+    !!this.database().trim() &&
+    !!this.username().trim() &&
+    !this.mongoDb.connecting()
+  );
 }

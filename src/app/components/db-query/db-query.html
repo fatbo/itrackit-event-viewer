@@ -108,7 +108,7 @@
       <button
         class="connect-btn"
         (click)="onConnect()"
-        [disabled]="!canConnect"
+        [disabled]="!canConnect()"
       >
         {{ mongoDb.connecting() ? '⏳ Connecting...' : '🔗 Connect' }}
       </button>

@@ -28,11 +28,17 @@ export class MongoDbService {
     this.connecting.set(true);
     this.error.set('');
 
+    if (config.apiUrl && !config.apiUrl.startsWith('https://') && !config.apiUrl.startsWith('http://localhost')) {
+      this.error.set('API URL must use HTTPS to protect credentials');
+      this.connecting.set(false);
+      return false;
+    }
+
     try {
       // Store config and test connection with a minimal query
       this.config = config;
       const headers = this.buildHeaders();
-      const body = this.buildRequestBody({ _testConnection: true }, 'findOne');
+      const body = this.buildRequestBody({}, 'findOne');
 
       await firstValueFrom(
         this.http.post(config.apiUrl + '/action/findOne', body, { headers })
