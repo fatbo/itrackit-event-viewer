@@ -36,14 +36,14 @@ describe('EventTimeline', () => {
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
-    const component = fixture.componentInstance as any;
+    const component = fixture.componentInstance;
     expect(component.timelineIndex()).toEqual([
       { label: 'Jan 2024', anchorId: 'event-0', count: 2 },
       { label: 'Feb 2024', anchorId: 'event-2', count: 1 },
     ]);
   });
 
-  it('identifies the first event of each month group', () => {
+  it('exposes month labels for each event', () => {
     const fixture = TestBed.createComponent(EventTimeline);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
@@ -69,10 +69,10 @@ describe('EventTimeline', () => {
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
-    const component = fixture.componentInstance as any;
-    const sortedEvents = component.sortedEvents();
-    expect(component.isNewIndexGroup(sortedEvents[0], 0)).toBe(true);
-    expect(component.isNewIndexGroup(sortedEvents[1], 1)).toBe(false);
-    expect(component.isNewIndexGroup(sortedEvents[2], 2)).toBe(true);
+    const component = fixture.componentInstance;
+    const labels = component.eventIndexLabels();
+    expect(labels[0]).toBe('Mar 2024');
+    expect(labels[1]).toBe('Mar 2024');
+    expect(labels[2]).toBe('Apr 2024');
   });
 });

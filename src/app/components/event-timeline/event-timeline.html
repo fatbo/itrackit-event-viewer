@@ -22,9 +22,10 @@
       </nav>
 
       <div class="timeline">
+        @let labels = eventIndexLabels();
         @for (event of sortedEvents(); track event.eventDateTime; let index = $index) {
-          @if (isNewIndexGroup(event, index)) {
-            <div class="timeline-group-label">{{ formatIndexLabel(event) }}</div>
+          @if (index === 0 || labels[index] !== labels[index - 1]) {
+            <div class="timeline-group-label">{{ labels[index] }}</div>
           }
 
           <div class="timeline-item" [attr.id]="getEventAnchorId(index)">

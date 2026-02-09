@@ -35,12 +35,15 @@ export class EventTimeline {
     });
   });
 
-  protected readonly timelineIndex = computed(() => {
-    const events = this.sortedEvents();
+  readonly eventIndexLabels = computed(() =>
+    this.sortedEvents().map((event) => this.formatIndexLabel(event))
+  );
+
+  readonly timelineIndex = computed(() => {
+    const labels = this.eventIndexLabels();
     const indexItems: TimelineIndexItem[] = [];
 
-    events.forEach((event, index) => {
-      const label = this.formatIndexLabel(event);
+    labels.forEach((label, index) => {
       const lastItem = indexItems.at(-1);
 
       if (!lastItem || lastItem.label !== label) {
@@ -76,11 +79,6 @@ export class EventTimeline {
     return this.indexDateFormatter.format(new Date(event.eventDateTime));
   }
 
-  protected isNewIndexGroup(event: ShipmentEvent, index: number): boolean {
-    if (index === 0) return true;
-    const previousEvent = this.sortedEvents()[index - 1];
-    return this.formatIndexLabel(previousEvent) !== this.formatIndexLabel(event);
-  }
 
   protected scrollToSection(anchorId: string): void {
     const target = this.document.getElementById(anchorId);
