@@ -69,21 +69,48 @@ export class EventComparison {
     const primaryEventMap = this.buildEventMap(primary.events || []);
     const secondaryEventMap = this.buildEventMap(secondary.events || []);
 
-    for (const [eventKey, primaryEvent] of primaryEventMap.entries()) {
-      const secondaryEvent = secondaryEventMap.get(eventKey);
-      if (!secondaryEvent) {
-        diffs.push(`Event ${this.formatEventLabel(primaryEvent)} missing in secondary shipment`);
+    for (const [eventKey, primaryEvents] of primaryEventMap.entries()) {
+      const secondaryEvents = secondaryEventMap.get(eventKey);
+      if (!secondaryEvents) {
+        primaryEvents.forEach((event, index) => {
+          diffs.push(
+            `Event ${this.formatEventLabel(event, primaryEvents.length > 1 ? index + 1 : undefined)} missing in secondary shipment`
+          );
+        });
         continue;
       }
 
-      diffs.push(
-        ...this.compareEventTimes(this.formatEventLabel(primaryEvent), primaryEvent, secondaryEvent)
-      );
+      const maxEvents = Math.max(primaryEvents.length, secondaryEvents.length);
+      for (let i = 0; i < maxEvents; i++) {
+        const primaryEvent = primaryEvents[i];
+        const secondaryEvent = secondaryEvents[i];
+        if (!primaryEvent) {
+          diffs.push(
+            `Event ${this.formatEventLabel(secondaryEvent, secondaryEvents.length > 1 ? i + 1 : undefined)} missing in primary shipment`
+          );
+          continue;
+        }
+        if (!secondaryEvent) {
+          diffs.push(
+            `Event ${this.formatEventLabel(primaryEvent, primaryEvents.length > 1 ? i + 1 : undefined)} missing in secondary shipment`
+          );
+          continue;
+        }
+        const label = this.formatEventLabel(
+          primaryEvent,
+          primaryEvents.length > 1 || secondaryEvents.length > 1 ? i + 1 : undefined
+        );
+        diffs.push(...this.compareEventTimes(label, primaryEvent, secondaryEvent));
+      }
     }
 
-    for (const [eventKey, secondaryEvent] of secondaryEventMap.entries()) {
+    for (const [eventKey, secondaryEvents] of secondaryEventMap.entries()) {
       if (!primaryEventMap.has(eventKey)) {
-        diffs.push(`Event ${this.formatEventLabel(secondaryEvent)} missing in primary shipment`);
+        secondaryEvents.forEach((event, index) => {
+          diffs.push(
+            `Event ${this.formatEventLabel(event, secondaryEvents.length > 1 ? index + 1 : undefined)} missing in primary shipment`
+          );
+        });
       }
     }
     
@@ -97,9 +124,7 @@ export class EventComparison {
     secondaryValue?: string
   ): void {
     if (primaryValue !== secondaryValue) {
-      diffs.push(`${
-        label
-      }: "${this.formatValue(primaryValue)}" vs "${this.formatValue(secondaryValue)}"`);
+      diffs.push(`${label}: "${this.formatValue(primaryValue)}" vs "${this.formatValue(secondaryValue)}"`);
     }
   }
 
@@ -114,10 +139,18 @@ export class EventComparison {
     return value ? new Date(value).toLocaleString() : '—';
   }
 
-  private buildEventMap(events: ShipmentEvent[]): Map<string, ShipmentEvent> {
-    const map = new Map<string, ShipmentEvent>();
+  private buildEventMap(events: ShipmentEvent[]): Map<string, ShipmentEvent[]> {
+    const map = new Map<string, ShipmentEvent[]>();
     for (const event of events) {
-      map.set(this.getEventKey(event), event);
+      const key = this.getEventKey(event);
+      const list = map.get(key) ?? [];
+      list.push(event);
+      map.set(key, list);
+    }
+    for (const list of map.values()) {
+      list.sort(
+        (a, b) => new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime()
+      );
     }
     return map;
   }
@@ -129,12 +162,13 @@ export class EventComparison {
     return [eventCode, locationType, location].filter(Boolean).join('|');
   }
 
-  private formatEventLabel(event: ShipmentEvent): string {
+  private formatEventLabel(event: ShipmentEvent, sequence?: number): string {
     const eventCode = event.eventCode || event.eventType || 'Unknown';
     const locationType = event.locationType || '';
     const location = event.unLocationCode || '';
     const base = [locationType, eventCode].filter(Boolean).join(' ');
-    return location ? `${base} (${location})` : base;
+    const label = location ? `${base} (${location})` : base;
+    return sequence ? `${label} #${sequence}` : label;
   }
 
   private compareEventTimes(
@@ -153,7 +187,7 @@ export class EventComparison {
       { name: 'Planned', primary: primaryEvent.plannedTime, secondary: secondaryEvent.plannedTime },
     ];
 
-    const hasTimeDetails = timePairs.some(
+    const hasTypedTimes = timePairs.some(
       time => time.primary !== undefined || time.secondary !== undefined
     );
 
@@ -167,7 +201,7 @@ export class EventComparison {
       }
     }
 
-    if (!hasTimeDetails && primaryEvent.eventDateTime !== secondaryEvent.eventDateTime) {
+    if (!hasTypedTimes && primaryEvent.eventDateTime !== secondaryEvent.eventDateTime) {
       diffs.push(
         `Event ${label} time: "${this.formatDateTime(
           primaryEvent.eventDateTime
