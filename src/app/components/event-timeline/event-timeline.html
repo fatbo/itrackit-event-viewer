@@ -2,94 +2,118 @@
   @if (primaryEvent() && sortedEvents().length > 0) {
     <h2>Event Timeline</h2>
     
-    <div class="timeline">
-      @for (event of sortedEvents(); track event.eventDateTime) {
-        <div class="timeline-item">
-          <div class="timeline-marker">
-            <div class="timeline-icon">{{ getEventIcon(event.eventType) }}</div>
-          </div>
-          <div class="timeline-content">
-            <div class="event-header">
-              <h3 class="event-type">{{ event.eventType }}</h3>
-              <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
+    <div class="timeline-layout">
+      <nav class="timeline-index" aria-label="Timeline index">
+        <div class="timeline-index-title">Index</div>
+        <ul class="timeline-index-list">
+          @for (item of timelineIndex(); track item.anchorId) {
+            <li>
+              <button
+                type="button"
+                class="timeline-index-link"
+                (click)="scrollToSection(item.anchorId)"
+              >
+                <span class="timeline-index-label">{{ item.label }}</span>
+                <span class="timeline-index-count">{{ item.count }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="timeline">
+        @for (event of sortedEvents(); track event.eventDateTime; let index = $index) {
+          @if (isNewIndexGroup(event, index)) {
+            <div class="timeline-group-label">{{ formatIndexLabel(event) }}</div>
+          }
+
+          <div class="timeline-item" [attr.id]="getEventAnchorId(index)">
+            <div class="timeline-marker">
+              <div class="timeline-icon">{{ getEventIcon(event.eventType) }}</div>
             </div>
-            <p class="event-description">{{ event.description }}</p>
-            
-            @if (event.actualTime || event.estimatedTime || event.plannedTime) {
-              <div class="event-times">
-                @if (event.actualTime) {
-                  <div class="time-item actual">
-                    <strong>Actual:</strong> {{ event.actualTime | date:'medium' }}
-                  </div>
+            <div class="timeline-content">
+              <div class="event-header">
+                <h3 class="event-type">{{ event.eventType }}</h3>
+                <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
+              </div>
+              <p class="event-description">{{ event.description }}</p>
+              
+              @if (event.actualTime || event.estimatedTime || event.plannedTime) {
+                <div class="event-times">
+                  @if (event.actualTime) {
+                    <div class="time-item actual">
+                      <strong>Actual:</strong> {{ event.actualTime | date:'medium' }}
+                    </div>
+                  }
+                  @if (event.estimatedTime) {
+                    <div class="time-item estimated">
+                      <strong>Estimated:</strong> {{ event.estimatedTime | date:'medium' }}
+                    </div>
+                  }
+                  @if (event.plannedTime) {
+                    <div class="time-item planned">
+                      <strong>Planned:</strong> {{ event.plannedTime | date:'medium' }}
+                    </div>
+                  }
+                </div>
+              }
+              
+              <div class="event-details">
+                @if (event.location) {
+                  <span class="detail-item">
+                    <strong>Location:</strong> {{ event.location }}
+                  </span>
                 }
-                @if (event.estimatedTime) {
-                  <div class="time-item estimated">
-                    <strong>Estimated:</strong> {{ event.estimatedTime | date:'medium' }}
-                  </div>
+                @if (event.eventCode) {
+                  <span class="detail-item">
+                    <strong>Event Code:</strong> {{ event.eventCode }}
+                  </span>
                 }
-                @if (event.plannedTime) {
-                  <div class="time-item planned">
-                    <strong>Planned:</strong> {{ event.plannedTime | date:'medium' }}
-                  </div>
+                @if (event.locationType) {
+                  <span class="detail-item">
+                    <strong>Location Type:</strong> {{ event.locationType }}
+                  </span>
+                }
+                @if (event.modeOfTransport) {
+                  <span class="detail-item">
+                    <strong>Transport Mode:</strong> {{ event.modeOfTransport }}
+                  </span>
+                }
+                @if (event.vessel) {
+                  <span class="detail-item">
+                    <strong>Vessel:</strong> {{ event.vessel }}
+                  </span>
+                }
+                @if (event.voyage) {
+                  <span class="detail-item">
+                    <strong>Voyage:</strong> {{ event.voyage }}
+                  </span>
+                }
+                @if (event.containerStatus) {
+                  <span class="detail-item">
+                    <strong>Container Status:</strong> {{ event.containerStatus }}
+                  </span>
+                }
+                @if (event.status) {
+                  <span class="detail-item">
+                    <strong>Status:</strong> {{ event.status }}
+                  </span>
+                }
+                @if (event.facilityName) {
+                  <span class="detail-item">
+                    <strong>Facility:</strong> {{ event.facilityName }}
+                  </span>
+                }
+                @if (event.dataProvider) {
+                  <span class="detail-item">
+                    <strong>Data Provider:</strong> {{ event.dataProvider }}
+                  </span>
                 }
               </div>
-            }
-            
-            <div class="event-details">
-              @if (event.location) {
-                <span class="detail-item">
-                  <strong>Location:</strong> {{ event.location }}
-                </span>
-              }
-              @if (event.eventCode) {
-                <span class="detail-item">
-                  <strong>Event Code:</strong> {{ event.eventCode }}
-                </span>
-              }
-              @if (event.locationType) {
-                <span class="detail-item">
-                  <strong>Location Type:</strong> {{ event.locationType }}
-                </span>
-              }
-              @if (event.modeOfTransport) {
-                <span class="detail-item">
-                  <strong>Transport Mode:</strong> {{ event.modeOfTransport }}
-                </span>
-              }
-              @if (event.vessel) {
-                <span class="detail-item">
-                  <strong>Vessel:</strong> {{ event.vessel }}
-                </span>
-              }
-              @if (event.voyage) {
-                <span class="detail-item">
-                  <strong>Voyage:</strong> {{ event.voyage }}
-                </span>
-              }
-              @if (event.containerStatus) {
-                <span class="detail-item">
-                  <strong>Container Status:</strong> {{ event.containerStatus }}
-                </span>
-              }
-              @if (event.status) {
-                <span class="detail-item">
-                  <strong>Status:</strong> {{ event.status }}
-                </span>
-              }
-              @if (event.facilityName) {
-                <span class="detail-item">
-                  <strong>Facility:</strong> {{ event.facilityName }}
-                </span>
-              }
-              @if (event.dataProvider) {
-                <span class="detail-item">
-                  <strong>Data Provider:</strong> {{ event.dataProvider }}
-                </span>
-              }
             </div>
           </div>
-        </div>
-      }
+        }
+      </div>
     </div>
   } @else if (primaryEvent()) {
     <div class="no-events">
