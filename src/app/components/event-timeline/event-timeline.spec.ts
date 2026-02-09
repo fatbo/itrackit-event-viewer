@@ -10,7 +10,7 @@ describe('EventTimeline', () => {
     }).compileComponents();
   });
 
-  it('builds an index grouped by month', () => {
+  it('builds an index grouped by day', () => {
     const fixture = TestBed.createComponent(EventTimeline);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
@@ -22,7 +22,7 @@ describe('EventTimeline', () => {
         },
         {
           eventType: 'Loaded',
-          eventDateTime: '2024-01-20T12:00:00Z',
+          eventDateTime: '2024-01-10T18:00:00Z',
           description: 'Container loaded on vessel.',
         },
         {
@@ -38,12 +38,12 @@ describe('EventTimeline', () => {
 
     const component = fixture.componentInstance;
     expect(component.timelineIndex()).toEqual([
-      { label: 'Jan 2024', anchorId: 'event-0', count: 2 },
-      { label: 'Feb 2024', anchorId: 'event-2', count: 1 },
+      { label: 'Jan 10, 2024', anchorId: 'event-0', count: 2 },
+      { label: 'Feb 5, 2024', anchorId: 'event-2', count: 1 },
     ]);
   });
 
-  it('exposes month labels for each event', () => {
+  it('exposes day labels for each event', () => {
     const fixture = TestBed.createComponent(EventTimeline);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
@@ -55,7 +55,7 @@ describe('EventTimeline', () => {
         },
         {
           eventType: 'Loaded',
-          eventDateTime: '2024-03-20T12:00:00Z',
+          eventDateTime: '2024-03-10T18:00:00Z',
           description: 'Container loaded on vessel.',
         },
         {
@@ -71,8 +71,8 @@ describe('EventTimeline', () => {
 
     const component = fixture.componentInstance;
     const labels = component.eventIndexLabels();
-    expect(labels[0]).toBe('Mar 2024');
-    expect(labels[1]).toBe('Mar 2024');
-    expect(labels[2]).toBe('Apr 2024');
+    expect(labels[0]).toBe('Mar 10, 2024');
+    expect(labels[1]).toBe('Mar 10, 2024');
+    expect(labels[2]).toBe('Apr 5, 2024');
   });
 });

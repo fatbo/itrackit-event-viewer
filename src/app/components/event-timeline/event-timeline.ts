@@ -19,6 +19,7 @@ export class EventTimeline {
   private eventDataService = inject(EventData);
   private document = inject(DOCUMENT);
   private readonly indexDateFormatter = new Intl.DateTimeFormat('en-US', {
+    day: 'numeric',
     month: 'short',
     year: 'numeric',
   });
