@@ -13,53 +13,102 @@
 .app-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 30px 20px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.app-header h1 {
+.header-content h1 {
   margin: 0;
-  font-size: 2.5em;
+  font-size: 1.4em;
   font-weight: 600;
 }
 
 .subtitle {
-  margin: 10px 0 0 0;
-  font-size: 1.1em;
-  opacity: 0.9;
+  margin: 2px 0 0 0;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.input-toggle-btn {
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.input-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.input-panel {
+  background: white;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  animation: slideDown 0.25s ease-out;
+}
+
+.input-panel-hidden {
+  display: none;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .app-main {
   flex: 1;
-  padding: 20px;
+  padding: 16px;
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  align-items: start;
 }
 
 .app-footer {
   background: #333;
   color: white;
   text-align: center;
-  padding: 20px;
-  margin-top: 40px;
+  padding: 12px;
+  margin-top: 20px;
 }
 
 .app-footer p {
   margin: 0;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
-@media (max-width: 768px) {
-  .app-header h1 {
-    font-size: 1.8em;
+@media (max-width: 900px) {
+  .app-header {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding: 10px 16px;
   }
-  
-  .subtitle {
-    font-size: 1em;
+
+  .header-content h1 {
+    font-size: 1.2em;
   }
-  
+
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
   .app-main {
     padding: 10px;
   }

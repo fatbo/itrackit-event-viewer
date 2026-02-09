@@ -1,7 +1,5 @@
 .event-timeline-container {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
+  padding: 14px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -9,20 +7,21 @@
 
 h2 {
   color: #333;
-  margin-bottom: 30px;
+  margin: 0 0 16px 0;
   border-bottom: 2px solid #2196F3;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
+  font-size: 1.05em;
 }
 
 .timeline {
   position: relative;
-  padding-left: 50px;
+  padding-left: 44px;
 }
 
 .timeline::before {
   content: '';
   position: absolute;
-  left: 20px;
+  left: 16px;
   top: 0;
   bottom: 0;
   width: 2px;
@@ -31,80 +30,82 @@ h2 {
 
 .timeline-item {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
   display: flex;
   align-items: flex-start;
 }
 
 .timeline-marker {
   position: absolute;
-  left: -30px;
+  left: -28px;
   top: 0;
 }
 
 .timeline-icon {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   background: white;
-  border: 3px solid #2196F3;
+  border: 2px solid #2196F3;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.1em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-content {
   flex: 1;
   background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  border-left: 4px solid #2196F3;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 3px solid #2196F3;
 }
 
 .event-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 6px;
 }
 
 .event-type {
   color: #2196F3;
-  font-size: 1.2em;
+  font-size: 0.95em;
   margin: 0;
+  font-weight: 600;
 }
 
 .event-date {
   color: #666;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .event-description {
   color: #333;
-  margin: 10px 0;
-  line-height: 1.5;
+  margin: 4px 0;
+  line-height: 1.4;
+  font-size: 0.85em;
 }
 
 .event-times {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 15px 0;
-  padding: 15px;
+  gap: 4px;
+  margin: 8px 0;
+  padding: 8px;
   background: white;
-  border-radius: 6px;
-  border-left: 3px solid #4CAF50;
+  border-radius: 4px;
+  border-left: 2px solid #4CAF50;
 }
 
 .time-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.9em;
+  gap: 6px;
+  font-size: 0.8em;
 }
 
 .time-item.actual {
@@ -134,15 +135,15 @@ h2 {
 .event-details {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 15px;
-  padding-top: 15px;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid #e0e0e0;
 }
 
 .detail-item {
   color: #555;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .detail-item strong {
@@ -151,10 +152,10 @@ h2 {
 
 .no-events {
   text-align: center;
-  padding: 40px;
+  padding: 24px;
   color: #999;
 }
 
 .no-events p {
-  font-size: 1.1em;
+  font-size: 0.9em;
 }
