@@ -3,6 +3,15 @@
     <div class="summary-header">
       <h2>Shipment Summary</h2>
       <div class="indicator-pills">
+        @if (shipmentStatus()) {
+          <span
+            class="pill pill-status"
+            [ngClass]="'pill-status-' + shipmentStatus()?.tone"
+            [title]="shipmentStatus()?.description"
+          >
+            {{ shipmentStatus()?.label }}
+          </span>
+        }
         @if (hasDangerousGoods()) {
           <span class="pill pill-dg" title="Contains Dangerous Goods">⚠ DG</span>
         }
@@ -13,6 +22,16 @@
     </div>
     
     <div class="summary-grid">
+      @if (shipmentStatus()) {
+        <div
+          class="summary-item summary-item-status"
+          [ngClass]="'summary-item-status-' + shipmentStatus()?.tone"
+        >
+          <span class="label">Shipment Status:</span>
+          <span class="value">{{ shipmentStatus()?.label }}</span>
+          <span class="status-note">{{ shipmentStatus()?.description }}</span>
+        </div>
+      }
       @if (primaryEvent()?.shipmentId) {
         <div class="summary-item">
           <span class="label">Shipment ID:</span>
