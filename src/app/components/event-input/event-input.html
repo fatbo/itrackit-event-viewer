@@ -21,7 +21,7 @@
   <div class="usage-tips">
     <h3>💡 How to Use</h3>
     <ul>
-      <li><strong>Load Your Data:</strong> Paste JSON or upload a file below</li>
+      <li><strong>Load Your Data:</strong> Paste JSON, upload a file, or query from a database</li>
       <li><strong>Compare:</strong> Toggle to "Secondary Event" for side-by-side comparison</li>
       <li><strong>Formats:</strong> OpShipmentEventRaw (OpenAPI) or ShipmentData</li>
     </ul>
@@ -59,6 +59,10 @@
       />
     </div>
   </div>
+
+  <div class="db-section-divider">OR</div>
+
+  <app-db-query [isPrimary]="isPrimary()"></app-db-query>
   
   @if (errorMessage()) {
     <div class="error-message">

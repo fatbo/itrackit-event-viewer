@@ -1,0 +1,121 @@
+<div class="db-query-container">
+  <h3>🗄️ Query from Database</h3>
+
+  @if (mongoDb.connected() && !showConnectionForm()) {
+    <div class="connection-status connected">
+      <span class="status-dot"></span>
+      <span>Connected</span>
+      <div class="connection-actions">
+        <button class="link-btn" (click)="onChangeConnection()">Change</button>
+        <button class="link-btn disconnect" (click)="onDisconnect()">Disconnect</button>
+      </div>
+    </div>
+
+    <div class="query-section">
+      <div class="query-row">
+        <select [(ngModel)]="queryField" class="query-select">
+          <option value="blNo">Bill of Lading</option>
+          <option value="bookingNo">Booking No.</option>
+          <option value="containerNo">Container No.</option>
+        </select>
+        <input
+          type="text"
+          [(ngModel)]="queryValue"
+          [placeholder]="queryField() === 'blNo' ? 'e.g. AMQ0325766' : queryField() === 'bookingNo' ? 'e.g. BOOK0325766' : 'e.g. SZLU9011734'"
+          class="query-input"
+          (keydown.enter)="onQuery()"
+        />
+        <button
+          class="search-btn"
+          (click)="onQuery()"
+          [disabled]="!queryValue().trim() || querying()"
+        >
+          {{ querying() ? '⏳' : '🔍' }} Search
+        </button>
+      </div>
+    </div>
+
+    @if (queryError()) {
+      <div class="message error">{{ queryError() }}</div>
+    }
+    @if (querySuccess()) {
+      <div class="message success">{{ querySuccess() }}</div>
+    }
+  } @else {
+    @if (!mongoDb.connected()) {
+      <div class="connection-status disconnected">
+        <span class="status-dot"></span>
+        <span>Not connected</span>
+      </div>
+    } @else {
+      <div class="connection-status connected">
+        <span class="status-dot"></span>
+        <span>Connected — editing settings</span>
+        <button class="link-btn" (click)="showConnectionForm.set(false)">Cancel</button>
+      </div>
+    }
+
+    <div class="connection-form">
+      <div class="form-group">
+        <label>API URL</label>
+        <input
+          type="text"
+          [(ngModel)]="apiUrl"
+          placeholder="https://data.mongodb-api.com/app/.../endpoint/data/v1"
+          class="form-input"
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Database</label>
+          <input
+            type="text"
+            [(ngModel)]="database"
+            placeholder="database name"
+            class="form-input"
+          />
+        </div>
+        <div class="form-group">
+          <label>Collection</label>
+          <input
+            type="text"
+            [(ngModel)]="collection"
+            placeholder="final_shipment"
+            class="form-input"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            [(ngModel)]="username"
+            placeholder="username"
+            class="form-input"
+          />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            [(ngModel)]="password"
+            placeholder="password"
+            class="form-input"
+          />
+        </div>
+      </div>
+      <button
+        class="connect-btn"
+        (click)="onConnect()"
+        [disabled]="!canConnect"
+      >
+        {{ mongoDb.connecting() ? '⏳ Connecting...' : '🔗 Connect' }}
+      </button>
+    </div>
+
+    @if (mongoDb.error()) {
+      <div class="message error">{{ mongoDb.error() }}</div>
+    }
+  }
+</div>

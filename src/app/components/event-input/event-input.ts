@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { ShipmentData, OpShipmentEventRaw } from '../../models/shipment-event.model';
 import { ShipmentParser } from '../../services/shipment-parser';
+import { DbQuery } from '../db-query/db-query';
 
 @Component({
   selector: 'app-event-input',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DbQuery],
   templateUrl: './event-input.html',
   styleUrl: './event-input.css',
 })
