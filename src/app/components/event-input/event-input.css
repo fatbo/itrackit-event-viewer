@@ -239,6 +239,33 @@ h3 {
   background: #da190b;
 }
 
+.db-section-divider {
+  text-align: center;
+  color: #999;
+  font-weight: bold;
+  font-size: 0.85em;
+  padding: 8px 0;
+  position: relative;
+}
+
+.db-section-divider::before,
+.db-section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 20px);
+  height: 1px;
+  background: #ddd;
+}
+
+.db-section-divider::before {
+  left: 0;
+}
+
+.db-section-divider::after {
+  right: 0;
+}
+
 @media (max-width: 700px) {
   .input-row {
     grid-template-columns: 1fr;
