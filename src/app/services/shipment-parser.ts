@@ -63,13 +63,6 @@ export class ShipmentParser {
       }
     }
 
-    // Process transport events
-    if (raw.transportEvents && Array.isArray(raw.transportEvents)) {
-      for (const te of raw.transportEvents) {
-        events.push(this.convertTransportEvent(te));
-      }
-    }
-
     // Build ShipmentData object
     return {
       shipmentId: raw.id,
@@ -171,6 +164,7 @@ export class ShipmentParser {
     const actualEvent = events.find(e => e.timeType === 'A');
     const estimatedEvent = events.find(e => e.timeType === 'E');
     const plannedEvent = events.find(e => e.timeType === 'G');
+    const includeEstimated = !actualEvent;
 
     // Use actual time as primary, fall back to estimated, then planned
     const displayEvent = actualEvent || estimatedEvent || plannedEvent || primaryEvent;
@@ -180,7 +174,7 @@ export class ShipmentParser {
     if (actualEvent) {
       timeDetails.push(`Actual: ${new Date(actualEvent.eventTime).toLocaleString()}`);
     }
-    if (estimatedEvent) {
+    if (estimatedEvent && includeEstimated) {
       timeDetails.push(`Estimated: ${new Date(estimatedEvent.eventTime).toLocaleString()}`);
     }
     if (plannedEvent) {
@@ -208,7 +202,7 @@ export class ShipmentParser {
       dataProvider: displayEvent.DataProvider,
       // Store time details for display
       actualTime: actualEvent?.eventTime,
-      estimatedTime: estimatedEvent?.eventTime,
+      estimatedTime: includeEstimated ? estimatedEvent?.eventTime : undefined,
       plannedTime: plannedEvent?.eventTime,
       timeDetails: timeDetails.join(' | '),
     };
@@ -247,7 +241,11 @@ export class ShipmentParser {
     }
 
     if (location.unLocationName) {
-      parts.push(location.unLocationName);
+      if (location.unLocationCode) {
+        parts.push(`${location.unLocationName} (${location.unLocationCode})`);
+      } else {
+        parts.push(location.unLocationName);
+      }
     } else if (location.unLocationCode) {
       parts.push(location.unLocationCode);
     }
