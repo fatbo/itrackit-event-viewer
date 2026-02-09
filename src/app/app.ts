@@ -18,4 +18,8 @@ export class App {
   toggleInput(): void {
     this.showInput.set(!this.showInput());
   }
+
+  closeInput(): void {
+    this.showInput.set(false);
+  }
 }

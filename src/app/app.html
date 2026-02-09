@@ -4,13 +4,15 @@
       <h1>{{ title() }}</h1>
       <p class="subtitle">Ocean Shipment Event Timeline Viewer</p>
     </div>
-    <button class="input-toggle-btn" (click)="toggleInput()">
-      {{ showInput() ? '✕ Close' : '📋 Load Data' }}
-    </button>
+    @if (!showInput()) {
+      <button class="input-toggle-btn" (click)="toggleInput()">
+        📋 Load Data
+      </button>
+    }
   </header>
   
   <div class="input-panel" [class.input-panel-hidden]="!showInput()">
-    <app-event-input></app-event-input>
+    <app-event-input [onClose]="closeInput.bind(this)"></app-event-input>
   </div>
 
   <main class="app-main">
