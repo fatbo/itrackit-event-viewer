@@ -47,6 +47,7 @@ export interface ShipmentData {
   sealNo?: string[];
   dg?: string[];
   dmg?: string[];
+  transportEvents?: OpTransportEvent[];
   [key: string]: any; // Allow additional properties
 }
 
@@ -65,6 +66,7 @@ export interface ConveyanceInfo {
 }
 
 export interface OpTransportEvent {
+  seq?: number;
   eventCode: 'OG' | 'IG' | 'AE' | 'VD' | 'VA' | 'UV' | 'AL' | 'UR' | 'RD' | 'RA' | 'TA' | 'CT' | 'RT' | 'SS' | 'ZZ' | 'PD';
   eventName?: string;
   locationType: 'POL' | 'POD' | 'POT' | 'POC';

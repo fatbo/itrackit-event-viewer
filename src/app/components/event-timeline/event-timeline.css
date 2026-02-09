@@ -233,6 +233,126 @@ h2 {
   font-size: 0.9em;
 }
 
+/* Port Transition Timeline */
+.port-transition {
+  margin-bottom: 20px;
+  padding: 14px;
+  background: #f5f7fb;
+  border-radius: 8px;
+  border: 1px solid #e0e6f0;
+}
+
+.port-transition-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 14px 0;
+}
+
+.port-transition-track {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.port-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.port-dot {
+  width: 16px;
+  height: 16px;
+  background: #2196F3;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #2196F3;
+  z-index: 1;
+}
+
+.port-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  text-align: center;
+  gap: 2px;
+}
+
+.port-name {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+}
+
+.port-code {
+  font-size: 0.72em;
+  color: #1565c0;
+  font-weight: 600;
+  background: #e3f2fd;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.port-time {
+  font-size: 0.7em;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.port-time.arrival {
+  color: #2e7d32;
+}
+
+.port-time.departure {
+  color: #1565c0;
+}
+
+.time-type-badge {
+  font-size: 0.85em;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.time-type-badge.estimated {
+  color: #ef6c00;
+  background: #fff3e0;
+}
+
+.time-type-badge.planned {
+  color: #1976d2;
+  background: #e3f2fd;
+}
+
+.port-connector {
+  flex: 1;
+  min-width: 40px;
+  height: 2px;
+  background: #2196F3;
+  margin-top: 7px;
+  position: relative;
+}
+
+.port-connector::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid #2196F3;
+}
+
 @media (max-width: 900px) {
   .timeline-layout {
     grid-template-columns: 1fr;
