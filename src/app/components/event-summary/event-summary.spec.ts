@@ -10,16 +10,16 @@ describe('EventSummary', () => {
     }).compileComponents();
   });
 
-  it('marks shipments in transit without an actual POL gate event', () => {
+  it('marks shipments in transit without an actual POD gate event', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
       events: [
         {
-          eventType: 'Loaded on Vessel',
+          eventType: 'Gate Out',
           eventDateTime: '2025-01-10T08:00:00Z',
-          description: 'Loaded on vessel.',
-          eventCode: 'AL',
+          description: 'Gate out at POL.',
+          eventCode: 'OG',
           locationType: 'POL',
           timeType: 'A',
           unLocationCode: 'CNYTN',
@@ -34,19 +34,21 @@ describe('EventSummary', () => {
     expect(status?.label).toBe('In Transit');
   });
 
-  it('marks Hong Kong departures as limited tracking when no other actual events exist', () => {
+  it('marks Hong Kong-only departures as completed when no other actual events exist', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
-      events: [
+      events: [],
+      transportEvents: [
         {
-          eventType: 'Gate Out',
-          eventDateTime: '2025-01-10T08:00:00Z',
-          description: 'Gate out at Hong Kong.',
-          eventCode: 'OG',
-          locationType: 'POL',
+          eventCode: 'VD',
+          locationType: 'POT',
+          eventTime: '2025-01-10T08:00:00Z',
           timeType: 'A',
-          unLocationCode: 'HKHKG',
+          location: {
+            unLocationCode: 'HKHKG',
+            unLocationName: 'Hong Kong',
+          },
         },
       ],
     };
@@ -55,19 +57,19 @@ describe('EventSummary', () => {
     fixture.detectChanges();
 
     const status = fixture.componentInstance.shipmentStatus();
-    expect(status?.label).toBe('Limited Tracking');
+    expect(status?.label).toBe('Completed (Hong Kong Only)');
   });
 
-  it('keeps limited tracking when only Hong Kong actual events are present', () => {
+  it('keeps Hong Kong-only completion when only Hong Kong actual events are present', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
       events: [
         {
-          eventType: 'Gate Out',
+          eventType: 'Vessel Departure',
           eventDateTime: '2025-01-10T08:00:00Z',
-          description: 'Gate out at Hong Kong.',
-          eventCode: 'OG',
+          description: 'Departed Hong Kong.',
+          eventCode: 'VD',
           locationType: 'POL',
           timeType: 'A',
           unLocationCode: 'HKHKG',
@@ -82,16 +84,28 @@ describe('EventSummary', () => {
           unLocationCode: 'HKHKG',
         },
       ],
+      transportEvents: [
+        {
+          eventCode: 'VD',
+          locationType: 'POC',
+          eventTime: '2025-01-10T08:00:00Z',
+          timeType: 'A',
+          location: {
+            unLocationCode: 'HKHKG',
+            unLocationName: 'Hong Kong',
+          },
+        },
+      ],
     };
 
     eventData.setPrimaryEvent(shipment);
     fixture.detectChanges();
 
     const status = fixture.componentInstance.shipmentStatus();
-    expect(status?.label).toBe('Limited Tracking');
+    expect(status?.label).toBe('Completed (Hong Kong Only)');
   });
 
-  it('marks shipments completed when POL gate events exist with other actual updates', () => {
+  it('marks shipments completed when POD gate events exist', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
@@ -99,17 +113,8 @@ describe('EventSummary', () => {
         {
           eventType: 'Gate Out',
           eventDateTime: '2025-01-10T08:00:00Z',
-          description: 'Gate out at POL.',
+          description: 'Gate out at POD.',
           eventCode: 'OG',
-          locationType: 'POL',
-          timeType: 'A',
-          unLocationCode: 'CNYTN',
-        },
-        {
-          eventType: 'Vessel Arrival',
-          eventDateTime: '2025-01-15T08:00:00Z',
-          description: 'Arrived at POD.',
-          eventCode: 'VA',
           locationType: 'POD',
           timeType: 'A',
           unLocationCode: 'SGSIN',
@@ -122,6 +127,39 @@ describe('EventSummary', () => {
 
     const status = fixture.componentInstance.shipmentStatus();
     expect(status?.label).toBe('Completed');
+  });
+
+  it('keeps shipments in transit when actual events exist outside Hong Kong without POD gates', () => {
+    const fixture = TestBed.createComponent(EventSummary);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [
+        {
+          eventType: 'Vessel Departure',
+          eventDateTime: '2025-01-10T08:00:00Z',
+          description: 'Departed Hong Kong.',
+          eventCode: 'VD',
+          locationType: 'POL',
+          timeType: 'A',
+          unLocationCode: 'HKHKG',
+        },
+        {
+          eventType: 'Vessel Arrival',
+          eventDateTime: '2025-01-12T08:00:00Z',
+          description: 'Arrived at Singapore.',
+          eventCode: 'VA',
+          locationType: 'POT',
+          timeType: 'A',
+          unLocationCode: 'SGSIN',
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const status = fixture.componentInstance.shipmentStatus();
+    expect(status?.label).toBe('In Transit');
   });
 
   it('shows status unavailable when there are no events', () => {
