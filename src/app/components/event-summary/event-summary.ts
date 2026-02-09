@@ -40,8 +40,9 @@ export class EventSummary {
   });
 
   readonly shipmentStatus = computed<ShipmentStatusInfo>(() => {
-    const events = this.primaryEvent()?.events ?? [];
-    const transportEvents = this.primaryEvent()?.transportEvents ?? [];
+    const primaryEvent = this.primaryEvent();
+    const events = primaryEvent?.events ?? [];
+    const transportEvents = primaryEvent?.transportEvents ?? [];
     if (events.length === 0 && transportEvents.length === 0) {
       return {
         label: 'Status Unavailable',
@@ -75,7 +76,7 @@ export class EventSummary {
 
     return {
       label: 'In Transit',
-      description: 'Awaiting an actual gate event at POD or a confirmed Hong Kong departure.',
+      description: 'Awaiting an actual gate event at POD or an actual Hong Kong departure.',
       tone: 'transit',
     };
   });
