@@ -17,6 +17,16 @@ export class EventSummary {
     return this.primaryEvent()?.events?.length || 0;
   });
   
+  protected readonly hasDangerousGoods = computed(() => {
+    const dg = this.primaryEvent()?.dg;
+    return Array.isArray(dg) && dg.length > 0;
+  });
+
+  protected readonly hasDamages = computed(() => {
+    const dmg = this.primaryEvent()?.dmg;
+    return Array.isArray(dmg) && dmg.length > 0;
+  });
+
   protected readonly firstEvent = computed(() => {
     const events = this.primaryEvent()?.events;
     if (!events || events.length === 0) return null;
