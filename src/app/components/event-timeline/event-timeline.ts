@@ -80,10 +80,16 @@ export class EventTimeline {
     const events = this.primaryEvent()?.events;
     if (!events) return [];
     
-    // Sort events by date (oldest first)
-    return [...events].sort((a, b) => {
-      return new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime();
-    });
+    // Only include events with a valid eventDateTime
+    return events
+      .filter(e => e.eventDateTime && !isNaN(new Date(e.eventDateTime).getTime()))
+      .sort((a, b) => new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime());
+  });
+
+  protected readonly undatedEvents = computed(() => {
+    const events = this.primaryEvent()?.events;
+    if (!events) return [];
+    return events.filter(e => !e.eventDateTime || isNaN(new Date(e.eventDateTime).getTime()));
   });
 
   readonly eventIndexLabels = computed(() =>

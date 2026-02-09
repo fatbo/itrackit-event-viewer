@@ -1,5 +1,5 @@
 <div class="event-timeline-container">
-  @if (primaryEvent() && sortedEvents().length > 0) {
+  @if (primaryEvent() && (sortedEvents().length > 0 || undatedEvents().length > 0)) {
     <h2>Event Timeline</h2>
 
     @if (portTransition().length > 0) {
@@ -19,6 +19,8 @@
                       <span class="time-type-badge" [class]="port.arrivalTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.arrivalTimeType) }}</span>
                     }
                   </span>
+                } @else {
+                  <span class="port-time unknown">Arr: —</span>
                 }
                 @if (port.departureTime) {
                   <span class="port-time departure">
@@ -27,6 +29,8 @@
                       <span class="time-type-badge" [class]="port.departureTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.departureTimeType) }}</span>
                     }
                   </span>
+                } @else {
+                  <span class="port-time unknown">Dep: —</span>
                 }
               </div>
             </div>
@@ -152,6 +156,36 @@
         }
       </div>
     </div>
+
+    @if (undatedEvents().length > 0) {
+      <div class="undated-events">
+        <h3 class="undated-events-title">⏳ Unscheduled Events</h3>
+        <p class="undated-events-hint">These events have no associated date/time.</p>
+        @for (event of undatedEvents(); track $index) {
+          <div class="undated-event-card">
+            <div class="event-header">
+              <span class="timeline-icon-inline">{{ getEventIcon(event.eventType) }}</span>
+              <h3 class="event-type">{{ event.eventType }}</h3>
+            </div>
+            <p class="event-description">{{ event.description }}</p>
+            <div class="event-details">
+              @if (event.location) {
+                <span class="detail-item"><strong>Location:</strong> {{ event.location }}</span>
+              }
+              @if (event.eventCode) {
+                <span class="detail-item"><strong>Event Code:</strong> {{ event.eventCode }}</span>
+              }
+              @if (event.locationType) {
+                <span class="detail-item"><strong>Location Type:</strong> {{ event.locationType }}</span>
+              }
+              @if (event.vessel) {
+                <span class="detail-item"><strong>Vessel:</strong> {{ event.vessel }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
   } @else if (primaryEvent()) {
     <div class="no-events">
       <p>No events found in the shipment data.</p>
