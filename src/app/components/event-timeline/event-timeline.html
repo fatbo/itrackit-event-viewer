@@ -22,7 +22,7 @@
                     <strong>Actual:</strong> {{ event.actualTime | date:'medium' }}
                   </div>
                 }
-                @if (event.estimatedTime) {
+                @if (event.estimatedTime && !event.actualTime) {
                   <div class="time-item estimated">
                     <strong>Estimated:</strong> {{ event.estimatedTime | date:'medium' }}
                   </div>
