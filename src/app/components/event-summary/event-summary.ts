@@ -160,15 +160,17 @@ export class EventSummary {
     events: ShipmentEvent[],
     transportEvents: OpTransportEvent[]
   ): boolean {
-    const hasEquipmentEvents = events.some(
+    const hasEquipmentEventsOutsideHongKong = events.some(
       (event) =>
         this.isActualEvent(event) && !this.isHongKongLocationCode(event.unLocationCode)
     );
-    if (hasEquipmentEvents) return true;
-    return transportEvents.some(
-      (event) =>
-        this.isActualTransportEvent(event) &&
-        !this.isHongKongLocationCode(event.location?.unLocationCode)
+    return (
+      hasEquipmentEventsOutsideHongKong ||
+      transportEvents.some(
+        (event) =>
+          this.isActualTransportEvent(event) &&
+          !this.isHongKongLocationCode(event.location?.unLocationCode)
+      )
     );
   }
 }

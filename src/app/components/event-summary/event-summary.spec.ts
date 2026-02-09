@@ -60,7 +60,7 @@ describe('EventSummary', () => {
     expect(status?.label).toBe('Completed (Hong Kong Only)');
   });
 
-  it('keeps Hong Kong-only completion when only Hong Kong actual events are present', () => {
+  it('keeps Hong Kong-only completion when equipment and transport departures are in Hong Kong', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
