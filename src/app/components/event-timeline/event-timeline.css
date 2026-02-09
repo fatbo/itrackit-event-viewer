@@ -13,6 +13,70 @@ h2 {
   font-size: 1.05em;
 }
 
+.timeline-layout {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.timeline-index {
+  position: sticky;
+  top: 12px;
+  align-self: start;
+  background: #f5f7fb;
+  border: 1px solid #e0e6f0;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.timeline-index-title {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.timeline-index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-index-link {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 0.78em;
+  color: #1e88e5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.timeline-index-link:hover {
+  background: #e3f2fd;
+}
+
+.timeline-index-label {
+  font-weight: 600;
+}
+
+.timeline-index-count {
+  background: #e3f2fd;
+  color: #1565c0;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 0.7em;
+}
+
 .timeline {
   position: relative;
   padding-left: 44px;
@@ -33,6 +97,15 @@ h2 {
   margin-bottom: 16px;
   display: flex;
   align-items: flex-start;
+}
+
+.timeline-group-label {
+  color: #5f6b7a;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 12px 0 6px;
 }
 
 .timeline-marker {
@@ -158,4 +231,14 @@ h2 {
 
 .no-events p {
   font-size: 0.9em;
+}
+
+@media (max-width: 900px) {
+  .timeline-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-index {
+    position: static;
+  }
 }
