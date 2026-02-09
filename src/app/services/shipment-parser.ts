@@ -84,6 +84,7 @@ export class ShipmentParser {
       sealNo: raw.sealNo,
       dg: raw.dg,
       dmg: raw.dmg,
+      transportEvents: raw.transportEvents,
     };
   }
 

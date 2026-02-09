@@ -1,6 +1,42 @@
 <div class="event-timeline-container">
   @if (primaryEvent() && sortedEvents().length > 0) {
     <h2>Event Timeline</h2>
+
+    @if (portTransition().length > 0) {
+      <div class="port-transition">
+        <h3 class="port-transition-title">🚢 Port Transition</h3>
+        <div class="port-transition-track">
+          @for (port of portTransition(); track port.locationCode; let i = $index; let last = $last) {
+            <div class="port-node">
+              <div class="port-dot"></div>
+              <div class="port-info">
+                <span class="port-name">{{ port.locationName }}</span>
+                <span class="port-code">{{ port.locationCode }}</span>
+                @if (port.arrivalTime) {
+                  <span class="port-time arrival">
+                    Arr: {{ port.arrivalTime | date:'dd MMM HH:mm' }}
+                    @if (port.arrivalTimeType && port.arrivalTimeType !== 'A') {
+                      <span class="time-type-badge" [class]="port.arrivalTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.arrivalTimeType) }}</span>
+                    }
+                  </span>
+                }
+                @if (port.departureTime) {
+                  <span class="port-time departure">
+                    Dep: {{ port.departureTime | date:'dd MMM HH:mm' }}
+                    @if (port.departureTimeType && port.departureTimeType !== 'A') {
+                      <span class="time-type-badge" [class]="port.departureTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.departureTimeType) }}</span>
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+            @if (!last) {
+              <div class="port-connector"></div>
+            }
+          }
+        </div>
+      </div>
+    }
     
     <div class="timeline-layout">
       <nav class="timeline-index" aria-label="Timeline index">

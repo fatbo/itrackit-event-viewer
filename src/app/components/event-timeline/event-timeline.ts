@@ -1,12 +1,22 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { EventData } from '../../services/event-data';
-import { ShipmentEvent } from '../../models/shipment-event.model';
+import { ShipmentEvent, OpTransportEvent } from '../../models/shipment-event.model';
 
 interface TimelineIndexItem {
   label: string;
   anchorId: string;
   count: number;
+}
+
+interface PortNode {
+  locationName: string;
+  locationCode: string;
+  locationType: string;
+  arrivalTime?: string;
+  arrivalTimeType?: string;
+  departureTime?: string;
+  departureTimeType?: string;
 }
 
 @Component({
@@ -26,6 +36,46 @@ export class EventTimeline {
   
   protected readonly primaryEvent = this.eventDataService.primaryEvent;
   
+  protected readonly portTransition = computed(() => {
+    const data = this.primaryEvent();
+    const transportEvents = data?.transportEvents as OpTransportEvent[] | undefined;
+    if (!transportEvents || transportEvents.length === 0) return [];
+
+    // Sort by seq if available, otherwise by eventTime
+    const sorted = [...transportEvents].sort((a, b) => {
+      if (a.seq != null && b.seq != null) return a.seq - b.seq;
+      if (a.seq != null) return -1;
+      if (b.seq != null) return 1;
+      return new Date(a.eventTime).getTime() - new Date(b.eventTime).getTime();
+    });
+
+    // Group by location code to build port nodes
+    const portMap = new Map<string, PortNode>();
+    const portOrder: string[] = [];
+
+    for (const event of sorted) {
+      const code = event.location.unLocationCode;
+      if (!portMap.has(code)) {
+        portMap.set(code, {
+          locationName: event.location.unLocationName,
+          locationCode: code,
+          locationType: event.locationType,
+        });
+        portOrder.push(code);
+      }
+      const node = portMap.get(code)!;
+      if (event.eventCode === 'VD' || event.eventCode === 'RD') {
+        node.departureTime = event.eventTime;
+        node.departureTimeType = event.timeType;
+      } else if (event.eventCode === 'VA' || event.eventCode === 'RA') {
+        node.arrivalTime = event.eventTime;
+        node.arrivalTimeType = event.timeType;
+      }
+    }
+
+    return portOrder.map(code => portMap.get(code)!);
+  });
+
   protected readonly sortedEvents = computed(() => {
     const events = this.primaryEvent()?.events;
     if (!events) return [];
@@ -85,6 +135,15 @@ export class EventTimeline {
     const target = this.document.getElementById(anchorId);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  protected getTimeTypeLabel(timeType: string): string {
+    switch (timeType) {
+      case 'A': return 'Actual';
+      case 'E': return 'Estimated';
+      case 'G': return 'Planned';
+      default: return '';
     }
   }
 }
