@@ -1,13 +1,27 @@
 <div class="app-container">
   <header class="app-header">
-    <h1>{{ title() }}</h1>
-    <p class="subtitle">Ocean Shipment Event Timeline Viewer</p>
+    <div class="header-content">
+      <h1>{{ title() }}</h1>
+      <p class="subtitle">Ocean Shipment Event Timeline Viewer</p>
+    </div>
+    <button class="input-toggle-btn" (click)="toggleInput()">
+      {{ showInput() ? '✕ Close' : '📋 Load Data' }}
+    </button>
   </header>
   
-  <main class="app-main">
+  <div class="input-panel" [class.input-panel-hidden]="!showInput()">
     <app-event-input></app-event-input>
-    <app-event-summary></app-event-summary>
-    <app-event-timeline></app-event-timeline>
+  </div>
+
+  <main class="app-main">
+    <div class="main-grid">
+      <div class="main-left">
+        <app-event-summary></app-event-summary>
+      </div>
+      <div class="main-right">
+        <app-event-timeline></app-event-timeline>
+      </div>
+    </div>
     <app-event-comparison></app-event-comparison>
   </main>
   

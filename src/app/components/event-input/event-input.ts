@@ -222,7 +222,6 @@ export class EventInput implements OnInit {
       }
       
       this.errorMessage.set('');
-      this.jsonInput.set('');
     } catch (error) {
       this.errorMessage.set('Invalid JSON format. Please check your JSON syntax and try again.');
     }

@@ -10,12 +10,11 @@
   }
 
   <div class="usage-tips">
-    <h3>💡 How to Use This Tool</h3>
+    <h3>💡 How to Use</h3>
     <ul>
-      <li><strong>View Demo:</strong> Sample shipment data is loaded automatically to help you explore features</li>
-      <li><strong>Load Your Data:</strong> Paste JSON data below or upload a JSON file to view your shipment events</li>
-      <li><strong>Compare Shipments:</strong> Toggle to "Secondary Event" to load a second shipment for side-by-side comparison</li>
-      <li><strong>Supported Formats:</strong> OpShipmentEventRaw (OpenAPI spec) or legacy ShipmentData format</li>
+      <li><strong>Load Your Data:</strong> Paste JSON or upload a file below</li>
+      <li><strong>Compare:</strong> Toggle to "Secondary Event" for side-by-side comparison</li>
+      <li><strong>Formats:</strong> OpShipmentEventRaw (OpenAPI) or ShipmentData</li>
     </ul>
   </div>
   
@@ -27,29 +26,31 @@
     </button>
   </div>
   
-  <div class="input-section">
-    <h3>Paste JSON Data</h3>
-    <textarea 
-      [(ngModel)]="jsonInput"
-      placeholder="Paste your shipment event JSON here..."
-      rows="10"
-      class="json-textarea"
-    ></textarea>
-    <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
-      Load JSON
-    </button>
-  </div>
-  
-  <div class="divider">OR</div>
-  
-  <div class="input-section">
-    <h3>Upload JSON File</h3>
-    <input 
-      type="file" 
-      accept=".json"
-      (change)="onFileSelected($event)"
-      class="file-input"
-    />
+  <div class="input-row">
+    <div class="input-section">
+      <h3>Paste JSON Data</h3>
+      <textarea 
+        [(ngModel)]="jsonInput"
+        placeholder="Paste your shipment event JSON here..."
+        rows="6"
+        class="json-textarea"
+      ></textarea>
+      <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
+        Load JSON
+      </button>
+    </div>
+    
+    <div class="divider">OR</div>
+    
+    <div class="input-section">
+      <h3>Upload JSON File</h3>
+      <input 
+        type="file" 
+        accept=".json"
+        (change)="onFileSelected($event)"
+        class="file-input"
+      />
+    </div>
   </div>
   
   @if (errorMessage()) {

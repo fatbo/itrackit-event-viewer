@@ -13,4 +13,9 @@ import { EventComparison } from './components/event-comparison/event-comparison'
 })
 export class App {
   protected readonly title = signal('iTrackiT Shipment Viewer');
+  protected readonly showInput = signal(false);
+
+  toggleInput(): void {
+    this.showInput.set(!this.showInput());
+  }
 }
