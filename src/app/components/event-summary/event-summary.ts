@@ -17,7 +17,11 @@ interface ShipmentStatusInfo {
 })
 export class EventSummary {
   private eventDataService = inject(EventData);
-  
+  private readonly ACTUAL_TIME_TYPE = 'A';
+  private readonly GATE_OUT_CODE = 'OG';
+  private readonly GATE_IN_CODE = 'IG';
+  private readonly HONG_KONG_LOCATION_CODE = 'HKHKG';
+
   protected readonly primaryEvent = this.eventDataService.primaryEvent;
   
   protected readonly eventCount = computed(() => {
@@ -49,7 +53,7 @@ export class EventSummary {
     if (polGateEvents.length === 0) {
       return {
         label: 'In Transit',
-        description: 'Awaiting an actual gate-in or gate-out at the port of loading.',
+        description: 'Awaiting an actual gate in or gate out at the port of loading.',
         tone: 'transit',
       };
     }
@@ -57,7 +61,7 @@ export class EventSummary {
     const hasHongKongPolGate = polGateEvents.some((event) => this.isHongKongLocation(event));
     if (hasHongKongPolGate && !this.hasActualEventsOutsideHongKong(events)) {
       return {
-        label: 'Completed (Hong Kong Tracking)',
+        label: 'Limited Tracking (Hong Kong Only)',
         description: 'Tracking ends after the actual gate event in Hong Kong.',
         tone: 'limited',
       };
@@ -98,18 +102,18 @@ export class EventSummary {
   }
 
   private isActualEvent(event: ShipmentEvent): boolean {
-    if (event.timeType?.toUpperCase() !== 'A') return false;
+    if (event.timeType?.toUpperCase() !== this.ACTUAL_TIME_TYPE) return false;
     if (!event.eventDateTime) return false;
     return !Number.isNaN(Date.parse(event.eventDateTime));
   }
 
   private isGateEvent(event: ShipmentEvent): boolean {
     const code = event.eventCode?.toUpperCase();
-    return code === 'OG' || code === 'IG';
+    return code === this.GATE_OUT_CODE || code === this.GATE_IN_CODE;
   }
 
   private isHongKongLocation(event: ShipmentEvent): boolean {
-    return event.unLocationCode?.toLowerCase() === 'hkhkg';
+    return event.unLocationCode?.toUpperCase() === this.HONG_KONG_LOCATION_CODE;
   }
 
   private hasActualEventsOutsideHongKong(events: ShipmentEvent[]): boolean {
@@ -117,7 +121,7 @@ export class EventSummary {
       (event) =>
         this.isActualEvent(event) &&
         !!event.unLocationCode &&
-        event.unLocationCode.toLowerCase() !== 'hkhkg'
+        event.unLocationCode.toUpperCase() !== this.HONG_KONG_LOCATION_CODE
     );
   }
 }

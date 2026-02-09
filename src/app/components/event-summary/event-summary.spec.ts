@@ -34,7 +34,7 @@ describe('EventSummary', () => {
     expect(status?.label).toBe('In Transit');
   });
 
-  it('marks Hong Kong departures as completed tracking when no other actual events exist', () => {
+  it('marks Hong Kong departures as limited tracking when no other actual events exist', () => {
     const fixture = TestBed.createComponent(EventSummary);
     const eventData = TestBed.inject(EventData);
     const shipment: ShipmentData = {
@@ -55,7 +55,7 @@ describe('EventSummary', () => {
     fixture.detectChanges();
 
     const status = fixture.componentInstance['shipmentStatus']?.();
-    expect(status?.label).toBe('Completed (Hong Kong Tracking)');
+    expect(status?.label).toBe('Limited Tracking (Hong Kong Only)');
   });
 
   it('marks shipments completed when POL gate events exist with other actual updates', () => {
