@@ -2,26 +2,26 @@
   @if (primaryEvent()) {
     <div class="summary-header">
       <h2>Shipment Summary</h2>
-      <div class="indicator-pills">
-        @if (shipmentStatus()) {
-          <span
-            class="pill pill-status"
-            [ngClass]="'pill-status-' + shipmentStatus().tone"
-            [title]="shipmentStatus().description"
-          >
-            {{ shipmentStatus().label }}
-          </span>
-        }
-        @if (hasReeferData()) {
-          <span class="pill pill-reefer" title="Reefer Container">❄️ REEFER</span>
-        }
-        @if (hasDangerousGoods()) {
-          <span class="pill pill-dg" title="Contains Dangerous Goods">⚠ DG</span>
-        }
-        @if (hasDamages()) {
-          <span class="pill pill-dmg" title="Damage Reported">🔴 DMG</span>
-        }
-      </div>
+    </div>
+    <div class="indicator-pills">
+      @if (shipmentStatus()) {
+        <span
+          class="pill pill-status"
+          [ngClass]="'pill-status-' + shipmentStatus().tone"
+          [title]="shipmentStatus().description"
+        >
+          {{ shipmentStatus().label }}
+        </span>
+      }
+      @if (hasReeferData()) {
+        <span class="pill pill-reefer" title="Reefer Container">❄️ REEFER</span>
+      }
+      @if (hasDangerousGoods()) {
+        <span class="pill pill-dg" title="Contains Dangerous Goods">⚠ DG</span>
+      }
+      @if (hasDamages()) {
+        <span class="pill pill-dmg" title="Damage Reported">🔴 DMG</span>
+      }
     </div>
     
     <div class="summary-grid">
