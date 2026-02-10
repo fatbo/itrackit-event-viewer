@@ -1,4 +1,4 @@
-/* Night Bridge — maritime-inspired dark theme */
+/* Night Bridge — maritime-inspired dark theme (default) */
 
 :root {
   /* Backgrounds */
@@ -47,6 +47,49 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+
+  /* Theme-specific gradient stops for app-container */
+  --gradient-a: rgba(34, 211, 238, 0.06);
+  --gradient-b: rgba(245, 158, 11, 0.04);
+}
+
+/* Harbour Dawn — warm maritime light theme */
+
+[data-theme="light"] {
+  --bg-deep: #f2ede4;
+  --bg-primary: #ece6da;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f7f4ee;
+  --bg-surface: #f9f6f0;
+  --bg-input: #ffffff;
+
+  --accent-cyan: #0891b2;
+  --accent-amber: #d97706;
+  --accent-emerald: #059669;
+  --accent-coral: #dc2626;
+  --accent-lavender: #7c3aed;
+  --accent-cyan-dim: rgba(8, 145, 178, 0.1);
+  --accent-amber-dim: rgba(217, 119, 6, 0.08);
+  --accent-emerald-dim: rgba(5, 150, 105, 0.08);
+  --accent-coral-dim: rgba(220, 38, 38, 0.08);
+
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+
+  --border: #e2ddd3;
+  --border-light: #d6cfc3;
+  --border-focus: #0891b2;
+
+  --shadow-sm: 0 1px 3px rgba(120, 100, 70, 0.1);
+  --shadow-md: 0 4px 12px rgba(120, 100, 70, 0.12);
+  --shadow-lg: 0 8px 24px rgba(120, 100, 70, 0.15);
+  --shadow-glow-cyan: 0 0 20px rgba(8, 145, 178, 0.08);
+
+  --gradient-a: rgba(8, 145, 178, 0.04);
+  --gradient-b: rgba(217, 119, 6, 0.03);
 }
 
 * {
