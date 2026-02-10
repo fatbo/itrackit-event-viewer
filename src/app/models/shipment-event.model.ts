@@ -48,6 +48,7 @@ export interface ShipmentData {
   dg?: string[];
   dmg?: string[];
   transportEvents?: OpTransportEvent[];
+  terminalData?: TerminalData;
   [key: string]: any; // Allow additional properties
 }
 
@@ -93,6 +94,40 @@ export interface OpEquipmentEvent {
   location: Location;
 }
 
+export interface ReeferData {
+  id?: string;
+  version?: number;
+  eventId?: string;
+  eventTime?: string;
+  terminal?: string;
+  containerNumber?: string;
+  vesselName?: string;
+  voyageNumber?: string;
+  requireTemp: string;
+  requireTempUnit: string;
+  readingTemp: string;
+  readingTempUnit: string;
+  readingTime: string;
+  shipmentType?: string;
+  shippingLine?: string;
+  billOfLadingNumber?: string;
+  bookingNumber?: string;
+  createDate?: string;
+  modifyDate?: string;
+}
+
+export interface TerminalData {
+  id?: string;
+  version?: number;
+  containerNo?: string;
+  shipmentType?: string;
+  shippingLine?: string;
+  billOfLadingNumber?: string;
+  bookingNumber?: string;
+  reeferData?: ReeferData;
+  hotboxData?: any;
+}
+
 export interface OpShipmentEventRaw {
   id: string;
   version: number;
@@ -120,4 +155,5 @@ export interface OpShipmentEventRaw {
   equipmentEvents?: OpEquipmentEvent[];
   pol?: Location;
   pod?: Location;
+  terminalData?: TerminalData;
 }

@@ -50,6 +50,12 @@ h2 {
   border: 1px solid #ef9a9a;
 }
 
+.pill-reefer {
+  background: #e0f7fa;
+  color: #006064;
+  border: 1px solid #80deea;
+}
+
 .pill-dg-inline,
 .pill-dmg-inline {
   margin-right: 4px;
@@ -128,6 +134,50 @@ h2 {
 .summary-item-dmg {
   background: #fce4ec;
   border-left-color: #e53935;
+}
+
+.summary-item-reefer {
+  background: #e0f2f1;
+  border-left-color: #00897b;
+}
+
+.summary-item-reefer-alert {
+  background: #fff3e0;
+  border-left-color: #f57c00;
+}
+
+.reefer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reefer-temp,
+.reefer-time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reefer-temp-alert {
+  font-weight: 600;
+  color: #e65100;
+}
+
+.reefer-label {
+  font-size: 0.8em;
+  color: #666;
+  min-width: 110px;
+}
+
+.reefer-value {
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.reefer-alert-icon {
+  margin-left: 4px;
+  font-size: 1em;
 }
 
 .seal-tag {

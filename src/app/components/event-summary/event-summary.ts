@@ -39,6 +39,28 @@ export class EventSummary {
     return Array.isArray(dmg) && dmg.length > 0;
   });
 
+  protected readonly hasReeferData = computed(() => {
+    return !!this.primaryEvent()?.terminalData?.reeferData;
+  });
+
+  protected readonly reeferData = computed(() => {
+    return this.primaryEvent()?.terminalData?.reeferData;
+  });
+
+  protected readonly isReeferTempAlert = computed(() => {
+    const reefer = this.reeferData();
+    if (!reefer) return false;
+    
+    const requireTemp = parseFloat(reefer.requireTemp);
+    const readingTemp = parseFloat(reefer.readingTemp);
+    
+    if (isNaN(requireTemp) || isNaN(readingTemp)) return false;
+    
+    // Alert if reading temp differs from required temp by +/- 1 degree
+    const diff = Math.abs(readingTemp - requireTemp);
+    return diff >= 1;
+  });
+
   readonly shipmentStatus = computed<ShipmentStatusInfo>(() => {
     const primaryEvent = this.primaryEvent();
     const events = primaryEvent?.events ?? [];
