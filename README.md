@@ -42,7 +42,10 @@ An Angular frontend application for viewing and comparing ocean shipment event t
     - **POD VA change** — Estimated VA time differs by the configured threshold (default 24h) when there is **no Actual VA** at POD.
     - **Transhipment count change** — number of unique POT ports differs between shipments.
   - Thresholds are configurable in the Alerts tab (POL VD hours / POD VA hours).
-  - **Limitations**: alerts are heuristics derived from event codes, location types, and available estimated/actual timestamps. They do **not** infer root cause, carrier responsibility, or guarantee completeness; missing data or completed actual events suppress warnings, and route alerts only compare the count of unique POT ports (not the exact ports or sequence).
+  - **Limitations**:
+    - Alerts are heuristics derived from event codes, location types, and available estimated/actual timestamps.
+    - They do **not** infer root cause, carrier responsibility, or guarantee completeness.
+    - Missing data or completed actual events suppress warnings, and route alerts only compare the count of unique POT ports (not the exact ports or sequence).
 
 ## Getting Started
 
