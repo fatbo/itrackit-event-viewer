@@ -69,6 +69,18 @@ describe('ComparisonAlertService', () => {
       expect(infoAlerts.some(a => a.category === 'POL')).toBe(true);
     });
 
+    it('should not alert when actual IG at POL already exists in primary', () => {
+      eventData.setPrimaryEvent(makeShipmentData({
+        events: [makeEquipmentEvent({ eventCode: 'IG', locationType: 'POL', timeType: 'A' })],
+      }));
+      eventData.setSecondaryEvent(makeShipmentData({
+        events: [makeEquipmentEvent({ eventCode: 'IG', locationType: 'POL', timeType: 'A' })],
+      }));
+
+      const infoAlerts = service.infoAlerts();
+      expect(infoAlerts.length).toBe(0);
+    });
+
     it('should detect actual OG at POL', () => {
       eventData.setPrimaryEvent(makeShipmentData());
       eventData.setSecondaryEvent(makeShipmentData({

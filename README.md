@@ -33,6 +33,21 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Load two different shipments for side-by-side comparison
 - Automatic detection of key differences (carrier, origin, destination, event count)
 - Visual comparison of event counts and timelines
+- **Info/Warning Alerts**: The Alerts tab surfaces notifications based on comparison rules.
+  (POL = Port of Loading, POD = Port of Discharge, VD/VA = Vessel Departure/Arrival, POT = Port of Transshipment).
+  - **Info alerts (actual event detection)**: triggered when the **secondary** shipment contains Actual events that are **not** present in the primary shipment at:
+    - **POL**: IG / OG / VD
+    - **POD**: VA / IG / OG
+  - **Warning alerts (threshold-based)**:
+    - **POL VD change**: Estimated VD time differs by at least the configured threshold (default 24 hours) when there is **no Actual VD** at POL.
+    - **POD VA change**: Estimated VA time differs by at least the configured threshold (default 24 hours) when there is **no Actual VA** at POD.
+    - **Transshipment count change**: number of unique POT ports differs between shipments.
+  - Thresholds are configurable in the Alerts tab (POL VD hours / POD VA hours).
+  - **Limitations**:
+    - Alerts are heuristics derived from event codes, location types, and available estimated/actual timestamps.
+    - They do **not** infer root cause, carrier responsibility, or guarantee completeness.
+    - Missing data or the presence of actual events suppress warnings.
+    - Route alerts compare only the count of unique POT ports (not the exact ports or sequence).
 
 ## Getting Started
 
