@@ -5,6 +5,7 @@ import { EventSummary } from './components/event-summary/event-summary';
 import { EventTimeline } from './components/event-timeline/event-timeline';
 import { EventComparison } from './components/event-comparison/event-comparison';
 import { I18nService, Locale } from './services/i18n.service';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,12 @@ import { I18nService, Locale } from './services/i18n.service';
 })
 export class App {
   protected readonly i18n = inject(I18nService);
+  protected readonly themeService = inject(ThemeService);
   protected readonly title = computed(() => this.i18n.t('app.title'));
   protected readonly showInput = signal(false);
+  protected readonly themeIcon = computed(() =>
+    this.themeService.theme() === 'dark' ? '☀️' : '🌙'
+  );
 
   setLocale(locale: Locale): void {
     this.i18n.setLocale(locale);
@@ -27,5 +32,9 @@ export class App {
 
   closeInput(): void {
     this.showInput.set(false);
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }

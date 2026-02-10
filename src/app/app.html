@@ -5,6 +5,15 @@
       <p class="subtitle">{{ i18n.t('app.subtitle') }}</p>
     </div>
     <div class="header-actions">
+      <button
+        class="theme-toggle-btn"
+        type="button"
+        (click)="toggleTheme()"
+        [title]="i18n.t('app.toggleTheme')"
+        [attr.aria-label]="i18n.t('app.toggleTheme')"
+      >
+        {{ themeIcon() }}
+      </button>
       <div class="language-switch" aria-label="{{ i18n.t('app.language') }}">
         <span class="language-label">{{ i18n.t('app.language') }}</span>
         <button

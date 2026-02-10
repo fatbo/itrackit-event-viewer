@@ -9,49 +9,65 @@
   align-items: center;
   justify-content: space-between;
   font-size: 0.8em;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .editor-hint {
   font-weight: 600;
-  color: #555;
+  color: var(--text-secondary);
 }
 
 .format-btn {
   padding: 4px 12px;
-  background: #4caf50;
-  color: white;
+  background: var(--accent-emerald);
+  color: var(--text-inverse);
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.8em;
   font-weight: 500;
+  font-family: var(--font-body);
+  transition: opacity 0.2s ease;
 }
 
 .format-btn:hover:not(:disabled) {
-  background: #45a049;
+  opacity: 0.85;
 }
 
 .format-btn:disabled {
-  background: #ccc;
+  background: var(--border-light);
+  color: var(--text-muted);
   cursor: not-allowed;
 }
 
 .json-textarea {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: monospace;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
   font-size: 0.85em;
   resize: vertical;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.json-textarea:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.15);
+}
+
+.json-textarea::placeholder {
+  color: var(--text-muted);
 }
 
 .format-message {
-  background: #ffebee;
-  color: #c62828;
+  background: var(--accent-coral-dim);
+  color: var(--accent-coral);
   padding: 6px 10px;
-  border-radius: 4px;
-  border-left: 3px solid #c62828;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-coral);
   font-size: 0.8em;
 }
