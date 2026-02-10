@@ -1,18 +1,25 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { EventData } from '../../services/event-data';
 import { ShipmentEvent } from '../../models/shipment-event.model';
 import { I18nService } from '../../services/i18n.service';
+import { ComparisonAlertService } from '../../services/comparison-alert.service';
+
+type TabId = 'alerts' | 'differences' | 'details';
 
 @Component({
   selector: 'app-event-comparison',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './event-comparison.html',
   styleUrl: './event-comparison.css',
 })
 export class EventComparison {
   private eventDataService = inject(EventData);
   protected readonly i18n = inject(I18nService);
+  protected readonly alertService = inject(ComparisonAlertService);
+  
+  protected readonly activeTab = signal<TabId>('alerts');
   
   protected readonly primaryEvent = this.eventDataService.primaryEvent;
   protected readonly secondaryEvent = this.eventDataService.secondaryEvent;
@@ -208,6 +215,28 @@ export class EventComparison {
     
     return diffs;
   });
+
+  protected readonly alertBadgeCount = computed(() => {
+    return this.alertService.warningAlerts().length;
+  });
+
+  setActiveTab(tab: TabId): void {
+    this.activeTab.set(tab);
+  }
+
+  onPolThresholdChange(value: string): void {
+    const num = parseInt(value, 10);
+    if (!isNaN(num) && num > 0) {
+      this.alertService.polVdThresholdHours.set(num);
+    }
+  }
+
+  onPodThresholdChange(value: string): void {
+    const num = parseInt(value, 10);
+    if (!isNaN(num) && num > 0) {
+      this.alertService.podVaThresholdHours.set(num);
+    }
+  }
 
   private addFieldDifference(
     diffs: string[],
