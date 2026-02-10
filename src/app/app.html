@@ -10,6 +10,7 @@
         type="button"
         (click)="toggleTheme()"
         [title]="i18n.t('app.toggleTheme')"
+        [attr.aria-label]="i18n.t('app.toggleTheme')"
       >
         {{ themeIcon() }}
       </button>
