@@ -36,12 +36,12 @@
   <div class="input-row">
     <div class="input-section">
       <h3>Paste JSON Data</h3>
-      <textarea 
-        [(ngModel)]="jsonInput"
+      <app-json-editor
+        [value]="jsonInput()"
+        (valueChange)="jsonInput.set($event)"
         placeholder="Paste your shipment event JSON here..."
-        rows="6"
-        class="json-textarea"
-      ></textarea>
+        [rows]="6"
+      ></app-json-editor>
       <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
         Load JSON
       </button>

@@ -1,0 +1,26 @@
+<div class="json-editor">
+  <div class="editor-toolbar">
+    <span class="editor-hint">Editor</span>
+    <button
+      type="button"
+      class="format-btn"
+      (click)="formatJson()"
+      [disabled]="!value.trim()"
+    >
+      Format JSON
+    </button>
+  </div>
+  <textarea
+    [ngModel]="value"
+    (ngModelChange)="onValueChange($event)"
+    [placeholder]="placeholder"
+    [rows]="rows"
+    class="json-textarea"
+    spellcheck="false"
+  ></textarea>
+  @if (formatError()) {
+    <div class="format-message">
+      {{ formatError() }}
+    </div>
+  }
+</div>
