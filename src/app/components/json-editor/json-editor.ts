@@ -34,7 +34,8 @@ export class JsonEditor {
       this.formatError.set('');
       this.valueChange.emit(formatted);
     } catch (error) {
-      this.formatError.set('Unable to format: invalid JSON.');
+      const message = error instanceof Error ? error.message : 'invalid JSON';
+      this.formatError.set(`Unable to format: ${message}`);
     }
   }
 }

@@ -22,6 +22,7 @@ describe('JsonEditor', () => {
     component.formatJson();
 
     expect(emittedValue).toBe('{\n  "tracking": true\n}');
+    expect(component.value).toBe('{\n  "tracking": true\n}');
     expect(fixture.nativeElement.querySelector('.format-message')).toBeNull();
   });
 
@@ -38,5 +39,6 @@ describe('JsonEditor', () => {
     const message = fixture.nativeElement.querySelector('.format-message');
     expect(message).not.toBeNull();
     expect(message?.textContent).toContain('Unable to format');
+    expect(component.value).toBe('{tracking:}');
   });
 });
