@@ -38,8 +38,8 @@ An Angular frontend application for viewing and comparing ocean shipment event t
     - **POL**: IG / OG / VD
     - **POD**: VA / IG / OG
   - **Warning alerts (threshold-based)**:
-    - **POL VD change** — Estimated VD time differs by the configured threshold (default 24h) when there is **no Actual VD** at POL.
-    - **POD VA change** — Estimated VA time differs by the configured threshold (default 24h) when there is **no Actual VA** at POD.
+    - **POL VD change** — Estimated VD time differs by the configured threshold (default 24 hours) when there is **no Actual VD** at POL.
+    - **POD VA change** — Estimated VA time differs by the configured threshold (default 24 hours) when there is **no Actual VA** at POD.
     - **Transhipment count change** — number of unique POT ports differs between shipments.
   - Thresholds are configurable in the Alerts tab (POL VD hours / POD VA hours).
   - **Limitations**:
