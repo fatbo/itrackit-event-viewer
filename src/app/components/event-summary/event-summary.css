@@ -1,20 +1,23 @@
 .event-summary-container {
   padding: 14px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .summary-header {
-  border-bottom: 2px solid #2196F3;
+  border-bottom: 2px solid var(--accent-cyan);
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
 
 h2 {
-  color: #333;
+  color: var(--text-primary);
   margin: 0;
   font-size: 1.05em;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }
 
 .indicator-pills {
@@ -37,22 +40,22 @@ h2 {
 
 .pill-dg,
 .pill-dg-inline {
-  background: #fff3e0;
-  color: #e65100;
-  border: 1px solid #ffcc80;
+  background: var(--accent-amber-dim);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .pill-dmg,
 .pill-dmg-inline {
-  background: #fce4ec;
-  color: #c62828;
-  border: 1px solid #ef9a9a;
+  background: var(--accent-coral-dim);
+  color: var(--accent-coral);
+  border: 1px solid rgba(248, 113, 113, 0.3);
 }
 
 .pill-reefer {
-  background: #e0f7fa;
-  color: #006064;
-  border: 1px solid #80deea;
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(34, 211, 238, 0.3);
 }
 
 .pill-dg-inline,
@@ -61,27 +64,27 @@ h2 {
 }
 
 .pill-status-completed {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #a5d6a7;
+  background: var(--accent-emerald-dim);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(52, 211, 153, 0.3);
 }
 
 .pill-status-transit {
-  background: #e3f2fd;
-  color: #1565c0;
-  border: 1px solid #90caf9;
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(34, 211, 238, 0.3);
 }
 
 .pill-status-limited {
-  background: #fff8e1;
-  color: #ef6c00;
-  border: 1px solid #ffecb3;
+  background: var(--accent-amber-dim);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .pill-status-unknown {
-  background: #f5f5f5;
-  color: #616161;
-  border: 1px solid #e0e0e0;
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--text-muted);
+  border: 1px solid rgba(100, 116, 139, 0.25);
 }
 
 .summary-grid {
@@ -95,54 +98,59 @@ h2 {
   display: flex;
   flex-direction: column;
   padding: 8px 10px;
-  background: #f5f5f5;
-  border-radius: 4px;
-  border-left: 3px solid #2196F3;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-cyan);
+  transition: background 0.2s ease;
+}
+
+.summary-item:hover {
+  background: var(--bg-card-hover);
 }
 
 .summary-item-status {
-  background: #eef6ff;
-  border-left-color: #1e88e5;
+  background: var(--accent-cyan-dim);
+  border-left-color: var(--accent-cyan);
 }
 
 .summary-item-status-completed {
-  background: #eef7f0;
-  border-left-color: #2e7d32;
+  background: var(--accent-emerald-dim);
+  border-left-color: var(--accent-emerald);
 }
 
 .summary-item-status-transit {
-  background: #eaf4ff;
-  border-left-color: #1565c0;
+  background: var(--accent-cyan-dim);
+  border-left-color: var(--accent-cyan);
 }
 
 .summary-item-status-limited {
-  background: #fff4e5;
-  border-left-color: #ef6c00;
+  background: var(--accent-amber-dim);
+  border-left-color: var(--accent-amber);
 }
 
 .summary-item-status-unknown {
-  background: #f5f5f5;
-  border-left-color: #9e9e9e;
+  background: rgba(100, 116, 139, 0.08);
+  border-left-color: var(--text-muted);
 }
 
 .summary-item-dg {
-  background: #fff8e1;
-  border-left-color: #ff9800;
+  background: var(--accent-amber-dim);
+  border-left-color: var(--accent-amber);
 }
 
 .summary-item-dmg {
-  background: #fce4ec;
-  border-left-color: #e53935;
+  background: var(--accent-coral-dim);
+  border-left-color: var(--accent-coral);
 }
 
 .summary-item-reefer {
-  background: #e0f2f1;
-  border-left-color: #00897b;
+  background: var(--accent-cyan-dim);
+  border-left-color: var(--accent-cyan);
 }
 
 .summary-item-reefer-alert {
-  background: #fff3e0;
-  border-left-color: #f57c00;
+  background: var(--accent-amber-dim);
+  border-left-color: var(--accent-amber);
 }
 
 .reefer-details {
@@ -160,18 +168,19 @@ h2 {
 
 .reefer-temp-alert {
   font-weight: 600;
-  color: #e65100;
+  color: var(--accent-amber);
 }
 
 .reefer-label {
   font-size: 0.8em;
-  color: #666;
+  color: var(--text-muted);
   min-width: 110px;
 }
 
 .reefer-value {
   font-size: 0.9em;
   font-weight: 500;
+  color: var(--text-primary);
 }
 
 .reefer-alert-icon {
@@ -181,9 +190,9 @@ h2 {
 
 .seal-tag {
   display: inline-block;
-  background: #e3f2fd;
-  color: #1565c0;
-  border: 1px solid #90caf9;
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(34, 211, 238, 0.3);
   border-radius: 12px;
   padding: 2px 10px;
   font-size: 0.85em;
@@ -193,7 +202,7 @@ h2 {
 
 .label {
   font-weight: bold;
-  color: #666;
+  color: var(--text-muted);
   font-size: 0.75em;
   margin-bottom: 2px;
   text-transform: uppercase;
@@ -201,12 +210,12 @@ h2 {
 }
 
 .value {
-  color: #333;
+  color: var(--text-primary);
   font-size: 0.9em;
 }
 
 .status-note {
-  color: #555;
+  color: var(--text-secondary);
   font-size: 0.78em;
   margin-top: 2px;
 }
@@ -214,7 +223,7 @@ h2 {
 .no-data {
   text-align: center;
   padding: 24px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .no-data p {
