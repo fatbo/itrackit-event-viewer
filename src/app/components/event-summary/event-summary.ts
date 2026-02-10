@@ -56,7 +56,7 @@ export class EventSummary {
     
     if (isNaN(requireTemp) || isNaN(readingTemp)) return false;
     
-    // Alert if reading temp differs from required temp by +/- 1 degree
+    // Alert if reading temp differs from required temp by ≥1 degree
     const diff = Math.abs(readingTemp - requireTemp);
     return diff >= 1;
   });
