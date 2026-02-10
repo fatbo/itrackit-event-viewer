@@ -14,7 +14,9 @@
         </span>
       }
       @if (hasReeferData()) {
-        <span class="pill pill-reefer" title="Reefer Container">❄️ REEFER</span>
+        <span class="pill pill-reefer" title="{{ i18n.t('summary.indicator.reeferTitle') }}">
+          ❄️ {{ i18n.t('summary.indicator.reeferLabel') }}
+        </span>
       }
       @if (hasDangerousGoods()) {
         <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">⚠ DG</span>
@@ -140,21 +142,21 @@
 
       @if (hasReeferData() && reeferData()) {
         <div class="summary-item summary-item-reefer" [ngClass]="{'summary-item-reefer-alert': isReeferTempAlert()}">
-          <span class="label">Reefer Information:</span>
+          <span class="label">{{ i18n.t('summary.label.reeferInfo') }}</span>
           <div class="value reefer-details">
             <div class="reefer-temp">
-              <span class="reefer-label">Required Temp:</span>
+              <span class="reefer-label">{{ i18n.t('summary.label.reeferRequiredTemp') }}</span>
               <span class="reefer-value">{{ reeferData()?.requireTemp }}°{{ reeferData()?.requireTempUnit }}</span>
             </div>
             <div class="reefer-temp" [ngClass]="{'reefer-temp-alert': isReeferTempAlert()}">
-              <span class="reefer-label">Reading Temp:</span>
+              <span class="reefer-label">{{ i18n.t('summary.label.reeferReadingTemp') }}</span>
               <span class="reefer-value">{{ reeferData()?.readingTemp }}°{{ reeferData()?.readingTempUnit }}</span>
               @if (isReeferTempAlert()) {
-                <span class="reefer-alert-icon" title="Temperature difference detected">⚠️</span>
+                <span class="reefer-alert-icon" title="{{ i18n.t('summary.label.reeferAlert') }}">⚠️</span>
               }
             </div>
             <div class="reefer-time">
-              <span class="reefer-label">Reading Time:</span>
+              <span class="reefer-label">{{ i18n.t('summary.label.reeferReadingTime') }}</span>
               <span class="reefer-value">{{ reeferData()?.readingTime | date:'medium' }}</span>
             </div>
           </div>
