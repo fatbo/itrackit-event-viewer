@@ -2,13 +2,14 @@ import { Component, signal, OnInit, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
+import { JsonEditor } from '../json-editor/json-editor';
 import { ShipmentData, OpShipmentEventRaw } from '../../models/shipment-event.model';
 import { ShipmentParser } from '../../services/shipment-parser';
 import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-event-input',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, JsonEditor],
   templateUrl: './event-input.html',
   styleUrl: './event-input.css',
 })

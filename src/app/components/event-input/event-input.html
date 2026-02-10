@@ -42,12 +42,12 @@
   <div class="input-row">
     <div class="input-section">
       <h3>{{ i18n.t('input.pasteTitle') }}</h3>
-      <textarea 
-        [(ngModel)]="jsonInput"
+      <app-json-editor
+        [value]="jsonInput()"
+        (valueChange)="jsonInput.set($event)"
         placeholder="{{ i18n.t('input.pastePlaceholder') }}"
-        rows="6"
-        class="json-textarea"
-      ></textarea>
+        [rows]="6"
+      ></app-json-editor>
       <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
         {{ i18n.t('input.loadJson') }}
       </button>

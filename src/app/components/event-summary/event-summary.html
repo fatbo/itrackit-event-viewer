@@ -2,23 +2,26 @@
   @if (primaryEvent()) {
     <div class="summary-header">
       <h2>{{ i18n.t('summary.title') }}</h2>
-      <div class="indicator-pills">
-        @if (shipmentStatus()) {
-          <span
-            class="pill pill-status"
-            [ngClass]="'pill-status-' + shipmentStatus().tone"
-            [title]="shipmentStatus().description"
-          >
-            {{ shipmentStatus().label }}
-          </span>
-        }
-        @if (hasDangerousGoods()) {
-          <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">⚠ DG</span>
-        }
-        @if (hasDamages()) {
-          <span class="pill pill-dmg" title="{{ i18n.t('summary.indicator.damage') }}">🔴 DMG</span>
-        }
-      </div>
+    </div>
+    <div class="indicator-pills">
+      @if (shipmentStatus()) {
+        <span
+          class="pill pill-status"
+          [ngClass]="'pill-status-' + shipmentStatus().tone"
+          [title]="shipmentStatus().description"
+        >
+          {{ shipmentStatus().label }}
+        </span>
+      }
+      @if (hasReeferData()) {
+        <span class="pill pill-reefer" title="Reefer Container">❄️ REEFER</span>
+      }
+      @if (hasDangerousGoods()) {
+        <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">⚠ DG</span>
+      }
+      @if (hasDamages()) {
+        <span class="pill pill-dmg" title="{{ i18n.t('summary.indicator.damage') }}">🔴 DMG</span>
+      }
     </div>
     
     <div class="summary-grid">
@@ -132,6 +135,29 @@
               <span class="pill pill-dmg-inline">🔴 {{ damage }}</span>
             }
           </span>
+        </div>
+      }
+
+      @if (hasReeferData() && reeferData()) {
+        <div class="summary-item summary-item-reefer" [ngClass]="{'summary-item-reefer-alert': isReeferTempAlert()}">
+          <span class="label">Reefer Information:</span>
+          <div class="value reefer-details">
+            <div class="reefer-temp">
+              <span class="reefer-label">Required Temp:</span>
+              <span class="reefer-value">{{ reeferData()?.requireTemp }}°{{ reeferData()?.requireTempUnit }}</span>
+            </div>
+            <div class="reefer-temp" [ngClass]="{'reefer-temp-alert': isReeferTempAlert()}">
+              <span class="reefer-label">Reading Temp:</span>
+              <span class="reefer-value">{{ reeferData()?.readingTemp }}°{{ reeferData()?.readingTempUnit }}</span>
+              @if (isReeferTempAlert()) {
+                <span class="reefer-alert-icon" title="Temperature difference detected">⚠️</span>
+              }
+            </div>
+            <div class="reefer-time">
+              <span class="reefer-label">Reading Time:</span>
+              <span class="reefer-value">{{ reeferData()?.readingTime | date:'medium' }}</span>
+            </div>
+          </div>
         </div>
       }
       

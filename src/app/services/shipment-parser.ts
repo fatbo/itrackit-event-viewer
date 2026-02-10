@@ -50,6 +50,7 @@ export class ShipmentParser {
       dg: raw.dg,
       dmg: raw.dmg,
       transportEvents: raw.transportEvents,
+      terminalData: raw.terminalData,
     };
   }
 
