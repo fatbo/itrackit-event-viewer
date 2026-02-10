@@ -1,10 +1,11 @@
-import { Component, signal, OnInit, Input } from '@angular/core';
+import { Component, signal, OnInit, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { JsonEditor } from '../json-editor/json-editor';
 import { ShipmentData, OpShipmentEventRaw } from '../../models/shipment-event.model';
 import { ShipmentParser } from '../../services/shipment-parser';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-event-input',
@@ -15,6 +16,7 @@ import { ShipmentParser } from '../../services/shipment-parser';
 export class EventInput implements OnInit {
   @Input() onClose?: () => void;
   
+  protected readonly i18n = inject(I18nService);
   protected readonly jsonInput = signal('');
   protected readonly errorMessage = signal('');
   protected readonly isPrimary = signal(true);
@@ -351,7 +353,7 @@ export class EventInput implements OnInit {
     };
     
     reader.onerror = () => {
-      this.errorMessage.set('Error reading file');
+      this.errorMessage.set(this.i18n.t('input.error.readFile'));
     };
     
     reader.readAsText(file);
@@ -374,13 +376,13 @@ export class EventInput implements OnInit {
         // Already in ShipmentData format
         shipmentData = parsedData;
       } else {
-        this.errorMessage.set('Invalid shipment data format. Please provide either OpShipmentEventRaw or ShipmentData format.');
+        this.errorMessage.set(this.i18n.t('input.error.invalidFormat'));
         return;
       }
       
       // Validate that it has events array
       if (!shipmentData.events || !Array.isArray(shipmentData.events)) {
-        this.errorMessage.set('Invalid shipment data: no events found');
+        this.errorMessage.set(this.i18n.t('input.error.noEvents'));
         return;
       }
       
@@ -392,7 +394,7 @@ export class EventInput implements OnInit {
       
       this.errorMessage.set('');
     } catch (error) {
-      this.errorMessage.set('Invalid JSON format. Please check your JSON syntax and try again.');
+      this.errorMessage.set(this.i18n.t('input.error.invalidJson'));
     }
   }
   

@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { ShipmentEvent, OpTransportEvent } from '../../models/shipment-event.model';
+import { I18nService } from '../../services/i18n.service';
 
 interface TimelineIndexItem {
   label: string;
@@ -28,11 +29,15 @@ interface PortNode {
 export class EventTimeline {
   private eventDataService = inject(EventData);
   private document = inject(DOCUMENT);
-  private readonly indexDateFormatter = new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  protected readonly i18n = inject(I18nService);
+  private readonly indexDateFormatter = computed(
+    () =>
+      new Intl.DateTimeFormat(this.i18n.localeTag(), {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      })
+  );
   
   protected readonly primaryEvent = this.eventDataService.primaryEvent;
   
@@ -121,15 +126,46 @@ export class EventTimeline {
     return indexItems;
   });
   
-  getEventIcon(eventType: string): string {
-    const type = eventType.toLowerCase();
-    if (type.includes('depart') || type.includes('departure')) return '🚢';
-    if (type.includes('arrive') || type.includes('arrival')) return '🏁';
-    if (type.includes('load')) return '📦';
-    if (type.includes('discharge') || type.includes('unload')) return '📭';
-    if (type.includes('gate')) return '🚪';
+  getEventIcon(event: ShipmentEvent): string {
+    const code = event.eventCode?.toUpperCase();
+    if (code === 'VD' || code === 'RD') return '🚢';
+    if (code === 'VA' || code === 'RA') return '🏁';
+    if (code === 'AL') return '📦';
+    if (code === 'UV' || code === 'PD') return '📭';
+    if (code === 'OG' || code === 'IG') return '🚪';
+    const type = event.eventType.toLowerCase();
     if (type.includes('customs')) return '🛃';
     return '📍';
+  }
+
+  protected getEventTypeLabel(event: ShipmentEvent): string {
+    return event.eventCode ? this.i18n.getEventCodeLabel(event.eventCode) : event.eventType;
+  }
+
+  protected getEventDescription(event: ShipmentEvent): string {
+    const parts: string[] = [];
+    if (event.eventType) {
+      parts.push(this.getEventTypeLabel(event));
+    }
+
+    if (event.containerStatus) {
+      parts.push(
+        this.i18n.t('parser.containerStatus', {
+          status: this.i18n.getContainerStatusLabel(event.containerStatus),
+        })
+      );
+    }
+
+    if (event.modeOfTransport) {
+      parts.push(this.i18n.t('parser.via', { mode: event.modeOfTransport }));
+    }
+
+    const timeDetails = this.buildTimeDetails(event);
+    if (timeDetails.length > 1) {
+      parts.push(this.i18n.t('parser.timeDetails', { details: timeDetails.join(', ') }));
+    }
+
+    return parts.length > 0 ? parts.join(' ') : event.description;
   }
 
   protected getEventAnchorId(index: number): string {
@@ -137,7 +173,25 @@ export class EventTimeline {
   }
 
   protected formatIndexLabel(event: ShipmentEvent): string {
-    return this.indexDateFormatter.format(new Date(event.eventDateTime));
+    return this.indexDateFormatter().format(new Date(event.eventDateTime));
+  }
+
+  protected getLocationTypeLabel(locationType?: string): string {
+    return locationType ? this.i18n.getLocationTypeLabel(locationType) : '';
+  }
+
+  protected getContainerStatusLabel(containerStatus?: string): string {
+    return containerStatus ? this.i18n.getContainerStatusLabel(containerStatus) : '';
+  }
+
+  protected getStatusLabel(event: ShipmentEvent): string {
+    if (event.containerStatus && event.timeType) {
+      return this.i18n.t('parser.containerStatusFormat', {
+        status: this.i18n.getContainerStatusLabel(event.containerStatus),
+        timeType: this.i18n.getTimeTypeLabel(event.timeType),
+      });
+    }
+    return event.status || '';
   }
 
 
@@ -149,11 +203,32 @@ export class EventTimeline {
   }
 
   protected getTimeTypeLabel(timeType: string): string {
-    switch (timeType) {
-      case 'A': return 'Actual';
-      case 'E': return 'Estimated';
-      case 'G': return 'Planned';
-      default: return '';
+    return this.i18n.getTimeTypeLabel(timeType);
+  }
+
+  private buildTimeDetails(event: ShipmentEvent): string[] {
+    const timeDetails: string[] = [];
+    if (event.actualTime) {
+      timeDetails.push(
+        `${this.i18n.t('time.actual')}: ${new Date(event.actualTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
     }
+    if (event.estimatedTime) {
+      timeDetails.push(
+        `${this.i18n.t('time.estimated')}: ${new Date(event.estimatedTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
+    }
+    if (event.plannedTime) {
+      timeDetails.push(
+        `${this.i18n.t('time.planned')}: ${new Date(event.plannedTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
+    }
+    return timeDetails;
   }
 }

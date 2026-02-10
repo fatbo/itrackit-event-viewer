@@ -32,6 +32,44 @@
   opacity: 0.85;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.language-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
+.language-label {
+  opacity: 0.85;
+}
+
+.language-btn {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.language-btn.active {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.75);
+}
+
+.language-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .input-toggle-btn {
   padding: 8px 18px;
   background: rgba(255, 255, 255, 0.2);
@@ -102,6 +140,10 @@
     gap: 8px;
     text-align: center;
     padding: 10px 16px;
+  }
+
+  .header-actions {
+    flex-direction: column;
   }
 
   .header-content h1 {

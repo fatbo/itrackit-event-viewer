@@ -2,13 +2,36 @@
   <header class="app-header">
     <div class="header-content">
       <h1>{{ title() }}</h1>
-      <p class="subtitle">Ocean Shipment Event Timeline Viewer</p>
+      <p class="subtitle">{{ i18n.t('app.subtitle') }}</p>
     </div>
-    @if (!showInput()) {
-      <button class="input-toggle-btn" (click)="toggleInput()">
-        📋 Load Data
-      </button>
-    }
+    <div class="header-actions">
+      <div class="language-switch" aria-label="{{ i18n.t('app.language') }}">
+        <span class="language-label">{{ i18n.t('app.language') }}</span>
+        <button
+          class="language-btn"
+          type="button"
+          [class.active]="i18n.locale() === 'en'"
+          (click)="setLocale('en')"
+          title="{{ i18n.t('app.languageEnglish') }}"
+        >
+          EN
+        </button>
+        <button
+          class="language-btn"
+          type="button"
+          [class.active]="i18n.locale() === 'zh-Hant'"
+          (click)="setLocale('zh-Hant')"
+          title="{{ i18n.t('app.languageChinese') }}"
+        >
+          繁
+        </button>
+      </div>
+      @if (!showInput()) {
+        <button class="input-toggle-btn" (click)="toggleInput()">
+          📋 {{ i18n.t('app.loadData') }}
+        </button>
+      }
+    </div>
   </header>
   
   <div class="input-panel" [class.input-panel-hidden]="!showInput()">
@@ -28,7 +51,7 @@
   </main>
   
   <footer class="app-footer">
-    <p>© 2026 iTrackiT Shipment Viewer - Support Tool for Ocean Shipment Tracking</p>
+    <p>{{ i18n.t('app.footer') }}</p>
   </footer>
 </div>
 <router-outlet />

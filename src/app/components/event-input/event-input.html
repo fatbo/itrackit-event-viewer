@@ -1,9 +1,9 @@
 <div class="event-input-container">
   <div class="input-header">
-    <h2>Shipment Event Input</h2>
+    <h2>{{ i18n.t('input.title') }}</h2>
     @if (onClose) {
       <button class="close-btn" (click)="onClose()">
-        ✕ Close
+        ✕ {{ i18n.t('input.close') }}
       </button>
     }
   </div>
@@ -12,45 +12,51 @@
     <div class="demo-banner">
       <div class="demo-icon">🎯</div>
       <div class="demo-content">
-        <strong>Demo Mode:</strong> You're viewing sample shipment data below. 
-        <button (click)="clearAll()" class="dismiss-demo">Clear Demo</button>
+        <strong>{{ i18n.t('input.demoMode') }}</strong> {{ i18n.t('input.demoDescription') }}
+        <button (click)="clearAll()" class="dismiss-demo">{{ i18n.t('input.clearDemo') }}</button>
       </div>
     </div>
   }
 
   <div class="usage-tips">
-    <h3>💡 How to Use</h3>
+    <h3>💡 {{ i18n.t('input.usageTitle') }}</h3>
     <ul>
-      <li><strong>Load Your Data:</strong> Paste JSON or upload a file below</li>
-      <li><strong>Compare:</strong> Toggle to "Secondary Event" for side-by-side comparison</li>
-      <li><strong>Formats:</strong> OpShipmentEventRaw (OpenAPI) or ShipmentData</li>
+      <li>
+        <strong>{{ i18n.t('input.usageLoadTitle') }}</strong> {{ i18n.t('input.usageLoadDescription') }}
+      </li>
+      <li>
+        <strong>{{ i18n.t('input.usageCompareTitle') }}</strong> {{ i18n.t('input.usageCompareDescription') }}
+      </li>
+      <li>
+        <strong>{{ i18n.t('input.usageFormatsTitle') }}</strong> {{ i18n.t('input.usageFormatsDescription') }}
+      </li>
     </ul>
   </div>
   
   <div class="input-toggle">
     <button (click)="toggleEventType()" class="toggle-btn">
-      {{ isPrimary() ? 'Primary Event' : 'Secondary Event (for comparison)' }}
+      {{ isPrimary() ? i18n.t('input.togglePrimary') : i18n.t('input.toggleSecondary') }}
     </button>
   </div>
   
   <div class="input-row">
     <div class="input-section">
-      <h3>Paste JSON Data</h3>
+      <h3>{{ i18n.t('input.pasteTitle') }}</h3>
       <app-json-editor
         [value]="jsonInput()"
         (valueChange)="jsonInput.set($event)"
-        placeholder="Paste your shipment event JSON here..."
+        placeholder="{{ i18n.t('input.pastePlaceholder') }}"
         [rows]="6"
       ></app-json-editor>
       <button (click)="onPasteJson()" class="action-btn" [disabled]="!jsonInput()">
-        Load JSON
+        {{ i18n.t('input.loadJson') }}
       </button>
     </div>
     
-    <div class="divider">OR</div>
+    <div class="divider">{{ i18n.t('input.divider') }}</div>
     
     <div class="input-section">
-      <h3>Upload JSON File</h3>
+      <h3>{{ i18n.t('input.uploadTitle') }}</h3>
       <input 
         type="file" 
         accept=".json"
@@ -68,7 +74,7 @@
   
   <div class="actions">
     <button (click)="clearAll()" class="clear-btn">
-      Clear All
+      {{ i18n.t('input.clearAll') }}
     </button>
   </div>
 </div>

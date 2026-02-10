@@ -1,5 +1,6 @@
 import { ShipmentParser } from './shipment-parser';
 import { OpShipmentEventRaw } from '../models/shipment-event.model';
+import { I18nService } from './i18n.service';
 
 describe('ShipmentParser', () => {
   let parser: ShipmentParser;
@@ -25,7 +26,7 @@ describe('ShipmentParser', () => {
   };
 
   beforeEach(() => {
-    parser = new ShipmentParser();
+    parser = new ShipmentParser(new I18nService());
   });
 
   it('ignores transport events when parsing raw data', () => {
