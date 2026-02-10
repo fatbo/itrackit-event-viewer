@@ -1,10 +1,10 @@
 <div class="event-comparison-container">
   @if (hasComparison()) {
-    <h2>Event Comparison</h2>
+    <h2>{{ i18n.t('comparison.title') }}</h2>
     
     @if (differences().length > 0) {
       <div class="differences-section">
-        <h3>Key Differences</h3>
+        <h3>{{ i18n.t('comparison.keyDifferences') }}</h3>
         <ul class="differences-list">
           @for (diff of differences(); track diff) {
             <li>{{ diff }}</li>
@@ -13,31 +13,31 @@
       </div>
     } @else {
       <div class="no-differences">
-        <p>✓ No major differences detected between the two shipments.</p>
+        <p>{{ i18n.t('comparison.noDifferences') }}</p>
       </div>
     }
     
     <div class="comparison-grid">
       <div class="comparison-column">
-        <h3 class="column-header primary">Primary Event</h3>
+        <h3 class="column-header primary">{{ i18n.t('comparison.primaryHeader') }}</h3>
         <div class="shipment-info">
           @if (primaryEvent()?.shipmentId) {
             <div class="info-item">
-              <strong>Shipment ID:</strong> {{ primaryEvent()?.shipmentId }}
+              <strong>{{ i18n.t('comparison.label.shipmentId') }}</strong> {{ primaryEvent()?.shipmentId }}
             </div>
           }
           @if (primaryEvent()?.origin) {
             <div class="info-item">
-              <strong>Origin:</strong> {{ primaryEvent()?.origin }}
+              <strong>{{ i18n.t('comparison.label.origin') }}</strong> {{ primaryEvent()?.origin }}
             </div>
           }
           @if (primaryEvent()?.destination) {
             <div class="info-item">
-              <strong>Destination:</strong> {{ primaryEvent()?.destination }}
+              <strong>{{ i18n.t('comparison.label.destination') }}</strong> {{ primaryEvent()?.destination }}
             </div>
           }
           <div class="info-item">
-            <strong>Total Events:</strong> {{ primarySortedEvents().length }}
+            <strong>{{ i18n.t('comparison.label.totalEvents') }}</strong> {{ primarySortedEvents().length }}
           </div>
         </div>
         
@@ -55,25 +55,25 @@
       </div>
       
       <div class="comparison-column">
-        <h3 class="column-header secondary">Secondary Event</h3>
+        <h3 class="column-header secondary">{{ i18n.t('comparison.secondaryHeader') }}</h3>
         <div class="shipment-info">
           @if (secondaryEvent()?.shipmentId) {
             <div class="info-item">
-              <strong>Shipment ID:</strong> {{ secondaryEvent()?.shipmentId }}
+              <strong>{{ i18n.t('comparison.label.shipmentId') }}</strong> {{ secondaryEvent()?.shipmentId }}
             </div>
           }
           @if (secondaryEvent()?.origin) {
             <div class="info-item">
-              <strong>Origin:</strong> {{ secondaryEvent()?.origin }}
+              <strong>{{ i18n.t('comparison.label.origin') }}</strong> {{ secondaryEvent()?.origin }}
             </div>
           }
           @if (secondaryEvent()?.destination) {
             <div class="info-item">
-              <strong>Destination:</strong> {{ secondaryEvent()?.destination }}
+              <strong>{{ i18n.t('comparison.label.destination') }}</strong> {{ secondaryEvent()?.destination }}
             </div>
           }
           <div class="info-item">
-            <strong>Total Events:</strong> {{ secondarySortedEvents().length }}
+            <strong>{{ i18n.t('comparison.label.totalEvents') }}</strong> {{ secondarySortedEvents().length }}
           </div>
         </div>
         
@@ -92,7 +92,7 @@
     </div>
   } @else {
     <div class="no-comparison">
-      <p>Load a secondary event to enable comparison. Use the toggle button in the input section above to switch to "Secondary Event".</p>
+      <p>{{ i18n.t('comparison.noComparison') }}</p>
     </div>
   }
 </div>

@@ -6,48 +6,13 @@ import {
   ShipmentData,
   ShipmentEvent,
 } from '../models/shipment-event.model';
+import { I18nService } from './i18n.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShipmentParser {
-  // Constants for mapping
-  private readonly CONTAINER_STATUS_MAP: { [key: string]: string } = {
-    F: 'Full',
-    E: 'Empty',
-  };
-
-  private readonly TIME_TYPE_MAP: { [key: string]: string } = {
-    A: 'Actual',
-    E: 'Estimated',
-    G: 'Planned',
-  };
-
-  private readonly EVENT_CODE_MAP: { [key: string]: string } = {
-    OG: 'Gate Out',
-    IG: 'Gate In',
-    AE: 'Arrived at Export',
-    VD: 'Vessel Departure',
-    VA: 'Vessel Arrival',
-    UV: 'Unloaded from Vessel',
-    AL: 'Loaded on Vessel',
-    UR: 'Unloaded from Rail',
-    RD: 'Rail Departure',
-    RA: 'Rail Arrival',
-    TA: 'Truck Arrival',
-    CT: 'Container Terminal',
-    RT: 'Return to Terminal',
-    SS: 'Shipment Status',
-    ZZ: 'Other',
-    PD: 'Port Discharge',
-  };
-
-  private readonly LOCATION_TYPE_MAP: { [key: string]: string } = {
-    POL: 'Port of Loading',
-    POD: 'Port of Discharge',
-    POT: 'Port of Transhipment',
-    POC: 'Port of Call',
-  };
+  constructor(private i18n: I18nService) {}
 
   /**
    * Converts OpShipmentEventRaw format to ShipmentData format for display
@@ -171,13 +136,25 @@ export class ShipmentParser {
     // Build time details
     const timeDetails: string[] = [];
     if (actualEvent) {
-      timeDetails.push(`Actual: ${new Date(actualEvent.eventTime).toLocaleString()}`);
+      timeDetails.push(
+        `${this.i18n.t('time.actual')}: ${new Date(actualEvent.eventTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
     }
     if (estimatedEvent) {
-      timeDetails.push(`Estimated: ${new Date(estimatedEvent.eventTime).toLocaleString()}`);
+      timeDetails.push(
+        `${this.i18n.t('time.estimated')}: ${new Date(estimatedEvent.eventTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
     }
     if (plannedEvent) {
-      timeDetails.push(`Planned: ${new Date(plannedEvent.eventTime).toLocaleString()}`);
+      timeDetails.push(
+        `${this.i18n.t('time.planned')}: ${new Date(plannedEvent.eventTime).toLocaleString(
+          this.i18n.localeTag()
+        )}`
+      );
     }
 
     return {
@@ -215,19 +192,23 @@ export class ShipmentParser {
     }
 
     if (event.containerStatus) {
-      parts.push(`(${this.CONTAINER_STATUS_MAP[event.containerStatus]} container)`);
+      parts.push(
+        this.i18n.t('parser.containerStatus', {
+          status: this.i18n.getContainerStatusLabel(event.containerStatus),
+        })
+      );
     }
 
     if (event.modeOfTransport) {
-      parts.push(`via ${event.modeOfTransport}`);
+      parts.push(this.i18n.t('parser.via', { mode: event.modeOfTransport }));
     }
 
     // Add time details if multiple times are available
     if (timeDetails.length > 1) {
-      parts.push(`- ${timeDetails.join(', ')}`);
+      parts.push(this.i18n.t('parser.timeDetails', { details: timeDetails.join(', ') }));
     }
 
-    return parts.length > 0 ? parts.join(' ') : 'Equipment event';
+    return parts.length > 0 ? parts.join(' ') : this.i18n.t('parser.equipmentEvent');
   }
 
   private formatLocation(location: any): string {
@@ -258,7 +239,7 @@ export class ShipmentParser {
     }
 
     // Fallback to event code mappings
-    return this.EVENT_CODE_MAP[eventCode] || eventCode;
+    return this.i18n.getEventCodeLabel(eventCode) || eventCode;
   }
 
   private buildEventDescription(event: OpTransportEvent): string {
@@ -269,14 +250,18 @@ export class ShipmentParser {
     }
 
     if (event.modeOfTransport) {
-      parts.push(`via ${event.modeOfTransport}`);
+      parts.push(this.i18n.t('parser.via', { mode: event.modeOfTransport }));
     }
 
     if (event.locationType) {
-      parts.push(`at ${this.LOCATION_TYPE_MAP[event.locationType] || event.locationType}`);
+      parts.push(
+        this.i18n.t('parser.atLocation', {
+          location: this.i18n.getLocationTypeLabel(event.locationType),
+        })
+      );
     }
 
-    return parts.length > 0 ? parts.join(' ') : 'Transport event';
+    return parts.length > 0 ? parts.join(' ') : this.i18n.t('parser.transportEvent');
   }
 
   private convertTransportEvent(event: OpTransportEvent): ShipmentEvent {
@@ -302,10 +287,13 @@ export class ShipmentParser {
   }
 
   private formatTimeType(timeType: string): string {
-    return this.TIME_TYPE_MAP[timeType] || timeType;
+    return this.i18n.getTimeTypeLabel(timeType) || timeType;
   }
 
   private formatContainerStatus(containerStatus: string, timeType: string): string {
-    return `${this.CONTAINER_STATUS_MAP[containerStatus] || containerStatus} - ${this.TIME_TYPE_MAP[timeType] || timeType}`;
+    return this.i18n.t('parser.containerStatusFormat', {
+      status: this.i18n.getContainerStatusLabel(containerStatus) || containerStatus,
+      timeType: this.i18n.getTimeTypeLabel(timeType) || timeType,
+    });
   }
 }

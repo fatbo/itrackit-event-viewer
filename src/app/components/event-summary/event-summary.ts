@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { OpTransportEvent, ShipmentEvent } from '../../models/shipment-event.model';
+import { I18nService } from '../../services/i18n.service';
 
 interface ShipmentStatusInfo {
   label: string;
@@ -17,6 +18,7 @@ interface ShipmentStatusInfo {
 })
 export class EventSummary {
   private eventDataService = inject(EventData);
+  protected readonly i18n = inject(I18nService);
   private readonly ACTUAL_TIME_TYPE = 'A';
   private readonly GATE_OUT_CODE = 'OG';
   private readonly GATE_IN_CODE = 'IG';
@@ -45,8 +47,8 @@ export class EventSummary {
     const transportEvents = primaryEvent?.transportEvents ?? [];
     if (events.length === 0 && transportEvents.length === 0) {
       return {
-        label: 'Status Unavailable',
-        description: 'No event data has been loaded yet.',
+        label: this.i18n.t('status.unavailable.label'),
+        description: this.i18n.t('status.unavailable.description'),
         tone: 'unknown',
       };
     }
@@ -54,8 +56,8 @@ export class EventSummary {
     const hasPodGateEvent = events.some((event) => this.isActualGateEventAtPod(event));
     if (hasPodGateEvent) {
       return {
-        label: 'Completed',
-        description: 'Actual gate in/out recorded at the port of discharge.',
+        label: this.i18n.t('status.completed.label'),
+        description: this.i18n.t('status.completed.description'),
         tone: 'completed',
       };
     }
@@ -68,15 +70,15 @@ export class EventSummary {
       !this.hasActualEventsOutsideHongKong(events, transportEvents)
     ) {
       return {
-        label: 'Completed (Hong Kong Only)',
-        description: 'Actual vessel departure recorded in Hong Kong with no other actual ports.',
+        label: this.i18n.t('status.hkCompleted.label'),
+        description: this.i18n.t('status.hkCompleted.description'),
         tone: 'completed',
       };
     }
 
     return {
-      label: 'In Transit',
-      description: 'Awaiting an actual gate event at POD or an actual Hong Kong departure.',
+      label: this.i18n.t('status.inTransit.label'),
+      description: this.i18n.t('status.inTransit.description'),
       tone: 'transit',
     };
   });
@@ -99,6 +101,11 @@ export class EventSummary {
     );
     return sorted[sorted.length - 1];
   });
+
+  protected getEventTypeLabel(event: ShipmentEvent | null): string {
+    if (!event) return '';
+    return event.eventCode ? this.i18n.getEventCodeLabel(event.eventCode) : event.eventType;
+  }
 
   private isActualGateEventAtPod(event: ShipmentEvent): boolean {
     return (

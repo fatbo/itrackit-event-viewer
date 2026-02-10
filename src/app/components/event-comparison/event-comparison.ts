@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventData } from '../../services/event-data';
 import { ShipmentEvent } from '../../models/shipment-event.model';
+import { I18nService } from '../../services/i18n.service';
 
 @Component({
   selector: 'app-event-comparison',
@@ -11,6 +12,7 @@ import { ShipmentEvent } from '../../models/shipment-event.model';
 })
 export class EventComparison {
   private eventDataService = inject(EventData);
+  protected readonly i18n = inject(I18nService);
   
   protected readonly primaryEvent = this.eventDataService.primaryEvent;
   protected readonly secondaryEvent = this.eventDataService.secondaryEvent;
@@ -44,26 +46,96 @@ export class EventComparison {
     const diffs: string[] = [];
     
     // Compare basic info
-    this.addFieldDifference(diffs, 'Shipment ID', primary.shipmentId, secondary.shipmentId);
-    this.addFieldDifference(diffs, 'BL Number', primary.blNo, secondary.blNo);
-    this.addFieldDifference(diffs, 'Booking Number', primary.bookingNumber, secondary.bookingNumber);
-    this.addFieldDifference(diffs, 'Container Number', primary.containerNumber, secondary.containerNumber);
-    this.addFieldDifference(diffs, 'Container Size', primary.containerSize, secondary.containerSize);
-    this.addFieldDifference(diffs, 'Container Type', primary.containerType, secondary.containerType);
-    this.addFieldDifference(diffs, 'Container ISO Code', primary.containerISOCode, secondary.containerISOCode);
-    this.addFieldDifference(diffs, 'Container Weight', primary.containerWeight, secondary.containerWeight);
-    this.addFieldDifference(diffs, 'Shipment Type', primary.shipmentType, secondary.shipmentType);
-    this.addFieldDifference(diffs, 'Shipping Line', primary.carrier, secondary.carrier);
-    this.addFieldDifference(diffs, 'Origin', primary.origin, secondary.origin);
-    this.addFieldDifference(diffs, 'Destination', primary.destination, secondary.destination);
-    this.addFieldDifference(diffs, 'Source', primary.source, secondary.source);
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.shipmentId')),
+      primary.shipmentId,
+      secondary.shipmentId
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.blNumber')),
+      primary.blNo,
+      secondary.blNo
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.bookingNumber')),
+      primary.bookingNumber,
+      secondary.bookingNumber
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.containerNumber')),
+      primary.containerNumber,
+      secondary.containerNumber
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.containerSize')),
+      primary.containerSize,
+      secondary.containerSize
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.containerType')),
+      primary.containerType,
+      secondary.containerType
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.containerIsoCode')),
+      primary.containerISOCode,
+      secondary.containerISOCode
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.containerWeight')),
+      primary.containerWeight,
+      secondary.containerWeight
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.shipmentType')),
+      primary.shipmentType,
+      secondary.shipmentType
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.shippingLine')),
+      primary.carrier,
+      secondary.carrier
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.origin')),
+      primary.origin,
+      secondary.origin
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('comparison.label.destination')),
+      primary.destination,
+      secondary.destination
+    );
+    this.addFieldDifference(
+      diffs,
+      this.normalizeLabel(this.i18n.t('summary.label.source')),
+      primary.source,
+      secondary.source
+    );
     
     // Compare event counts
     const primaryCount = primary.events?.length || 0;
     const secondaryCount = secondary.events?.length || 0;
     
     if (primaryCount !== secondaryCount) {
-      diffs.push(`Event Count: ${primaryCount} vs ${secondaryCount}`);
+      diffs.push(
+        this.i18n.t('comparison.eventCount', {
+          primary: primaryCount,
+          secondary: secondaryCount,
+        })
+      );
     }
 
     const primaryEventMap = this.buildEventMap(primary.events || []);
@@ -74,7 +146,12 @@ export class EventComparison {
       if (!secondaryEvents) {
         primaryEvents.forEach((event, index) => {
           diffs.push(
-            `Event ${this.formatEventLabel(event, primaryEvents.length > 1 ? index + 1 : undefined)} missing in secondary shipment`
+            this.i18n.t('comparison.eventMissingSecondary', {
+              label: this.formatEventLabel(
+                event,
+                primaryEvents.length > 1 ? index + 1 : undefined
+              ),
+            })
           );
         });
         continue;
@@ -86,13 +163,23 @@ export class EventComparison {
         const secondaryEvent = secondaryEvents[i];
         if (!primaryEvent) {
           diffs.push(
-            `Event ${this.formatEventLabel(secondaryEvent, secondaryEvents.length > 1 ? i + 1 : undefined)} missing in primary shipment`
+            this.i18n.t('comparison.eventMissingPrimary', {
+              label: this.formatEventLabel(
+                secondaryEvent,
+                secondaryEvents.length > 1 ? i + 1 : undefined
+              ),
+            })
           );
           continue;
         }
         if (!secondaryEvent) {
           diffs.push(
-            `Event ${this.formatEventLabel(primaryEvent, primaryEvents.length > 1 ? i + 1 : undefined)} missing in secondary shipment`
+            this.i18n.t('comparison.eventMissingSecondary', {
+              label: this.formatEventLabel(
+                primaryEvent,
+                primaryEvents.length > 1 ? i + 1 : undefined
+              ),
+            })
           );
           continue;
         }
@@ -108,7 +195,12 @@ export class EventComparison {
       if (!primaryEventMap.has(eventKey)) {
         secondaryEvents.forEach((event, index) => {
           diffs.push(
-            `Event ${this.formatEventLabel(event, secondaryEvents.length > 1 ? index + 1 : undefined)} missing in primary shipment`
+            this.i18n.t('comparison.eventMissingPrimary', {
+              label: this.formatEventLabel(
+                event,
+                secondaryEvents.length > 1 ? index + 1 : undefined
+              ),
+            })
           );
         });
       }
@@ -124,7 +216,13 @@ export class EventComparison {
     secondaryValue?: string
   ): void {
     if (primaryValue !== secondaryValue) {
-      diffs.push(`${label}: "${this.formatValue(primaryValue)}" vs "${this.formatValue(secondaryValue)}"`);
+      diffs.push(
+        this.i18n.t('comparison.fieldDifference', {
+          label,
+          primary: this.formatValue(primaryValue),
+          secondary: this.formatValue(secondaryValue),
+        })
+      );
     }
   }
 
@@ -136,7 +234,7 @@ export class EventComparison {
   }
 
   private formatDateTime(value?: string): string {
-    return value ? new Date(value).toLocaleString() : '—';
+    return value ? new Date(value).toLocaleString(this.i18n.localeTag()) : '—';
   }
 
   private buildEventMap(events: ShipmentEvent[]): Map<string, ShipmentEvent[]> {
@@ -157,14 +255,19 @@ export class EventComparison {
 
   private getEventKey(event: ShipmentEvent): string {
     const location = event.unLocationCode || event.location || '';
-    const eventCode = event.eventCode || event.eventType || 'Unknown';
+    const eventCode =
+      event.eventCode || event.eventType || this.i18n.t('comparison.unknownEvent');
     const locationType = event.locationType || '';
     return [eventCode, locationType, location].filter(Boolean).join('|');
   }
 
   private formatEventLabel(event: ShipmentEvent, sequence?: number): string {
-    const eventCode = event.eventCode || event.eventType || 'Unknown';
-    const locationType = event.locationType || '';
+    const eventCode = event.eventCode
+      ? this.i18n.getEventCodeLabel(event.eventCode)
+      : event.eventType || this.i18n.t('comparison.unknownEvent');
+    const locationType = event.locationType
+      ? this.i18n.getLocationTypeLabel(event.locationType)
+      : '';
     const location = event.unLocationCode || '';
     const base = [locationType, eventCode].filter(Boolean).join(' ');
     const label = location ? `${base} (${location})` : base;
@@ -178,13 +281,21 @@ export class EventComparison {
   ): string[] {
     const diffs: string[] = [];
     const timePairs = [
-      { name: 'Actual', primary: primaryEvent.actualTime, secondary: secondaryEvent.actualTime },
       {
-        name: 'Estimated',
+        name: this.i18n.t('time.actual'),
+        primary: primaryEvent.actualTime,
+        secondary: secondaryEvent.actualTime,
+      },
+      {
+        name: this.i18n.t('time.estimated'),
         primary: primaryEvent.estimatedTime,
         secondary: secondaryEvent.estimatedTime,
       },
-      { name: 'Planned', primary: primaryEvent.plannedTime, secondary: secondaryEvent.plannedTime },
+      {
+        name: this.i18n.t('time.planned'),
+        primary: primaryEvent.plannedTime,
+        secondary: secondaryEvent.plannedTime,
+      },
     ];
 
     const hasTypedTimes = timePairs.some(
@@ -194,21 +305,30 @@ export class EventComparison {
     for (const time of timePairs) {
       if (time.primary !== time.secondary) {
         diffs.push(
-          `Event ${label} ${time.name} time: "${this.formatDateTime(
-            time.primary
-          )}" vs "${this.formatDateTime(time.secondary)}"`
+          this.i18n.t('comparison.eventTimeDiff', {
+            label,
+            timeLabel: time.name,
+            primary: this.formatDateTime(time.primary),
+            secondary: this.formatDateTime(time.secondary),
+          })
         );
       }
     }
 
     if (!hasTypedTimes && primaryEvent.eventDateTime !== secondaryEvent.eventDateTime) {
       diffs.push(
-        `Event ${label} time: "${this.formatDateTime(
-          primaryEvent.eventDateTime
-        )}" vs "${this.formatDateTime(secondaryEvent.eventDateTime)}"`
+        this.i18n.t('comparison.eventTimeDiffFallback', {
+          label,
+          primary: this.formatDateTime(primaryEvent.eventDateTime),
+          secondary: this.formatDateTime(secondaryEvent.eventDateTime),
+        })
       );
     }
 
     return diffs;
+  }
+
+  private normalizeLabel(label: string): string {
+    return label.replace(/[:：]\s*$/, '');
   }
 }

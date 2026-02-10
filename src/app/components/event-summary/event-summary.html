@@ -1,7 +1,7 @@
 <div class="event-summary-container">
   @if (primaryEvent()) {
     <div class="summary-header">
-      <h2>Shipment Summary</h2>
+      <h2>{{ i18n.t('summary.title') }}</h2>
       <div class="indicator-pills">
         @if (shipmentStatus()) {
           <span
@@ -13,10 +13,10 @@
           </span>
         }
         @if (hasDangerousGoods()) {
-          <span class="pill pill-dg" title="Contains Dangerous Goods">⚠ DG</span>
+          <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">⚠ DG</span>
         }
         @if (hasDamages()) {
-          <span class="pill pill-dmg" title="Damage Reported">🔴 DMG</span>
+          <span class="pill pill-dmg" title="{{ i18n.t('summary.indicator.damage') }}">🔴 DMG</span>
         }
       </div>
     </div>
@@ -27,84 +27,84 @@
           class="summary-item summary-item-status"
           [ngClass]="'summary-item-status-' + shipmentStatus().tone"
         >
-          <span class="label">Shipment Status:</span>
+          <span class="label">{{ i18n.t('summary.label.shipmentStatus') }}</span>
           <span class="value">{{ shipmentStatus().label }}</span>
           <span class="status-note">{{ shipmentStatus().description }}</span>
         </div>
       }
       @if (primaryEvent()?.shipmentId) {
         <div class="summary-item">
-          <span class="label">Shipment ID:</span>
+          <span class="label">{{ i18n.t('summary.label.shipmentId') }}</span>
           <span class="value">{{ primaryEvent()?.shipmentId }}</span>
         </div>
       }
       
       @if (primaryEvent()?.blNo) {
         <div class="summary-item">
-          <span class="label">BL Number:</span>
+          <span class="label">{{ i18n.t('summary.label.blNumber') }}</span>
           <span class="value">{{ primaryEvent()?.blNo }}</span>
         </div>
       }
       
       @if (primaryEvent()?.bookingNumber) {
         <div class="summary-item">
-          <span class="label">Booking Number:</span>
+          <span class="label">{{ i18n.t('summary.label.bookingNumber') }}</span>
           <span class="value">{{ primaryEvent()?.bookingNumber }}</span>
         </div>
       }
       
       @if (primaryEvent()?.containerNumber) {
         <div class="summary-item">
-          <span class="label">Container Number:</span>
+          <span class="label">{{ i18n.t('summary.label.containerNumber') }}</span>
           <span class="value">{{ primaryEvent()?.containerNumber }}</span>
         </div>
       }
       
       @if (primaryEvent()?.containerSize || primaryEvent()?.containerType) {
         <div class="summary-item">
-          <span class="label">Container Size/Type:</span>
+          <span class="label">{{ i18n.t('summary.label.containerSizeType') }}</span>
           <span class="value">{{ primaryEvent()?.containerSize || '' }} {{ primaryEvent()?.containerType || '' }}</span>
         </div>
       }
       
       @if (primaryEvent()?.containerISOCode) {
         <div class="summary-item">
-          <span class="label">Container ISO Code:</span>
+          <span class="label">{{ i18n.t('summary.label.containerIsoCode') }}</span>
           <span class="value">{{ primaryEvent()?.containerISOCode }}</span>
         </div>
       }
       
       @if (primaryEvent()?.shipmentType) {
         <div class="summary-item">
-          <span class="label">Shipment Type:</span>
+          <span class="label">{{ i18n.t('summary.label.shipmentType') }}</span>
           <span class="value">{{ primaryEvent()?.shipmentType }}</span>
         </div>
       }
       
       @if (primaryEvent()?.carrier) {
         <div class="summary-item">
-          <span class="label">Shipping Line:</span>
+          <span class="label">{{ i18n.t('summary.label.shippingLine') }}</span>
           <span class="value">{{ primaryEvent()?.carrier }}</span>
         </div>
       }
       
       @if (primaryEvent()?.origin) {
         <div class="summary-item">
-          <span class="label">Origin (POL):</span>
+          <span class="label">{{ i18n.t('summary.label.originPol') }}</span>
           <span class="value">{{ primaryEvent()?.origin }}</span>
         </div>
       }
       
       @if (primaryEvent()?.destination) {
         <div class="summary-item">
-          <span class="label">Destination (POD):</span>
+          <span class="label">{{ i18n.t('summary.label.destinationPod') }}</span>
           <span class="value">{{ primaryEvent()?.destination }}</span>
         </div>
       }
 
       @if (primaryEvent()?.sealNo?.length) {
         <div class="summary-item">
-          <span class="label">Seal Numbers:</span>
+          <span class="label">{{ i18n.t('summary.label.sealNumbers') }}</span>
           <span class="value">
             @for (seal of primaryEvent()?.sealNo; track seal) {
               <span class="seal-tag">🔒 {{ seal }}</span>
@@ -115,7 +115,7 @@
 
       @if (hasDangerousGoods()) {
         <div class="summary-item summary-item-dg">
-          <span class="label">Dangerous Goods (DG):</span>
+          <span class="label">{{ i18n.t('summary.label.dangerousGoods') }}</span>
           <span class="value">
             @for (code of primaryEvent()?.dg; track code) {
               <span class="pill pill-dg-inline">⚠ {{ code }}</span>
@@ -126,7 +126,7 @@
 
       @if (hasDamages()) {
         <div class="summary-item summary-item-dmg">
-          <span class="label">Damages (DMG):</span>
+          <span class="label">{{ i18n.t('summary.label.damages') }}</span>
           <span class="value">
             @for (damage of primaryEvent()?.dmg; track damage) {
               <span class="pill pill-dmg-inline">🔴 {{ damage }}</span>
@@ -137,33 +137,33 @@
       
       @if (primaryEvent()?.source) {
         <div class="summary-item">
-          <span class="label">Source:</span>
+          <span class="label">{{ i18n.t('summary.label.source') }}</span>
           <span class="value">{{ primaryEvent()?.source }}</span>
         </div>
       }
       
       <div class="summary-item">
-        <span class="label">Total Events:</span>
+        <span class="label">{{ i18n.t('summary.label.totalEvents') }}</span>
         <span class="value">{{ eventCount() }}</span>
       </div>
       
       @if (firstEvent()) {
         <div class="summary-item">
-          <span class="label">First Event:</span>
-          <span class="value">{{ firstEvent()?.eventType }} - {{ firstEvent()?.eventDateTime | date:'medium' }}</span>
+          <span class="label">{{ i18n.t('summary.label.firstEvent') }}</span>
+          <span class="value">{{ getEventTypeLabel(firstEvent()) }} - {{ firstEvent()?.eventDateTime | date:'medium' }}</span>
         </div>
       }
       
       @if (lastEvent()) {
         <div class="summary-item">
-          <span class="label">Latest Event:</span>
-          <span class="value">{{ lastEvent()?.eventType }} - {{ lastEvent()?.eventDateTime | date:'medium' }}</span>
+          <span class="label">{{ i18n.t('summary.label.latestEvent') }}</span>
+          <span class="value">{{ getEventTypeLabel(lastEvent()) }} - {{ lastEvent()?.eventDateTime | date:'medium' }}</span>
         </div>
       }
     </div>
   } @else {
     <div class="no-data">
-      <p>No shipment data loaded. Please paste or upload JSON data above.</p>
+      <p>{{ i18n.t('summary.noData') }}</p>
     </div>
   }
 </div>

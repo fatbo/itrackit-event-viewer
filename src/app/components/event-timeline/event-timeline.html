@@ -1,10 +1,10 @@
 <div class="event-timeline-container">
   @if (primaryEvent() && (sortedEvents().length > 0 || undatedEvents().length > 0)) {
-    <h2>Event Timeline</h2>
+    <h2>{{ i18n.t('timeline.title') }}</h2>
 
     @if (portTransition().length > 0) {
       <div class="port-transition">
-        <h3 class="port-transition-title">🚢 Port Transition</h3>
+        <h3 class="port-transition-title">🚢 {{ i18n.t('timeline.portTransition') }}</h3>
         <div class="port-transition-track">
           @for (port of portTransition(); track port.locationCode; let i = $index; let last = $last) {
             <div class="port-node">
@@ -14,23 +14,23 @@
                 <span class="port-code">{{ port.locationCode }}</span>
                 @if (port.arrivalTime) {
                   <span class="port-time arrival">
-                    Arr: {{ port.arrivalTime | date:'dd MMM HH:mm' }}
+                    {{ i18n.t('timeline.arrivalShort') }}: {{ port.arrivalTime | date:'dd MMM HH:mm' }}
                     @if (port.arrivalTimeType && port.arrivalTimeType !== 'A') {
                       <span class="time-type-badge" [class]="port.arrivalTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.arrivalTimeType) }}</span>
                     }
                   </span>
                 } @else {
-                  <span class="port-time unknown">Arr: —</span>
+                  <span class="port-time unknown">{{ i18n.t('timeline.arrivalShort') }}: —</span>
                 }
                 @if (port.departureTime) {
                   <span class="port-time departure">
-                    Dep: {{ port.departureTime | date:'dd MMM HH:mm' }}
+                    {{ i18n.t('timeline.departureShort') }}: {{ port.departureTime | date:'dd MMM HH:mm' }}
                     @if (port.departureTimeType && port.departureTimeType !== 'A') {
                       <span class="time-type-badge" [class]="port.departureTimeType === 'E' ? 'estimated' : 'planned'">{{ getTimeTypeLabel(port.departureTimeType) }}</span>
                     }
                   </span>
                 } @else {
-                  <span class="port-time unknown">Dep: —</span>
+                  <span class="port-time unknown">{{ i18n.t('timeline.departureShort') }}: —</span>
                 }
               </div>
             </div>
@@ -43,8 +43,8 @@
     }
     
     <div class="timeline-layout">
-      <nav class="timeline-index" aria-label="Timeline index">
-        <div class="timeline-index-title">Index</div>
+      <nav class="timeline-index" aria-label="{{ i18n.t('timeline.indexAria') }}">
+        <div class="timeline-index-title">{{ i18n.t('timeline.indexLabel') }}</div>
         <ul class="timeline-index-list">
           @for (item of timelineIndex(); track item.anchorId) {
             <li>
@@ -70,30 +70,30 @@
 
           <div class="timeline-item" [attr.id]="getEventAnchorId(index)">
             <div class="timeline-marker">
-              <div class="timeline-icon">{{ getEventIcon(event.eventType) }}</div>
+              <div class="timeline-icon">{{ getEventIcon(event) }}</div>
             </div>
             <div class="timeline-content">
               <div class="event-header">
-                <h3 class="event-type">{{ event.eventType }}</h3>
+                <h3 class="event-type">{{ getEventTypeLabel(event) }}</h3>
                 <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
               </div>
-              <p class="event-description">{{ event.description }}</p>
+              <p class="event-description">{{ getEventDescription(event) }}</p>
               
               @if (event.actualTime || event.estimatedTime || event.plannedTime) {
                 <div class="event-times">
                   @if (event.actualTime) {
                     <div class="time-item actual">
-                      <strong>Actual:</strong> {{ event.actualTime | date:'medium' }}
+                      <strong>{{ i18n.t('time.actual') }}:</strong> {{ event.actualTime | date:'medium' }}
                     </div>
                   }
                   @if (event.estimatedTime) {
                     <div class="time-item estimated">
-                      <strong>Estimated:</strong> {{ event.estimatedTime | date:'medium' }}
+                      <strong>{{ i18n.t('time.estimated') }}:</strong> {{ event.estimatedTime | date:'medium' }}
                     </div>
                   }
                   @if (event.plannedTime) {
                     <div class="time-item planned">
-                      <strong>Planned:</strong> {{ event.plannedTime | date:'medium' }}
+                      <strong>{{ i18n.t('time.planned') }}:</strong> {{ event.plannedTime | date:'medium' }}
                     </div>
                   }
                 </div>
@@ -102,52 +102,52 @@
               <div class="event-details">
                 @if (event.location) {
                   <span class="detail-item">
-                    <strong>Location:</strong> {{ event.location }}
+                    <strong>{{ i18n.t('timeline.detail.location') }}</strong> {{ event.location }}
                   </span>
                 }
                 @if (event.eventCode) {
                   <span class="detail-item">
-                    <strong>Event Code:</strong> {{ event.eventCode }}
+                    <strong>{{ i18n.t('timeline.detail.eventCode') }}</strong> {{ event.eventCode }}
                   </span>
                 }
                 @if (event.locationType) {
                   <span class="detail-item">
-                    <strong>Location Type:</strong> {{ event.locationType }}
+                    <strong>{{ i18n.t('timeline.detail.locationType') }}</strong> {{ getLocationTypeLabel(event.locationType) }}
                   </span>
                 }
                 @if (event.modeOfTransport) {
                   <span class="detail-item">
-                    <strong>Transport Mode:</strong> {{ event.modeOfTransport }}
+                    <strong>{{ i18n.t('timeline.detail.transportMode') }}</strong> {{ event.modeOfTransport }}
                   </span>
                 }
                 @if (event.vessel) {
                   <span class="detail-item">
-                    <strong>Vessel:</strong> {{ event.vessel }}
+                    <strong>{{ i18n.t('timeline.detail.vessel') }}</strong> {{ event.vessel }}
                   </span>
                 }
                 @if (event.voyage) {
                   <span class="detail-item">
-                    <strong>Voyage:</strong> {{ event.voyage }}
+                    <strong>{{ i18n.t('timeline.detail.voyage') }}</strong> {{ event.voyage }}
                   </span>
                 }
                 @if (event.containerStatus) {
                   <span class="detail-item">
-                    <strong>Container Status:</strong> {{ event.containerStatus }}
+                    <strong>{{ i18n.t('timeline.detail.containerStatus') }}</strong> {{ getContainerStatusLabel(event.containerStatus) }}
                   </span>
                 }
                 @if (event.status) {
                   <span class="detail-item">
-                    <strong>Status:</strong> {{ event.status }}
+                    <strong>{{ i18n.t('timeline.detail.status') }}</strong> {{ getStatusLabel(event) }}
                   </span>
                 }
                 @if (event.facilityName) {
                   <span class="detail-item">
-                    <strong>Facility:</strong> {{ event.facilityName }}
+                    <strong>{{ i18n.t('timeline.detail.facility') }}</strong> {{ event.facilityName }}
                   </span>
                 }
                 @if (event.dataProvider) {
                   <span class="detail-item">
-                    <strong>Data Provider:</strong> {{ event.dataProvider }}
+                    <strong>{{ i18n.t('timeline.detail.dataProvider') }}</strong> {{ event.dataProvider }}
                   </span>
                 }
               </div>
@@ -159,27 +159,27 @@
 
     @if (undatedEvents().length > 0) {
       <div class="undated-events">
-        <h3 class="undated-events-title">⏳ Unscheduled Events</h3>
-        <p class="undated-events-hint">These events have no associated date/time.</p>
+        <h3 class="undated-events-title">⏳ {{ i18n.t('timeline.unscheduledTitle') }}</h3>
+        <p class="undated-events-hint">{{ i18n.t('timeline.unscheduledHint') }}</p>
         @for (event of undatedEvents(); track $index) {
           <div class="undated-event-card">
             <div class="event-header">
-              <span class="timeline-icon-inline">{{ getEventIcon(event.eventType) }}</span>
-              <h3 class="event-type">{{ event.eventType }}</h3>
+              <span class="timeline-icon-inline">{{ getEventIcon(event) }}</span>
+              <h3 class="event-type">{{ getEventTypeLabel(event) }}</h3>
             </div>
-            <p class="event-description">{{ event.description }}</p>
+            <p class="event-description">{{ getEventDescription(event) }}</p>
             <div class="event-details">
               @if (event.location) {
-                <span class="detail-item"><strong>Location:</strong> {{ event.location }}</span>
+                <span class="detail-item"><strong>{{ i18n.t('timeline.detail.location') }}</strong> {{ event.location }}</span>
               }
               @if (event.eventCode) {
-                <span class="detail-item"><strong>Event Code:</strong> {{ event.eventCode }}</span>
+                <span class="detail-item"><strong>{{ i18n.t('timeline.detail.eventCode') }}</strong> {{ event.eventCode }}</span>
               }
               @if (event.locationType) {
-                <span class="detail-item"><strong>Location Type:</strong> {{ event.locationType }}</span>
+                <span class="detail-item"><strong>{{ i18n.t('timeline.detail.locationType') }}</strong> {{ getLocationTypeLabel(event.locationType) }}</span>
               }
               @if (event.vessel) {
-                <span class="detail-item"><strong>Vessel:</strong> {{ event.vessel }}</span>
+                <span class="detail-item"><strong>{{ i18n.t('timeline.detail.vessel') }}</strong> {{ event.vessel }}</span>
               }
             </div>
           </div>
@@ -188,7 +188,7 @@
     }
   } @else if (primaryEvent()) {
     <div class="no-events">
-      <p>No events found in the shipment data.</p>
+      <p>{{ i18n.t('timeline.noEvents') }}</p>
     </div>
   }
 </div>
