@@ -48,13 +48,18 @@ export class ComparisonAlertService {
     const polInfoCodes = ['IG', 'OG', 'VD'];
     const podInfoCodes = ['VA', 'IG', 'OG'];
 
-    // Check secondary (the newer data) for actual events
+    // Check for new actual events appearing in secondary (the newer data)
+    const primaryTransport = primary.transportEvents ?? [];
+    const primaryEquipment = primary.events ?? [];
     const secondaryTransport = secondary.transportEvents ?? [];
     const secondaryEquipment = secondary.events ?? [];
 
     // POL info alerts
     for (const code of polInfoCodes) {
-      if (this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POL')) {
+      if (
+        this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POL') &&
+        !this.hasActualEventAtLocation(primaryTransport, primaryEquipment, code, 'POL')
+      ) {
         results.push({
           level: 'info',
           message: this.i18n.t('alerts.info.actualEventAtPol', {
@@ -67,7 +72,10 @@ export class ComparisonAlertService {
 
     // POD info alerts
     for (const code of podInfoCodes) {
-      if (this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POD')) {
+      if (
+        this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POD') &&
+        !this.hasActualEventAtLocation(primaryTransport, primaryEquipment, code, 'POD')
+      ) {
         results.push({
           level: 'info',
           message: this.i18n.t('alerts.info.actualEventAtPod', {

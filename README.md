@@ -35,7 +35,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Visual comparison of event counts and timelines
 - **Info/Warning Alerts**: The Alerts tab surfaces notifications based on comparison rules.
   (POL = Port of Loading, POD = Port of Discharge, VD/VA = Vessel Departure/Arrival, POT = Port of Transshipment).
-  - **Info alerts (actual event detection)**: triggered when the **secondary** shipment contains Actual events at:
+  - **Info alerts (actual event detection)**: triggered when the **secondary** shipment contains Actual events that are **not** present in the primary shipment at:
     - **POL**: IG / OG / VD
     - **POD**: VA / IG / OG
   - **Warning alerts (threshold-based)**:
