@@ -75,4 +75,69 @@ describe('EventTimeline', () => {
     expect(labels[1]).toBe('Mar 10, 2024');
     expect(labels[2]).toBe('Apr 5, 2024');
   });
+
+  it('returns location type CSS class for events', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const component = fixture.componentInstance;
+
+    expect((component as any)['getLocationTypeClass']({ eventType: '', eventDateTime: '', description: '', locationType: 'POL' })).toBe('location-pol');
+    expect((component as any)['getLocationTypeClass']({ eventType: '', eventDateTime: '', description: '', locationType: 'POD' })).toBe('location-pod');
+    expect((component as any)['getLocationTypeClass']({ eventType: '', eventDateTime: '', description: '', locationType: 'POT' })).toBe('location-pot');
+    expect((component as any)['getLocationTypeClass']({ eventType: '', eventDateTime: '', description: '' })).toBe('');
+  });
+
+  it('detects vessel changes between consecutive port transition legs', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+      transportEvents: [
+        {
+          seq: 1,
+          eventCode: 'VD',
+          locationType: 'POL',
+          eventTime: '2025-02-18T14:00:00+08:00',
+          timeType: 'A',
+          conveyanceInfo: { conveyanceName: 'VESSEL A', conveyanceNumber: '001' },
+          location: { unLocationCode: 'CNYTN', unLocationName: 'Yantian, CN' },
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POT',
+          eventTime: '2025-02-21T06:30:00+08:00',
+          timeType: 'A',
+          conveyanceInfo: { conveyanceName: 'VESSEL A', conveyanceNumber: '001' },
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore, SG' },
+        },
+        {
+          seq: 3,
+          eventCode: 'VD',
+          locationType: 'POT',
+          eventTime: '2025-02-22T20:00:00+08:00',
+          timeType: 'A',
+          conveyanceInfo: { conveyanceName: 'VESSEL B', conveyanceNumber: '002' },
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore, SG' },
+        },
+        {
+          seq: 4,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-03-06T08:00:00+01:00',
+          timeType: 'A',
+          conveyanceInfo: { conveyanceName: 'VESSEL B', conveyanceNumber: '002' },
+          location: { unLocationCode: 'NLRTM', unLocationName: 'Rotterdam, NL' },
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const component = fixture.componentInstance;
+    // Vessel changes from A to B between POL (index 0) and POT (index 1)
+    expect((component as any).getVesselChangeAt(0)).toBe('VESSEL B');
+    // No change between POT and POD (both VESSEL B)
+    expect((component as any).getVesselChangeAt(1)).toBeNull();
+  });
 });
