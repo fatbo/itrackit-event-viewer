@@ -265,7 +265,7 @@ export class ComparisonAlertService {
       unLocationName: event.unLocationName,
       unLocationCode: event.unLocationCode,
     });
-    return formatted || event.location || undefined;
+    return formatted.length > 0 ? formatted : event.location;
   }
 
   private formatLocation(location?: {
@@ -304,8 +304,11 @@ export class ComparisonAlertService {
 
   private formatDateTime(value?: string | Date): string {
     if (!value) return '';
-    const date = value instanceof Date ? value : new Date(value);
-    if (Number.isNaN(date.getTime())) return '';
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? '' : value.toLocaleString(this.i18n.localeTag());
+    }
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
     return date.toLocaleString(this.i18n.localeTag());
   }
 
