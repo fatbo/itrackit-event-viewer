@@ -1,0 +1,29 @@
+.timeline-view {
+  animation: fadeSlideUp 0.5s ease-out 0.15s both;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.main-left {
+  animation: fadeSlideUp 0.5s ease-out 0.25s both;
+}
+
+.main-right {
+  animation: fadeSlideUp 0.5s ease-out 0.35s both;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
