@@ -7,6 +7,7 @@ import { ShipmentData, OpTransportEvent, ShipmentEvent } from '../models/shipmen
 describe('ComparisonAlertService', () => {
   let service: ComparisonAlertService;
   let eventData: EventData;
+  let i18n: I18nService;
 
   function makeShipmentData(overrides: Partial<ShipmentData> = {}): ShipmentData {
     return {
@@ -36,6 +37,7 @@ describe('ComparisonAlertService', () => {
       locationType: 'POL',
       timeType: 'A',
       unLocationCode: 'CNYTN',
+      unLocationName: 'Yantian',
       ...overrides,
     };
   }
@@ -46,6 +48,7 @@ describe('ComparisonAlertService', () => {
     });
     service = TestBed.inject(ComparisonAlertService);
     eventData = TestBed.inject(EventData);
+    i18n = TestBed.inject(I18nService);
   });
 
   it('should return empty alerts when no comparison data', () => {
@@ -60,13 +63,26 @@ describe('ComparisonAlertService', () => {
   describe('Info alerts', () => {
     it('should detect actual IG at POL', () => {
       eventData.setPrimaryEvent(makeShipmentData());
+      const eventTime = '2025-02-17T15:00:00+08:00';
       eventData.setSecondaryEvent(makeShipmentData({
-        events: [makeEquipmentEvent({ eventCode: 'IG', locationType: 'POL', timeType: 'A' })],
+        events: [makeEquipmentEvent({
+          eventCode: 'IG',
+          locationType: 'POL',
+          timeType: 'A',
+          eventDateTime: eventTime,
+        })],
       }));
 
       const infoAlerts = service.infoAlerts();
+      const alert = infoAlerts.find(item => item.category === 'POL');
+      const locationLabel = i18n.t('alerts.detail.location', { location: 'Yantian (CNYTN)' });
+      const timeLabel = i18n.t('alerts.detail.time', {
+        time: new Date(eventTime).toLocaleString(i18n.localeTag()),
+      });
       expect(infoAlerts.length).toBeGreaterThanOrEqual(1);
       expect(infoAlerts.some(a => a.category === 'POL')).toBe(true);
+      expect(alert?.message).toContain(locationLabel);
+      expect(alert?.message).toContain(timeLabel);
     });
 
     it('should not alert when actual IG at POL already exists in primary', () => {
@@ -94,11 +110,27 @@ describe('ComparisonAlertService', () => {
     it('should detect actual VD at POL from transport events', () => {
       eventData.setPrimaryEvent(makeShipmentData());
       eventData.setSecondaryEvent(makeShipmentData({
-        transportEvents: [makeTransportEvent({ eventCode: 'VD', locationType: 'POL', timeType: 'A' })],
+        transportEvents: [makeTransportEvent({
+          eventCode: 'VD',
+          locationType: 'POL',
+          timeType: 'A',
+          conveyanceInfo: { conveyanceName: 'Test Vessel', conveyanceNumber: 'V001' },
+        })],
       }));
 
       const infoAlerts = service.infoAlerts();
+      const alert = infoAlerts.find(item => item.category === 'POL');
+      const locationLabel = i18n.t('alerts.detail.location', { location: 'Yantian (CNYTN)' });
+      const timeLabel = i18n.t('alerts.detail.time', {
+        time: new Date('2025-02-18T14:00:00+08:00').toLocaleString(i18n.localeTag()),
+      });
+      const conveyanceLabel = i18n.t('alerts.detail.conveyance', {
+        conveyance: 'Test Vessel (V001)',
+      });
       expect(infoAlerts.some(a => a.category === 'POL')).toBe(true);
+      expect(alert?.message).toContain(locationLabel);
+      expect(alert?.message).toContain(timeLabel);
+      expect(alert?.message).toContain(conveyanceLabel);
     });
 
     it('should detect actual VA at POD', () => {
@@ -150,7 +182,16 @@ describe('ComparisonAlertService', () => {
       }));
 
       const warnings = service.warningAlerts();
+      const previousTime = new Date('2025-02-18T14:00:00+08:00').toLocaleString(i18n.localeTag());
+      const currentTime = new Date('2025-02-19T14:00:00+08:00').toLocaleString(i18n.localeTag());
+      const diffHours = (new Date('2025-02-19T14:00:00+08:00').getTime() -
+        new Date('2025-02-18T14:00:00+08:00').getTime()) / (1000 * 60 * 60);
+      const diffLabel = `${diffHours >= 0 ? '+' : '-'}${Math.abs(diffHours).toFixed(1)} ${i18n.t('alerts.units.hoursShort')}`;
+      const alert = warnings.find(item => item.category === 'POL');
       expect(warnings.some(a => a.category === 'POL')).toBe(true);
+      expect(alert?.message).toContain(previousTime);
+      expect(alert?.message).toContain(currentTime);
+      expect(alert?.message).toContain(diffLabel);
     });
 
     it('should not warn when estimated VD change is within threshold', () => {
@@ -216,7 +257,16 @@ describe('ComparisonAlertService', () => {
       }));
 
       const warnings = service.warningAlerts();
+      const previousTime = new Date('2025-03-06T08:00:00+01:00').toLocaleString(i18n.localeTag());
+      const currentTime = new Date('2025-03-07T08:00:00+01:00').toLocaleString(i18n.localeTag());
+      const diffHours = (new Date('2025-03-07T08:00:00+01:00').getTime() -
+        new Date('2025-03-06T08:00:00+01:00').getTime()) / (1000 * 60 * 60);
+      const diffLabel = `${diffHours >= 0 ? '+' : '-'}${Math.abs(diffHours).toFixed(1)} ${i18n.t('alerts.units.hoursShort')}`;
+      const alert = warnings.find(item => item.category === 'POD');
       expect(warnings.some(a => a.category === 'POD')).toBe(true);
+      expect(alert?.message).toContain(previousTime);
+      expect(alert?.message).toContain(currentTime);
+      expect(alert?.message).toContain(diffLabel);
     });
   });
 
