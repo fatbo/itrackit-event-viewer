@@ -36,8 +36,9 @@
             </div>
             @if (!last) {
               <div class="port-connector">
-                @if (getVesselChangeAt(i)) {
-                  <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + getVesselChangeAt(i)">🔄 {{ getVesselChangeAt(i) }}</span>
+                @let vesselChange = getVesselChangeAt(i);
+                @if (vesselChange) {
+                  <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + vesselChange">🔄 {{ vesselChange }}</span>
                 }
               </div>
             }

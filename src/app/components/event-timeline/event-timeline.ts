@@ -91,8 +91,6 @@ export class EventTimeline {
     const changes: { index: number; from: string; to: string }[] = [];
     for (let i = 0; i < ports.length - 1; i++) {
       const departureVessel = ports[i].departureVessel;
-      const arrivalVessel = ports[i + 1].arrivalVessel;
-      // Check if next port's departure vessel differs (vessel change at transhipment)
       const nextDepartureVessel = ports[i + 1].departureVessel;
       if (departureVessel && nextDepartureVessel && departureVessel !== nextDepartureVessel) {
         changes.push({ index: i, from: departureVessel, to: nextDepartureVessel });
