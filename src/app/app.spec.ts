@@ -1,10 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
+import { routes } from './app.routes';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideRouter(routes)],
     }).compileComponents();
   });
 
@@ -19,5 +22,15 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('iTrackiT Shipment Viewer');
+  });
+
+  it('should render navigation tabs', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navTabs = compiled.querySelectorAll('.nav-tab');
+    expect(navTabs.length).toBe(2);
+    expect(navTabs[0].textContent).toContain('Timeline');
+    expect(navTabs[1].textContent).toContain('Event Comparison');
   });
 });
