@@ -156,6 +156,12 @@ const TRANSLATIONS: Record<Locale, Record<string, string>> = {
     'alerts.config.title': 'Alert Thresholds',
     'alerts.config.polVdHours': 'POL VD threshold (hours):',
     'alerts.config.podVaHours': 'POD VA threshold (hours):',
+    'summary.label.containerWeight': 'Container Weight:',
+    'summary.label.voyageProgress': 'Voyage Progress:',
+    'summary.label.voyageProgressValue': '{percent}% ({completed}/{total} legs completed)',
+    'summary.label.totalEquipmentEvents': 'Equipment Events:',
+    'summary.label.totalTransportEvents': 'Transport Events:',
+    'summary.vesselChange': 'Vessel Change:',
   },
   'zh-Hant': {
     'app.title': 'iTrackiT 貨運檢視器',
@@ -301,6 +307,12 @@ const TRANSLATIONS: Record<Locale, Record<string, string>> = {
     'alerts.config.title': '警報閾值',
     'alerts.config.polVdHours': '裝貨港 VD 閾值（小時）：',
     'alerts.config.podVaHours': '卸貨港 VA 閾值（小時）：',
+    'summary.label.containerWeight': '貨櫃重量：',
+    'summary.label.voyageProgress': '航程進度：',
+    'summary.label.voyageProgressValue': '{percent}%（{completed}/{total} 航段已完成）',
+    'summary.label.totalEquipmentEvents': '貨櫃事件：',
+    'summary.label.totalTransportEvents': '運輸事件：',
+    'summary.vesselChange': '船舶更換：',
   },
 };
 
@@ -309,6 +321,7 @@ const MAP_TRANSLATIONS: Record<
   {
     timeType: Record<string, string>;
     containerStatus: Record<string, string>;
+    shipmentType: Record<string, string>;
     eventCode: Record<string, string>;
     locationType: Record<string, string>;
   }
@@ -322,6 +335,11 @@ const MAP_TRANSLATIONS: Record<
     containerStatus: {
       F: 'Full',
       E: 'Empty',
+    },
+    shipmentType: {
+      IM: 'Import',
+      EX: 'Export',
+      TS: 'Transhipment',
     },
     eventCode: {
       OG: 'Gate Out',
@@ -357,6 +375,11 @@ const MAP_TRANSLATIONS: Record<
     containerStatus: {
       F: '滿載',
       E: '空櫃',
+    },
+    shipmentType: {
+      IM: '進口',
+      EX: '出口',
+      TS: '轉運',
     },
     eventCode: {
       OG: '閘口出場',
@@ -427,6 +450,10 @@ export class I18nService {
 
   getLocationTypeLabel(locationType: string): string {
     return this.getMapValue('locationType', locationType);
+  }
+
+  getShipmentTypeLabel(shipmentType: string): string {
+    return this.getMapValue('shipmentType', shipmentType);
   }
 
   private getMapValue(

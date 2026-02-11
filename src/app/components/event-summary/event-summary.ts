@@ -10,6 +10,12 @@ interface ShipmentStatusInfo {
   tone: 'completed' | 'limited' | 'transit' | 'unknown';
 }
 
+interface VoyageProgress {
+  percent: number;
+  completedLegs: number;
+  totalLegs: number;
+}
+
 @Component({
   selector: 'app-event-summary',
   imports: [CommonModule],
@@ -29,6 +35,10 @@ export class EventSummary {
   
   protected readonly eventCount = computed(() => {
     return this.primaryEvent()?.events?.length || 0;
+  });
+
+  protected readonly transportEventCount = computed(() => {
+    return this.primaryEvent()?.transportEvents?.length || 0;
   });
   
   protected readonly hasDangerousGoods = computed(() => {
@@ -61,6 +71,27 @@ export class EventSummary {
     // Alert if reading temp differs from required temp by ≥1 degree
     const diff = Math.abs(readingTemp - requireTemp);
     return diff >= 1;
+  });
+
+  protected readonly shipmentTypeLabel = computed(() => {
+    const type = this.primaryEvent()?.shipmentType;
+    if (!type) return '';
+    return this.i18n.getShipmentTypeLabel(type);
+  });
+
+  protected readonly voyageProgress = computed<VoyageProgress | null>(() => {
+    const transportEvents = this.primaryEvent()?.transportEvents;
+    if (!transportEvents || transportEvents.length === 0) return null;
+
+    // Count unique legs (VD events represent leg starts)
+    const vdEvents = transportEvents.filter(e => e.eventCode === 'VD');
+    if (vdEvents.length === 0) return null;
+
+    const totalLegs = vdEvents.length;
+    const completedLegs = vdEvents.filter(e => e.timeType === 'A').length;
+    const percent = Math.round((completedLegs / totalLegs) * 100);
+
+    return { percent, completedLegs, totalLegs };
   });
 
   readonly shipmentStatus = computed<ShipmentStatusInfo>(() => {

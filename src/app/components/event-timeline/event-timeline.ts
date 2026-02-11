@@ -18,6 +18,8 @@ interface PortNode {
   arrivalTimeType?: string;
   departureTime?: string;
   departureTimeType?: string;
+  arrivalVessel?: string;
+  departureVessel?: string;
 }
 
 @Component({
@@ -72,14 +74,35 @@ export class EventTimeline {
       if (event.eventCode === 'VD' || event.eventCode === 'RD') {
         node.departureTime = event.eventTime;
         node.departureTimeType = event.timeType;
+        node.departureVessel = event.conveyanceInfo?.conveyanceName;
       } else if (event.eventCode === 'VA' || event.eventCode === 'RA') {
         node.arrivalTime = event.eventTime;
         node.arrivalTimeType = event.timeType;
+        node.arrivalVessel = event.conveyanceInfo?.conveyanceName;
       }
     }
 
     return portOrder.map(code => portMap.get(code)!);
   });
+
+  protected readonly vesselChanges = computed(() => {
+    const ports = this.portTransition();
+    if (ports.length < 2) return [];
+    const changes: { index: number; from: string; to: string }[] = [];
+    for (let i = 0; i < ports.length - 1; i++) {
+      const departureVessel = ports[i].departureVessel;
+      const nextDepartureVessel = ports[i + 1].departureVessel;
+      if (departureVessel && nextDepartureVessel && departureVessel !== nextDepartureVessel) {
+        changes.push({ index: i, from: departureVessel, to: nextDepartureVessel });
+      }
+    }
+    return changes;
+  });
+
+  protected getVesselChangeAt(index: number): string | null {
+    const change = this.vesselChanges().find(c => c.index === index);
+    return change ? change.to : null;
+  }
 
   private hasValidDate(event: ShipmentEvent): boolean {
     return !!event.eventDateTime && !isNaN(new Date(event.eventDateTime).getTime());
@@ -192,6 +215,15 @@ export class EventTimeline {
       });
     }
     return event.status || '';
+  }
+
+  protected getLocationTypeClass(event: ShipmentEvent): string {
+    switch (event.locationType?.toUpperCase()) {
+      case 'POL': return 'location-pol';
+      case 'POD': return 'location-pod';
+      case 'POT': return 'location-pot';
+      default: return '';
+    }
   }
 
 

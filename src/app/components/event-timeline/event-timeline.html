@@ -35,7 +35,12 @@
               </div>
             </div>
             @if (!last) {
-              <div class="port-connector"></div>
+              <div class="port-connector">
+                @let vesselChange = getVesselChangeAt(i);
+                @if (vesselChange) {
+                  <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + vesselChange">🔄 {{ vesselChange }}</span>
+                }
+              </div>
             }
           }
         </div>
@@ -68,11 +73,11 @@
             <div class="timeline-group-label">{{ labels[index] }}</div>
           }
 
-          <div class="timeline-item" [attr.id]="getEventAnchorId(index)">
+          <div class="timeline-item" [attr.id]="getEventAnchorId(index)" [ngClass]="getLocationTypeClass(event)">
             <div class="timeline-marker">
               <div class="timeline-icon">{{ getEventIcon(event) }}</div>
             </div>
-            <div class="timeline-content">
+            <div class="timeline-content" [ngClass]="getLocationTypeClass(event)">
               <div class="event-header">
                 <h3 class="event-type">{{ getEventTypeLabel(event) }}</h3>
                 <span class="event-date">{{ event.eventDateTime | date:'medium' }}</span>
