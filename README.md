@@ -265,6 +265,10 @@ src/
 └── styles.css                  # Global styles
 ```
 
+## Feature Roadmap
+
+See [docs/FEATURES.md](docs/FEATURES.md) for a detailed list of implemented enhancements and future improvement proposals, including intelligent event types, UI refinements, and analytics features.
+
 ## Technology Stack
 
 - **Angular 21**: Modern web framework with standalone components and signals

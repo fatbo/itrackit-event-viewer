@@ -372,6 +372,34 @@ h2 {
   border-left: 6px solid var(--accent-cyan);
 }
 
+.vessel-change-badge {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.62em;
+  background: var(--accent-amber-dim);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Location type color coding */
+.timeline-content.location-pol {
+  border-left-color: var(--accent-emerald);
+}
+
+.timeline-content.location-pod {
+  border-left-color: var(--accent-coral);
+}
+
+.timeline-content.location-pot {
+  border-left-color: var(--accent-amber);
+}
+
 @media (max-width: 900px) {
   .timeline-layout {
     grid-template-columns: 1fr;

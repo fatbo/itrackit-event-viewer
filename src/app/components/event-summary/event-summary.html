@@ -82,7 +82,7 @@
       @if (primaryEvent()?.shipmentType) {
         <div class="summary-item">
           <span class="label">{{ i18n.t('summary.label.shipmentType') }}</span>
-          <span class="value">{{ primaryEvent()?.shipmentType }}</span>
+          <span class="value">{{ shipmentTypeLabel() }} <span class="value-code">({{ primaryEvent()?.shipmentType }})</span></span>
         </div>
       }
       
@@ -163,17 +163,43 @@
         </div>
       }
       
+      @if (primaryEvent()?.containerWeight) {
+        <div class="summary-item">
+          <span class="label">{{ i18n.t('summary.label.containerWeight') }}</span>
+          <span class="value">{{ primaryEvent()?.containerWeight }} kg</span>
+        </div>
+      }
+
       @if (primaryEvent()?.source) {
         <div class="summary-item">
           <span class="label">{{ i18n.t('summary.label.source') }}</span>
           <span class="value">{{ primaryEvent()?.source }}</span>
         </div>
       }
+
+      @if (voyageProgress()) {
+        <div class="summary-item summary-item-progress">
+          <span class="label">{{ i18n.t('summary.label.voyageProgress') }}</span>
+          <div class="value">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="voyageProgress()!.percent"></div>
+            </div>
+            <span class="progress-text">{{ i18n.t('summary.label.voyageProgressValue', { percent: voyageProgress()!.percent, completed: voyageProgress()!.completedLegs, total: voyageProgress()!.totalLegs }) }}</span>
+          </div>
+        </div>
+      }
       
       <div class="summary-item">
-        <span class="label">{{ i18n.t('summary.label.totalEvents') }}</span>
+        <span class="label">{{ i18n.t('summary.label.totalEquipmentEvents') }}</span>
         <span class="value">{{ eventCount() }}</span>
       </div>
+
+      @if (transportEventCount() > 0) {
+        <div class="summary-item">
+          <span class="label">{{ i18n.t('summary.label.totalTransportEvents') }}</span>
+          <span class="value">{{ transportEventCount() }}</span>
+        </div>
+      }
       
       @if (firstEvent()) {
         <div class="summary-item">
