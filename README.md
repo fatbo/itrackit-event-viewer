@@ -16,6 +16,11 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - **Dangerous Goods (DG) Indicator** — an orange `⚠ DG` pill badge appears in the header when DG codes are present; individual codes are listed in an orange-highlighted row
 - **Damage (DMG) Indicator** — a red `🔴 DMG` pill badge appears in the header when damages are reported; individual damage entries are listed in a red-highlighted row
 - Shows total event count and the first/latest event timestamps
+- **Shipment Status** — derived from actual events (time type `A` with valid timestamps) across equipment and transport events:
+  - **Status Unavailable** — no equipment or transport events are loaded yet
+  - **Completed** — actual gate-in (`IG`) or gate-out (`OG`) recorded at the port of discharge (`POD`)
+  - **Completed (Hong Kong Only)** — actual vessel departure (`VD`) recorded in Hong Kong (`HKHKG`) for a departure location type (`POL`, `POT`, `POC`) with no other actual events outside Hong Kong
+  - **In Transit** — awaiting an actual POD gate event or a qualifying Hong Kong departure
 
 ### 3. Port Transition Map
 - Visual port-to-port route showing the container's journey
