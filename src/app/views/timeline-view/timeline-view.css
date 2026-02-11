@@ -17,11 +17,6 @@
   animation: fadeSlideUp 0.5s ease-out 0.35s both;
 }
 
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @media (max-width: 900px) {
   .main-grid {
     grid-template-columns: 1fr;
