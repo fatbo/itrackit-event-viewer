@@ -1,7 +1,7 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { EventData } from './event-data';
 import { I18nService } from './i18n.service';
-import { ShipmentData, OpTransportEvent } from '../models/shipment-event.model';
+import { ShipmentData, OpTransportEvent, ShipmentEvent } from '../models/shipment-event.model';
 
 export type AlertLevel = 'info' | 'warning';
 
@@ -9,6 +9,12 @@ export interface ComparisonAlert {
   level: AlertLevel;
   message: string;
   category: string;
+}
+
+interface AlertEventDetails {
+  time?: string;
+  location?: string;
+  conveyance?: string;
 }
 
 @Injectable({
@@ -60,10 +66,12 @@ export class ComparisonAlertService {
         this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POL') &&
         !this.hasActualEventAtLocation(primaryTransport, primaryEquipment, code, 'POL')
       ) {
+        const details = this.getActualEventDetails(secondaryTransport, secondaryEquipment, code, 'POL');
         results.push({
           level: 'info',
           message: this.i18n.t('alerts.info.actualEventAtPol', {
             event: this.i18n.getEventCodeLabel(code),
+            details: this.formatAlertDetails(details),
           }),
           category: 'POL',
         });
@@ -76,10 +84,12 @@ export class ComparisonAlertService {
         this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, code, 'POD') &&
         !this.hasActualEventAtLocation(primaryTransport, primaryEquipment, code, 'POD')
       ) {
+        const details = this.getActualEventDetails(secondaryTransport, secondaryEquipment, code, 'POD');
         results.push({
           level: 'info',
           message: this.i18n.t('alerts.info.actualEventAtPod', {
             event: this.i18n.getEventCodeLabel(code),
+            details: this.formatAlertDetails(details),
           }),
           category: 'POD',
         });
@@ -100,19 +110,18 @@ export class ComparisonAlertService {
 
     // Warning: estimated VD change at POL (skip if actual VD exists at POL)
     if (!this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, 'VD', 'POL')) {
-      const diff = this.getEstimatedTimeDiffHours(
+      const change = this.getEstimatedTimeChangeDetails(
         primaryTransport, secondaryTransport,
         primaryEquipment, secondaryEquipment,
         'VD', 'POL'
       );
-      if (diff !== null && Math.abs(diff) >= this.polVdThresholdHours()) {
+      if (change && Math.abs(change.diffHours) >= this.polVdThresholdHours()) {
         results.push({
           level: 'warning',
           message: this.i18n.t('alerts.warning.estimatedVdChangeAtPol', {
-            hours: this.formatHours(Math.abs(diff)),
-            direction: diff > 0
-              ? this.i18n.t('alerts.direction.delayed')
-              : this.i18n.t('alerts.direction.advanced'),
+            previous: this.formatDateTime(change.primaryTime),
+            current: this.formatDateTime(change.secondaryTime),
+            difference: this.formatHourDelta(change.diffHours),
           }),
           category: 'POL',
         });
@@ -121,19 +130,18 @@ export class ComparisonAlertService {
 
     // Warning: estimated VA change at POD (skip if actual VA exists at POD)
     if (!this.hasActualEventAtLocation(secondaryTransport, secondaryEquipment, 'VA', 'POD')) {
-      const diff = this.getEstimatedTimeDiffHours(
+      const change = this.getEstimatedTimeChangeDetails(
         primaryTransport, secondaryTransport,
         primaryEquipment, secondaryEquipment,
         'VA', 'POD'
       );
-      if (diff !== null && Math.abs(diff) >= this.podVaThresholdHours()) {
+      if (change && Math.abs(change.diffHours) >= this.podVaThresholdHours()) {
         results.push({
           level: 'warning',
           message: this.i18n.t('alerts.warning.estimatedVaChangeAtPod', {
-            hours: this.formatHours(Math.abs(diff)),
-            direction: diff > 0
-              ? this.i18n.t('alerts.direction.delayed')
-              : this.i18n.t('alerts.direction.advanced'),
+            previous: this.formatDateTime(change.primaryTime),
+            current: this.formatDateTime(change.secondaryTime),
+            difference: this.formatHourDelta(change.diffHours),
           }),
           category: 'POD',
         });
@@ -157,7 +165,7 @@ export class ComparisonAlertService {
 
   private hasActualEventAtLocation(
     transportEvents: OpTransportEvent[],
-    equipmentEvents: { eventCode?: string; locationType?: string; timeType?: string }[],
+    equipmentEvents: ShipmentEvent[],
     eventCode: string,
     locationType: string
   ): boolean {
@@ -175,27 +183,160 @@ export class ComparisonAlertService {
     );
   }
 
-  /** Get the time difference in hours between estimated events across primary/secondary */
-  private getEstimatedTimeDiffHours(
-    primaryTransport: OpTransportEvent[],
-    secondaryTransport: OpTransportEvent[],
-    primaryEquipment: { eventCode?: string; locationType?: string; timeType?: string; estimatedTime?: string; eventDateTime?: string }[],
-    secondaryEquipment: { eventCode?: string; locationType?: string; timeType?: string; estimatedTime?: string; eventDateTime?: string }[],
+  private getActualEventDetails(
+    transportEvents: OpTransportEvent[],
+    equipmentEvents: ShipmentEvent[],
     eventCode: string,
     locationType: string
-  ): number | null {
+  ): AlertEventDetails | null {
+    const transportEvent = transportEvents.find(
+      e => e.eventCode === eventCode &&
+           e.locationType === locationType &&
+           e.timeType === 'A'
+    );
+    if (transportEvent) {
+      return this.buildAlertDetails(
+        this.formatDateTime(transportEvent.eventTime),
+        this.formatLocation(transportEvent.location),
+        this.shouldIncludeConveyance(eventCode)
+          ? this.formatConveyance(
+              transportEvent.conveyanceInfo?.conveyanceName,
+              transportEvent.conveyanceInfo?.conveyanceNumber
+            )
+          : undefined
+      );
+    }
+
+    const equipmentEvent = equipmentEvents.find(
+      e => e.eventCode === eventCode &&
+           e.locationType === locationType &&
+           e.timeType === 'A'
+    );
+    if (equipmentEvent) {
+      return this.buildAlertDetails(
+        this.formatDateTime(equipmentEvent.eventDateTime),
+        this.formatEquipmentLocation(equipmentEvent),
+        this.shouldIncludeConveyance(eventCode)
+          ? this.formatConveyance(equipmentEvent.vessel, equipmentEvent.voyage)
+          : undefined
+      );
+    }
+
+    return null;
+  }
+
+  private formatAlertDetails(details: AlertEventDetails | null): string {
+    if (!details) return '';
+
+    const parts = [
+      details.time ? this.i18n.t('alerts.detail.time', { time: details.time }) : null,
+      details.location
+        ? this.i18n.t('alerts.detail.location', { location: details.location })
+        : null,
+      details.conveyance
+        ? this.i18n.t('alerts.detail.conveyance', { conveyance: details.conveyance })
+        : null,
+    ].filter((part): part is string => Boolean(part));
+
+    if (parts.length === 0) return '';
+
+    return ` (${parts.join(' • ')})`;
+  }
+
+  private buildAlertDetails(
+    time?: string,
+    location?: string,
+    conveyance?: string
+  ): AlertEventDetails {
+    return {
+      time,
+      location,
+      conveyance,
+    };
+  }
+
+  private shouldIncludeConveyance(eventCode: string): boolean {
+    return eventCode === 'VD' || eventCode === 'VA';
+  }
+
+  private formatEquipmentLocation(event: ShipmentEvent): string | undefined {
+    const formatted = this.formatLocation({
+      facilityName: event.facilityName,
+      unLocationName: event.unLocationName,
+      unLocationCode: event.unLocationCode,
+    });
+    return formatted.length > 0 ? formatted : event.location;
+  }
+
+  private formatLocation(location?: {
+    facilityName?: string;
+    unLocationName?: string;
+    unLocationCode?: string;
+  }): string {
+    if (!location) return '';
+
+    const parts: string[] = [];
+
+    if (location.facilityName) {
+      parts.push(location.facilityName);
+    }
+
+    if (location.unLocationName) {
+      if (location.unLocationCode) {
+        parts.push(`${location.unLocationName} (${location.unLocationCode})`);
+      } else {
+        parts.push(location.unLocationName);
+      }
+    } else if (location.unLocationCode) {
+      parts.push(location.unLocationCode);
+    }
+
+    return parts.join(', ');
+  }
+
+  private formatConveyance(name?: string, number?: string): string | undefined {
+    if (!name && !number) return undefined;
+    if (name && number) {
+      return `${name} (${number})`;
+    }
+    return name ?? number;
+  }
+
+  private formatDateTime(value?: string | Date): string {
+    if (!value) return '';
+    if (value instanceof Date) {
+      return isNaN(value.getTime()) ? '' : value.toLocaleString(this.i18n.localeTag());
+    }
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleString(this.i18n.localeTag());
+  }
+
+  /** Get the time difference in hours between estimated events across primary/secondary */
+  private getEstimatedTimeChangeDetails(
+    primaryTransport: OpTransportEvent[],
+    secondaryTransport: OpTransportEvent[],
+    primaryEquipment: ShipmentEvent[],
+    secondaryEquipment: ShipmentEvent[],
+    eventCode: string,
+    locationType: string
+  ): { diffHours: number; primaryTime: Date; secondaryTime: Date } | null {
     const primaryTime = this.findEstimatedTime(primaryTransport, primaryEquipment, eventCode, locationType);
     const secondaryTime = this.findEstimatedTime(secondaryTransport, secondaryEquipment, eventCode, locationType);
 
     if (!primaryTime || !secondaryTime) return null;
 
     const diffMs = secondaryTime.getTime() - primaryTime.getTime();
-    return diffMs / (1000 * 60 * 60);
+    return {
+      diffHours: diffMs / (1000 * 60 * 60),
+      primaryTime,
+      secondaryTime,
+    };
   }
 
   private findEstimatedTime(
     transportEvents: OpTransportEvent[],
-    equipmentEvents: { eventCode?: string; locationType?: string; timeType?: string; estimatedTime?: string; eventDateTime?: string }[],
+    equipmentEvents: ShipmentEvent[],
     eventCode: string,
     locationType: string
   ): Date | null {
@@ -242,5 +383,10 @@ export class ComparisonAlertService {
 
   private formatHours(hours: number): string {
     return hours.toFixed(1);
+  }
+
+  private formatHourDelta(diffHours: number): string {
+    const sign = diffHours >= 0 ? '+' : '-';
+    return `${sign}${this.formatHours(Math.abs(diffHours))} ${this.i18n.t('alerts.units.hoursShort')}`;
   }
 }
