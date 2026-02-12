@@ -16,20 +16,32 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - **Dangerous Goods (DG) Indicator** — an orange `⚠ DG` pill badge appears in the header when DG codes are present; individual codes are listed in an orange-highlighted row
 - **Damage (DMG) Indicator** — a red `🔴 DMG` pill badge appears in the header when damages are reported; individual damage entries are listed in a red-highlighted row
 - Shows total event count and the first/latest event timestamps
+- **Voyage Progress** — progress bar showing percentage of voyage legs completed
 
 ### 3. Port Transition Map
 - Visual port-to-port route showing the container's journey
 - Supports multiple transhipment ports (POT), not just origin and destination
 - Displays arrival and departure times at each port with estimated/planned time badges
+- **Dwell Time** — calculates how long the container stays at each port (arrival → departure); ports with ≥ 48 hours dwell time are highlighted with an amber alert
+- **Vessel Change Detection** — a 🔄 badge appears between ports when the container transfers to a different vessel
 
-### 4. Event Timeline
+### 4. Shipment Milestones
+- Visual milestone tracker above the timeline grouping events into three phases:
+  - **Origin** (emerald): Gate In → Loaded → Vessel Departure at POL
+  - **Transit** (amber): Arrival → Departure at each POT
+  - **Destination** (coral): Vessel Arrival → Unloaded → Gate Out at POD
+- Steps fill in as Actual events are recorded, providing at-a-glance progress
+
+### 5. Event Timeline
 - Chronological display of all equipment events grouped by date
 - Visual timeline with contextual icons for each event type (🚢 departure, 📦 loaded, 📭 unloaded, 🚪 gate, etc.)
 - **Time grouping** — when the same event has Actual, Estimated, and Planned times they are displayed together in a single card
+- **ETA Accuracy** — when both Actual and Estimated times exist, the variance is shown inline with colour coding: green (< 2 hrs), amber (2–12 hrs), red (> 12 hrs)
 - Detailed information for each event: location, facility, vessel/voyage, transport mode, container status, and data provider
 - Clickable date index for quick navigation
+- **Location-Type Color Coding** — timeline card borders are coloured by location type (emerald for POL, coral for POD, amber for POT)
 
-### 5. Event Comparison
+### 6. Event Comparison
 - Load two different shipments for side-by-side comparison
 - Automatic detection of key differences (carrier, origin, destination, event count)
 - Visual comparison of event counts and timelines
@@ -252,17 +264,26 @@ src/
 ├── app/
 │   ├── components/
 │   │   ├── event-input/        # Input component for JSON data
-│   │   ├── event-summary/      # Summary display component
-│   │   ├── event-timeline/     # Timeline visualization component
-│   │   └── event-comparison/   # Comparison component
+│   │   ├── event-summary/      # Summary display with voyage progress
+│   │   ├── event-timeline/     # Timeline, milestones, port transition, ETA tracking
+│   │   ├── event-comparison/   # Comparison component with alerts
+│   │   └── json-editor/        # JSON editor component
 │   ├── models/
 │   │   └── shipment-event.model.ts  # TypeScript interfaces
 │   ├── services/
-│   │   ├── event-data.ts       # Shared data service
-│   │   └── shipment-parser.ts  # Parser for OpShipmentEventRaw → ShipmentData
+│   │   ├── event-data.ts             # Shared data service
+│   │   ├── shipment-parser.ts        # Parser for OpShipmentEventRaw → ShipmentData
+│   │   ├── i18n.service.ts           # Internationalization (EN + zh-Hant)
+│   │   ├── theme.service.ts          # Theme toggling (Night Bridge / Harbour Dawn)
+│   │   └── comparison-alert.service.ts # Comparison alert logic
+│   ├── views/
+│   │   ├── timeline-view/      # Timeline page layout
+│   │   └── comparison-view/    # Comparison page layout
 │   ├── app.ts                  # Root component
 │   └── app.html                # Root template
-└── styles.css                  # Global styles
+├── styles.css                  # Global styles
+└── docs/
+    └── FEATURES.md             # Feature roadmap and proposals
 ```
 
 ## Feature Roadmap
