@@ -283,12 +283,13 @@ src/
 │   └── app.html                # Root template
 ├── styles.css                  # Global styles
 └── docs/
-    └── FEATURES.md             # Feature roadmap and proposals
+    ├── FEATURES.md             # Feature roadmap and proposals
+    └── UI-UX-IMPROVEMENTS.md   # UI/UX improvement plan and task checklist
 ```
 
 ## Feature Roadmap
 
-See [docs/FEATURES.md](docs/FEATURES.md) for a detailed list of implemented enhancements and future improvement proposals, including intelligent event types, UI refinements, and analytics features.
+See [docs/FEATURES.md](docs/FEATURES.md) for a detailed list of implemented enhancements and future improvement proposals, including intelligent event types, UI refinements, and analytics features. The UI/UX delivery checklist lives in [docs/UI-UX-IMPROVEMENTS.md](docs/UI-UX-IMPROVEMENTS.md).
 
 ## Technology Stack
 

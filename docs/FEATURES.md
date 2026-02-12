@@ -1,6 +1,6 @@
 # Feature Roadmap & Improvement Proposals
 
-This document outlines proposed enhancements to the iTrackiT Shipment Viewer based on analysis of the current shipment data model (`OpShipmentEventRaw`) and UI capabilities.
+This document outlines proposed enhancements to the iTrackiT Shipment Viewer based on analysis of the current shipment data model (`OpShipmentEventRaw`) and UI capabilities. For the dedicated UI/UX task checklist, see [docs/UI-UX-IMPROVEMENTS.md](UI-UX-IMPROVEMENTS.md).
 
 ---
 
