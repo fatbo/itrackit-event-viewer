@@ -140,4 +140,119 @@ describe('EventTimeline', () => {
     // No change between POT and POD (both VESSEL B)
     expect((component as any).getVesselChangeAt(1)).toBeNull();
   });
+
+  it('computes dwell time at ports with both arrival and departure', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+      transportEvents: [
+        {
+          seq: 1,
+          eventCode: 'VD',
+          locationType: 'POL',
+          eventTime: '2025-02-18T14:00:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'CNYTN', unLocationName: 'Yantian, CN' },
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POT',
+          eventTime: '2025-02-21T06:00:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore, SG' },
+        },
+        {
+          seq: 3,
+          eventCode: 'VD',
+          locationType: 'POT',
+          eventTime: '2025-02-22T18:00:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore, SG' },
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const ports = (fixture.componentInstance as any).portTransition();
+    const sgPort = ports.find((p: any) => p.locationCode === 'SGSIN');
+    expect(sgPort).toBeTruthy();
+    // 36 hours between arrival and departure
+    expect(sgPort.dwellTimeHours).toBe(36);
+  });
+
+  it('computes ETA variance when both actual and estimated times exist', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const component = fixture.componentInstance;
+
+    const eventOnTime = {
+      eventType: 'Loaded',
+      eventDateTime: '2025-01-10T10:00:00Z',
+      description: 'test',
+      actualTime: '2025-01-10T10:00:00Z',
+      estimatedTime: '2025-01-10T09:00:00Z',
+    };
+
+    const eventLate = {
+      eventType: 'Loaded',
+      eventDateTime: '2025-01-10T20:00:00Z',
+      description: 'test',
+      actualTime: '2025-01-10T20:00:00Z',
+      estimatedTime: '2025-01-10T06:00:00Z',
+    };
+
+    const variance1 = (component as any).getEtaVariance(eventOnTime);
+    expect(variance1).toBeTruthy();
+    expect(variance1.diffHours).toBe(1);
+    expect(variance1.tone).toBe('green');
+
+    const variance2 = (component as any).getEtaVariance(eventLate);
+    expect(variance2).toBeTruthy();
+    expect(variance2.diffHours).toBe(14);
+    expect(variance2.tone).toBe('red');
+  });
+
+  it('returns null ETA variance when no estimated time', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const component = fixture.componentInstance;
+
+    const eventNoEst = {
+      eventType: 'Loaded',
+      eventDateTime: '2025-01-10T10:00:00Z',
+      description: 'test',
+      actualTime: '2025-01-10T10:00:00Z',
+    };
+
+    expect((component as any).getEtaVariance(eventNoEst)).toBeNull();
+  });
+
+  it('builds milestone steps from equipment and transport events', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [
+        { eventType: 'Gate In', eventDateTime: '2025-01-10T08:00:00Z', description: 'test', eventCode: 'IG', locationType: 'POL', timeType: 'A' },
+        { eventType: 'Loaded', eventDateTime: '2025-01-10T10:00:00Z', description: 'test', eventCode: 'AL', locationType: 'POL', timeType: 'A' },
+      ],
+      transportEvents: [
+        { eventCode: 'VD', locationType: 'POL', eventTime: '2025-01-10T14:00:00Z', timeType: 'A', location: { unLocationCode: 'CNYTN', unLocationName: 'Yantian, CN' } },
+        { eventCode: 'VA', locationType: 'POD', eventTime: '2025-01-20T08:00:00Z', timeType: 'E', location: { unLocationCode: 'NLRTM', unLocationName: 'Rotterdam, NL' } },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const milestones = (fixture.componentInstance as any).milestones();
+    expect(milestones.length).toBeGreaterThanOrEqual(6);
+    // Gate In at POL should be completed
+    const gateIn = milestones.find((m: any) => m.eventCode === 'IG' && m.phase === 'origin');
+    expect(gateIn?.completed).toBe(true);
+    // Vessel Arrival at POD should not be completed (Estimated)
+    const vaAtPod = milestones.find((m: any) => m.eventCode === 'VA' && m.phase === 'destination');
+    expect(vaAtPod?.completed).toBe(false);
+  });
 });

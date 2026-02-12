@@ -32,6 +32,11 @@
                 } @else {
                   <span class="port-time unknown">{{ i18n.t('timeline.departureShort') }}: —</span>
                 }
+                @if (port.dwellTimeHours != null) {
+                  <span class="port-dwell" [class.port-dwell-alert]="port.dwellTimeHours >= 48" [title]="port.dwellTimeHours >= 48 ? i18n.t('timeline.dwellAlert') : ''">
+                    ⏱ {{ i18n.t('timeline.dwellTime', { hours: port.dwellTimeHours }) }}
+                  </span>
+                }
               </div>
             </div>
             @if (!last) {
@@ -41,6 +46,23 @@
                   <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + vesselChange">🔄 {{ vesselChange }}</span>
                 }
               </div>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    @if (milestones().length > 0) {
+      <div class="milestone-tracker">
+        <h3 class="milestone-tracker-title">🏁 {{ i18n.t('milestone.title') }}</h3>
+        <div class="milestone-track">
+          @for (step of milestones(); track step.label; let last = $last) {
+            <div class="milestone-step" [class.milestone-completed]="step.completed" [class.milestone-origin]="step.phase === 'origin'" [class.milestone-transit]="step.phase === 'transit'" [class.milestone-destination]="step.phase === 'destination'">
+              <div class="milestone-dot">{{ step.completed ? '✓' : '' }}</div>
+              <span class="milestone-label">{{ step.label }}</span>
+            </div>
+            @if (!last) {
+              <div class="milestone-connector" [class.milestone-connector-completed]="step.completed"></div>
             }
           }
         </div>
@@ -101,6 +123,13 @@
                       <strong>{{ i18n.t('time.planned') }}:</strong> {{ event.plannedTime | date:'medium' }}
                     </div>
                   }
+                </div>
+              }
+
+              @let etaVar = getEtaVariance(event);
+              @if (etaVar) {
+                <div class="eta-variance" [ngClass]="'eta-variance-' + etaVar.tone">
+                  ⏱ {{ etaVar.label }}
                 </div>
               }
               
