@@ -4,7 +4,10 @@
 
     @if (portTransition().length > 0) {
       <div class="port-transition">
-        <h3 class="port-transition-title">🚢 {{ i18n.t('timeline.portTransition') }}</h3>
+        <h3 class="port-transition-title">
+          <span class="icon icon-ship" aria-hidden="true"></span>
+          {{ i18n.t('timeline.portTransition') }}
+        </h3>
         <div class="port-transition-track">
           @for (port of portTransition(); track port.locationCode; let i = $index; let last = $last) {
             <div class="port-node">
@@ -34,7 +37,8 @@
                 }
                 @if (port.dwellTimeHours != null) {
                   <span class="port-dwell" [class.port-dwell-alert]="port.dwellTimeHours >= dwellAlertHours" [title]="port.dwellTimeHours >= dwellAlertHours ? i18n.t('timeline.dwellAlert') : ''">
-                    ⏱ {{ i18n.t('timeline.dwellTime', { hours: port.dwellTimeHours }) }}
+                    <span class="icon icon-clock" aria-hidden="true"></span>
+                    {{ i18n.t('timeline.dwellTime', { hours: port.dwellTimeHours }) }}
                   </span>
                 }
               </div>
@@ -43,7 +47,10 @@
               <div class="port-connector">
                 @let vesselChange = getVesselChangeAt(i);
                 @if (vesselChange) {
-                  <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + vesselChange">🔄 {{ vesselChange }}</span>
+                  <span class="vessel-change-badge" [title]="i18n.t('summary.vesselChange') + ' ' + vesselChange">
+                    <span class="icon icon-swap" aria-hidden="true"></span>
+                    {{ vesselChange }}
+                  </span>
                 }
               </div>
             }
@@ -54,7 +61,10 @@
 
     @if (milestones().length > 0) {
       <div class="milestone-tracker">
-        <h3 class="milestone-tracker-title">🏁 {{ i18n.t('milestone.title') }}</h3>
+        <h3 class="milestone-tracker-title">
+          <span class="icon icon-flag" aria-hidden="true"></span>
+          {{ i18n.t('milestone.title') }}
+        </h3>
         <div class="milestone-track">
           @for (step of milestones(); track step.label; let last = $last) {
             <div class="milestone-step" [class.milestone-completed]="step.completed" [class.milestone-origin]="step.phase === 'origin'" [class.milestone-transit]="step.phase === 'transit'" [class.milestone-destination]="step.phase === 'destination'">
@@ -70,23 +80,26 @@
     }
     
     <div class="timeline-layout">
-      <nav class="timeline-index" aria-label="{{ i18n.t('timeline.indexAria') }}">
-        <div class="timeline-index-title">{{ i18n.t('timeline.indexLabel') }}</div>
-        <ul class="timeline-index-list">
-          @for (item of timelineIndex(); track item.anchorId) {
-            <li>
-              <button
-                type="button"
-                class="timeline-index-link"
-                (click)="scrollToSection(item.anchorId)"
-              >
-                <span class="timeline-index-label">{{ item.label }}</span>
-                <span class="timeline-index-count">{{ item.count }}</span>
-              </button>
-            </li>
-          }
-        </ul>
-      </nav>
+      <details class="timeline-index-accordion" open>
+        <summary class="timeline-index-summary">{{ i18n.t('timeline.indexLabel') }}</summary>
+        <nav class="timeline-index" aria-label="{{ i18n.t('timeline.indexAria') }}">
+          <div class="timeline-index-title">{{ i18n.t('timeline.indexLabel') }}</div>
+          <ul class="timeline-index-list">
+            @for (item of timelineIndex(); track item.anchorId) {
+              <li>
+                <button
+                  type="button"
+                  class="timeline-index-link"
+                  (click)="scrollToSection(item.anchorId)"
+                >
+                  <span class="timeline-index-label">{{ item.label }}</span>
+                  <span class="timeline-index-count">{{ item.count }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </nav>
+      </details>
 
       <div class="timeline">
         @let labels = eventIndexLabels();
@@ -97,7 +110,9 @@
 
           <div class="timeline-item" [attr.id]="getEventAnchorId(index)" [ngClass]="getLocationTypeClass(event)">
             <div class="timeline-marker">
-              <div class="timeline-icon">{{ getEventIcon(event) }}</div>
+              <div class="timeline-icon">
+                <span class="icon" [ngClass]="getEventIcon(event)" aria-hidden="true"></span>
+              </div>
             </div>
             <div class="timeline-content" [ngClass]="getLocationTypeClass(event)">
               <div class="event-header">
@@ -127,11 +142,12 @@
               }
 
               @let etaVar = getEtaVariance(event);
-              @if (etaVar) {
-                <div class="eta-variance" [ngClass]="'eta-variance-' + etaVar.tone">
-                  ⏱ {{ etaVar.label }}
-                </div>
-              }
+                @if (etaVar) {
+                  <div class="eta-variance" [ngClass]="'eta-variance-' + etaVar.tone">
+                  <span class="icon icon-clock" aria-hidden="true"></span>
+                  {{ etaVar.label }}
+                  </div>
+                }
               
               <div class="event-details">
                 @if (event.location) {
@@ -193,12 +209,17 @@
 
     @if (undatedEvents().length > 0) {
       <div class="undated-events">
-        <h3 class="undated-events-title">⏳ {{ i18n.t('timeline.unscheduledTitle') }}</h3>
+        <h3 class="undated-events-title">
+          <span class="icon icon-hourglass" aria-hidden="true"></span>
+          {{ i18n.t('timeline.unscheduledTitle') }}
+        </h3>
         <p class="undated-events-hint">{{ i18n.t('timeline.unscheduledHint') }}</p>
         @for (event of undatedEvents(); track $index) {
           <div class="undated-event-card">
             <div class="event-header">
-              <span class="timeline-icon-inline">{{ getEventIcon(event) }}</span>
+              <span class="timeline-icon-inline">
+                <span class="icon" [ngClass]="getEventIcon(event)" aria-hidden="true"></span>
+              </span>
               <h3 class="event-type">{{ getEventTypeLabel(event) }}</h3>
             </div>
             <p class="event-description">{{ getEventDescription(event) }}</p>

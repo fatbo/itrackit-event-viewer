@@ -15,14 +15,21 @@
       }
       @if (hasReeferData()) {
         <span class="pill pill-reefer" title="{{ i18n.t('summary.indicator.reeferTitle') }}">
-          ❄️ {{ i18n.t('summary.indicator.reeferLabel') }}
+          <span class="icon icon-snow" aria-hidden="true"></span>
+          {{ i18n.t('summary.indicator.reeferLabel') }}
         </span>
       }
       @if (hasDangerousGoods()) {
-        <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">⚠ DG</span>
+        <span class="pill pill-dg" title="{{ i18n.t('summary.indicator.dangerousGoods') }}">
+          <span class="icon icon-alert" aria-hidden="true"></span>
+          DG
+        </span>
       }
       @if (hasDamages()) {
-        <span class="pill pill-dmg" title="{{ i18n.t('summary.indicator.damage') }}">🔴 DMG</span>
+        <span class="pill pill-dmg" title="{{ i18n.t('summary.indicator.damage') }}">
+          <span class="icon icon-damage" aria-hidden="true"></span>
+          DMG
+        </span>
       }
     </div>
     
@@ -112,7 +119,10 @@
           <span class="label">{{ i18n.t('summary.label.sealNumbers') }}</span>
           <span class="value">
             @for (seal of primaryEvent()?.sealNo; track seal) {
-              <span class="seal-tag">🔒 {{ seal }}</span>
+              <span class="seal-tag">
+                <span class="icon icon-lock" aria-hidden="true"></span>
+                {{ seal }}
+              </span>
             }
           </span>
         </div>
@@ -123,7 +133,10 @@
           <span class="label">{{ i18n.t('summary.label.dangerousGoods') }}</span>
           <span class="value">
             @for (code of primaryEvent()?.dg; track code) {
-              <span class="pill pill-dg-inline">⚠ {{ code }}</span>
+              <span class="pill pill-dg-inline">
+                <span class="icon icon-alert" aria-hidden="true"></span>
+                {{ code }}
+              </span>
             }
           </span>
         </div>
@@ -134,7 +147,10 @@
           <span class="label">{{ i18n.t('summary.label.damages') }}</span>
           <span class="value">
             @for (damage of primaryEvent()?.dmg; track damage) {
-              <span class="pill pill-dmg-inline">🔴 {{ damage }}</span>
+              <span class="pill pill-dmg-inline">
+                <span class="icon icon-damage" aria-hidden="true"></span>
+                {{ damage }}
+              </span>
             }
           </span>
         </div>
@@ -152,7 +168,9 @@
               <span class="reefer-label">{{ i18n.t('summary.label.reeferReadingTemp') }}</span>
               <span class="reefer-value">{{ reeferData()?.readingTemp }}°{{ reeferData()?.readingTempUnit }}</span>
               @if (isReeferTempAlert()) {
-                <span class="reefer-alert-icon" title="{{ i18n.t('summary.label.reeferAlert') }}">⚠️</span>
+                <span class="reefer-alert-icon" title="{{ i18n.t('summary.label.reeferAlert') }}">
+                  <span class="icon icon-alert" aria-hidden="true"></span>
+                </span>
               }
             </div>
             <div class="reefer-time">

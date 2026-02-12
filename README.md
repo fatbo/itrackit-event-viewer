@@ -58,8 +58,13 @@ An Angular frontend application for viewing and comparing ocean shipment event t
   - **Limitations**:
     - Alerts are heuristics derived from event codes, location types, and available estimated/actual timestamps.
     - They do **not** infer root cause, carrier responsibility, or guarantee completeness.
-    - Missing data or the presence of actual events suppress warnings.
-    - Route alerts compare only the count of unique POT ports (not the exact ports or sequence).
+   - Missing data or the presence of actual events suppress warnings.
+   - Route alerts compare only the count of unique POT ports (not the exact ports or sequence).
+
+### 7. UI/UX Enhancements
+- Wave-inspired background gradients aligned with Night Bridge and Harbour Dawn themes
+- SVG-based icon system with hover motion cues for primary actions
+- Mobile-friendly timeline index accordion plus themed loading/error states
 
 ## Getting Started
 

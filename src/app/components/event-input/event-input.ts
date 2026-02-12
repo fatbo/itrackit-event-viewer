@@ -19,6 +19,7 @@ export class EventInput implements OnInit {
   protected readonly i18n = inject(I18nService);
   protected readonly jsonInput = signal('');
   protected readonly errorMessage = signal('');
+  protected readonly isLoading = signal(false);
   protected readonly isPrimary = signal(true);
   protected readonly isDemoData = signal(true);
   
@@ -345,6 +346,7 @@ export class EventInput implements OnInit {
     
     const file = input.files[0];
     const reader = new FileReader();
+    this.isLoading.set(true);
     
     reader.onload = (e) => {
       const content = e.target?.result as string;
@@ -354,6 +356,7 @@ export class EventInput implements OnInit {
     
     reader.onerror = () => {
       this.errorMessage.set(this.i18n.t('input.error.readFile'));
+      this.isLoading.set(false);
     };
     
     reader.readAsText(file);
@@ -365,6 +368,7 @@ export class EventInput implements OnInit {
   }
   
   private processJsonInput(jsonString: string): void {
+    this.isLoading.set(true);
     try {
       const parsedData = JSON.parse(jsonString);
       let shipmentData: ShipmentData;
@@ -395,6 +399,8 @@ export class EventInput implements OnInit {
       this.errorMessage.set('');
     } catch (error) {
       this.errorMessage.set(this.i18n.t('input.error.invalidJson'));
+    } finally {
+      this.isLoading.set(false);
     }
   }
   
@@ -407,6 +413,7 @@ export class EventInput implements OnInit {
     this.errorMessage.set('');
     this.eventDataService.clearEvents();
     this.isDemoData.set(false);
+    this.isLoading.set(false);
   }
 
   loadDemoData(): void {

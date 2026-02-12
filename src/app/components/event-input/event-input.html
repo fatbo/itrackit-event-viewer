@@ -2,15 +2,18 @@
   <div class="input-header">
     <h2>{{ i18n.t('input.title') }}</h2>
     @if (onClose) {
-      <button class="close-btn" (click)="onClose()">
-        ✕ {{ i18n.t('input.close') }}
+      <button class="close-btn icon-hover" (click)="onClose()">
+        <span class="icon icon-close" aria-hidden="true"></span>
+        {{ i18n.t('input.close') }}
       </button>
     }
   </div>
   
   @if (isDemoData()) {
     <div class="demo-banner">
-      <div class="demo-icon">🎯</div>
+      <div class="demo-icon">
+        <span class="icon icon-target" aria-hidden="true"></span>
+      </div>
       <div class="demo-content">
         <strong>{{ i18n.t('input.demoMode') }}</strong> {{ i18n.t('input.demoDescription') }}
         <button (click)="clearAll()" class="dismiss-demo">{{ i18n.t('input.clearDemo') }}</button>
@@ -19,7 +22,7 @@
   }
 
   <div class="usage-tips">
-    <h3>💡 {{ i18n.t('input.usageTitle') }}</h3>
+    <h3><span class="icon icon-bulb" aria-hidden="true"></span> {{ i18n.t('input.usageTitle') }}</h3>
     <ul>
       <li>
         <strong>{{ i18n.t('input.usageLoadTitle') }}</strong> {{ i18n.t('input.usageLoadDescription') }}
@@ -66,8 +69,16 @@
     </div>
   </div>
   
+  @if (isLoading()) {
+    <div class="loading-message" role="status" aria-live="polite">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      {{ i18n.t('input.loading') }}
+    </div>
+  }
+
   @if (errorMessage()) {
-    <div class="error-message">
+    <div class="error-message" role="alert" aria-live="assertive">
+      <span class="icon icon-alert" aria-hidden="true"></span>
       {{ errorMessage() }}
     </div>
   }

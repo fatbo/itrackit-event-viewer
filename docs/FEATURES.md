@@ -78,6 +78,11 @@ Each step shows a coloured dot (emerald for origin, amber for transit, coral for
 
 **Implementation:** The `milestones` computed signal dynamically builds the milestone list from equipment and transport events. It checks for actual events at each milestone and marks them as completed.
 
+### 10. UI/UX Visual Refresh (Phase 1)
+**Problem:** The UI relied on emoji icons and had limited visual depth or mobile affordances.
+
+**Solution:** Introduced themed SVG iconography, wave-inspired background gradients, typography scale adjustments, and mobile-friendly accordion navigation for the timeline index. Added themed loading and error states for the input and comparison panels.
+
 ---
 
 ## Future Proposals

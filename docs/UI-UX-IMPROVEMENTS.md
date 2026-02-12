@@ -12,15 +12,26 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 
 ## Phase 0 — Planning & Foundations
 - [x] Capture the UI/UX improvement plan and checklist (this document).
-- [ ] Audit current UI for accessibility gaps (contrast, ARIA, keyboard focus states).
-- [ ] Document design references for maritime motifs (gradients, textures, icon set).
+- [x] Audit current UI for accessibility gaps (contrast, ARIA, keyboard focus states).
+- [x] Document design references for maritime motifs (gradients, textures, icon set).
+
+### Accessibility Audit Notes (2026-02-12)
+- Ensure focus-visible outlines are clearly visible on buttons, tabs, and links.
+- Add `aria-hidden="true"` for purely decorative icons and provide labels for icon-only controls.
+- Provide `role="status"` / `aria-live` regions for loading and error states where relevant.
+- Validate contrast for muted text on card backgrounds across both themes.
+
+### Maritime Motif References
+- Wave-layer gradients that blend accent cyan and amber glows over deep backgrounds.
+- Subtle sonar rings or compass ticks as background texture accents.
+- Navigation-inspired iconography (ship, anchor, beacon, logbook) in SVG form.
 
 ## Phase 1 — Visual & Theming Enhancements
-- [ ] Add wave-inspired background gradients using existing CSS variables.
-- [ ] Refresh typography scale (Syne headings, Lexend body, JetBrains Mono code).
-- [ ] Replace emoji icons with themed SVGs and add hover motion (pulse/scale).
-- [ ] Improve responsive layout with CSS Grid/Flex and mobile accordions.
-- [ ] Add themed loading and error states for inputs and comparisons.
+- [x] Add wave-inspired background gradients using existing CSS variables.
+- [x] Refresh typography scale (Syne headings, Lexend body, JetBrains Mono code).
+- [x] Replace emoji icons with themed SVGs and add hover motion (pulse/scale).
+- [x] Improve responsive layout with CSS Grid/Flex and mobile accordions.
+- [x] Add themed loading and error states for inputs and comparisons.
 
 ## Phase 2 — UX Flow & Accessibility
 - [ ] Add onboarding modal with i18n copy and dismissal persistence.
