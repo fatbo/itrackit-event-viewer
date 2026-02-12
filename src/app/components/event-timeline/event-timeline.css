@@ -456,3 +456,144 @@ h2 {
 .timeline-icon-inline {
   font-size: 1.1em;
 }
+
+/* Dwell Time */
+.port-dwell {
+  font-size: 0.68em;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  margin-top: 2px;
+}
+
+.port-dwell-alert {
+  color: var(--accent-amber);
+  background: var(--accent-amber-dim);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ETA Variance */
+.eta-variance {
+  font-size: 0.78em;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  margin: 6px 0;
+  font-weight: 500;
+}
+
+.eta-variance-green {
+  color: var(--accent-emerald);
+  background: var(--accent-emerald-dim);
+}
+
+.eta-variance-amber {
+  color: var(--accent-amber);
+  background: var(--accent-amber-dim);
+}
+
+.eta-variance-red {
+  color: var(--accent-coral);
+  background: var(--accent-coral-dim);
+}
+
+/* Milestone Tracker */
+.milestone-tracker {
+  margin-bottom: 20px;
+  padding: 14px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.milestone-tracker-title {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 14px 0;
+  font-family: var(--font-display);
+}
+
+.milestone-track {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.milestone-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.milestone-dot {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--text-muted);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: 700;
+  color: transparent;
+  background: var(--bg-card);
+  z-index: 1;
+}
+
+.milestone-completed .milestone-dot {
+  border-color: var(--accent-emerald);
+  background: var(--accent-emerald);
+  color: var(--bg-card);
+}
+
+.milestone-origin .milestone-dot {
+  border-color: var(--accent-emerald);
+}
+
+.milestone-transit .milestone-dot {
+  border-color: var(--accent-amber);
+}
+
+.milestone-destination .milestone-dot {
+  border-color: var(--accent-coral);
+}
+
+.milestone-completed.milestone-transit .milestone-dot {
+  background: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
+
+.milestone-completed.milestone-destination .milestone-dot {
+  background: var(--accent-coral);
+  border-color: var(--accent-coral);
+}
+
+.milestone-label {
+  font-size: 0.65em;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 6px;
+  max-width: 90px;
+  line-height: 1.3;
+}
+
+.milestone-completed .milestone-label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.milestone-connector {
+  flex: 1;
+  min-width: 20px;
+  height: 2px;
+  background: var(--border-light);
+  margin-top: 10px;
+}
+
+.milestone-connector-completed {
+  background: var(--accent-emerald);
+}

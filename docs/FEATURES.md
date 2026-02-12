@@ -49,31 +49,75 @@ This document outlines proposed enhancements to the iTrackiT Shipment Viewer bas
 
 **Solution:** Display both equipment and transport event counts separately in the summary.
 
+### 7. Dwell Time Calculation
+**Problem:** Users had no visibility into how long a container remains at each port. Long dwell times may indicate delays, congestion, or customs holds.
+
+**Solution:** Calculate and display the time a container spends at each port (arrival to departure) in the Port Transition map. Ports with dwell time ≥ 48 hours are highlighted with an amber alert to draw attention to potential delays.
+
+**Implementation:** The `portTransition` computed signal now calculates `dwellTimeHours` for each port node that has both arrival and departure times. The dwell time is displayed as a compact badge below the port times.
+
+### 8. ETA Accuracy Tracking
+**Problem:** When both Estimated and Actual times exist for the same event, there was no way to see the variance between them. Users could not tell whether a vessel arrived on time, early, or late.
+
+**Solution:** When both Actual and Estimated times are available for the same equipment event, the timeline card now displays the variance:
+- **Green** (< 2 hrs): On time
+- **Amber** (2–12 hrs): Moderate deviation
+- **Red** (> 12 hrs): Significant deviation
+
+**Implementation:** The `getEtaVariance()` method computes the difference and returns a colour-coded label. Displayed inline on each timeline card that has both time types.
+
+### 9. Smart Event Type Classification (Milestone Tracker)
+**Problem:** Users must read through all individual timeline events to understand the shipment's overall journey progress. There is no summary of which major milestones have been reached.
+
+**Solution:** A milestone tracker displayed above the timeline that groups events into three phases:
+- **Origin Milestones**: Gate In (IG) → Loaded (AL) → Vessel Departure (VD) at POL
+- **Transit Milestones**: Vessel Arrival → Vessel Departure at each POT
+- **Destination Milestones**: Vessel Arrival (VA) → Unloaded (UV) → Gate Out (OG) at POD
+
+Each step shows a coloured dot (emerald for origin, amber for transit, coral for destination) that fills in when the corresponding Actual event is recorded.
+
+**Implementation:** The `milestones` computed signal dynamically builds the milestone list from equipment and transport events. It checks for actual events at each milestone and marks them as completed.
+
 ---
 
 ## Future Proposals
 
-### Smart Event Type Classification
-Introduce a higher-level "milestone" classification that groups raw event codes into user-friendly categories:
-- **Origin Milestones**: Gate In (IG) → Loaded (AL) → Vessel Departure (VD)
-- **Transit Milestones**: Vessel Arrival at POT → Unloaded → Loaded → Vessel Departure
-- **Destination Milestones**: Vessel Arrival (VA) → Unloaded (UV) → Gate Out (OG)
-
-This would allow a compact milestone tracker at the top of the timeline.
-
-### Dwell Time Calculation
-Calculate and display the time a container spends at each port (arrival to departure). Long dwell times could trigger amber/red alerts, helping users identify potential delays.
-
-### ETA Accuracy Tracking
-When both Estimated and Actual times exist for the same event, compute the variance and surface it:
-- *"Vessel arrived 4.2 hrs later than estimated"*
-- Colour-code: green (< 2 hrs), amber (2-12 hrs), red (> 12 hrs)
-
 ### Multi-Container View
 Support loading multiple containers from the same BL, displaying a summary table and allowing drill-down into individual container timelines.
+
+> **Deferred:** Requires additional data fields (multi-container BL structure) not yet present in the model.
 
 ### Reefer Temperature Trend Chart
 When multiple temperature readings are available over time, display a sparkline or mini chart showing the temperature trend alongside the required range.
 
+> **Deferred:** Requires multiple temperature readings over time; current model only stores a single reading.
+
 ### Export / Share
 Allow users to export the current view as PDF or share a read-only link for collaboration with colleagues.
+
+> **Deferred:** Requires PDF generation library and/or backend service for shareable links.
+
+### Carrier Performance Analytics
+Aggregate ETA accuracy data across shipments to provide carrier-level statistics, showing which carriers consistently deliver on time and which are frequently delayed.
+
+> **Rationale:** Industry demand for carrier reliability metrics. Builds on ETA Accuracy Tracking (Feature 8). Requires multi-shipment data aggregation.
+
+### Port Congestion Indicator
+Use dwell time data to flag ports that consistently have long dwell times, indicating potential congestion or operational issues.
+
+> **Rationale:** Builds on Dwell Time Calculation (Feature 7). Industry-standard logistics intelligence.
+
+### CO₂ Emission Estimation
+Estimate carbon emissions for each leg based on transport mode, distance, and vessel type. Display total carbon footprint in the shipment summary.
+
+> **Rationale:** Growing regulatory and ESG reporting requirements in the shipping industry (IMO 2030/2050 targets).
+
+### Customs & Compliance Status Tracking
+Track customs clearance milestones at each port, including customs hold status, inspection flags, and estimated clearance times.
+
+> **Rationale:** Common industry requirement for import/export compliance visibility. Would need additional event codes or data fields.
+
+### Smart Notification Rules
+Allow users to configure notification rules (e.g., "alert me if vessel departure is delayed by more than 6 hours") that generate alerts automatically.
+
+> **Rationale:** Proactive monitoring is a core industry need. Builds on existing comparison/alert architecture.

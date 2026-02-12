@@ -20,6 +20,23 @@ interface PortNode {
   departureTimeType?: string;
   arrivalVessel?: string;
   departureVessel?: string;
+  dwellTimeHours?: number;
+}
+
+interface EtaVariance {
+  diffHours: number;
+  label: string;
+  tone: 'green' | 'amber' | 'red';
+}
+
+type MilestonePhase = 'origin' | 'transit' | 'destination';
+
+interface MilestoneStep {
+  label: string;
+  eventCode: string;
+  phase: MilestonePhase;
+  completed: boolean;
+  time?: string;
 }
 
 @Component({
@@ -32,6 +49,8 @@ export class EventTimeline {
   private eventDataService = inject(EventData);
   private document = inject(DOCUMENT);
   protected readonly i18n = inject(I18nService);
+  protected static readonly DWELL_ALERT_HOURS = 48;
+  protected readonly dwellAlertHours = EventTimeline.DWELL_ALERT_HOURS;
   private readonly indexDateFormatter = computed(
     () =>
       new Intl.DateTimeFormat(this.i18n.localeTag(), {
@@ -82,6 +101,17 @@ export class EventTimeline {
       }
     }
 
+    // Compute dwell time for each port
+    for (const node of portMap.values()) {
+      if (node.arrivalTime && node.departureTime) {
+        const arrival = new Date(node.arrivalTime).getTime();
+        const departure = new Date(node.departureTime).getTime();
+        if (!isNaN(arrival) && !isNaN(departure) && departure > arrival) {
+          node.dwellTimeHours = this.roundToOneDecimal((departure - arrival) / (1000 * 60 * 60));
+        }
+      }
+    }
+
     return portOrder.map(code => portMap.get(code)!);
   });
 
@@ -103,6 +133,64 @@ export class EventTimeline {
     const change = this.vesselChanges().find(c => c.index === index);
     return change ? change.to : null;
   }
+
+  protected getEtaVariance(event: ShipmentEvent): EtaVariance | null {
+    if (!event.actualTime || !event.estimatedTime) return null;
+    const actual = new Date(event.actualTime).getTime();
+    const estimated = new Date(event.estimatedTime).getTime();
+    if (isNaN(actual) || isNaN(estimated)) return null;
+    const diffMs = actual - estimated;
+    const diffHours = this.roundToOneDecimal(Math.abs(diffMs) / (1000 * 60 * 60));
+    const direction = diffMs > 0
+      ? this.i18n.t('eta.later')
+      : this.i18n.t('eta.earlier');
+    const tone: EtaVariance['tone'] = diffHours < 2 ? 'green' : diffHours < 12 ? 'amber' : 'red';
+    return {
+      diffHours,
+      label: this.i18n.t('eta.varianceLabel', { hours: diffHours, direction }),
+      tone,
+    };
+  }
+
+  protected readonly milestones = computed<MilestoneStep[]>(() => {
+    const data = this.primaryEvent();
+    if (!data) return [];
+    const events = data.events ?? [];
+    const transportEvents = (data.transportEvents ?? []) as OpTransportEvent[];
+
+    const steps: MilestoneStep[] = [];
+    const hasActualEquip = (code: string, locType: string) =>
+      events.some(e => e.eventCode === code && e.locationType === locType && e.timeType === 'A');
+    const hasActualTransport = (code: string, locType: string) =>
+      transportEvents.some(e => e.eventCode === code && e.locationType === locType && e.timeType === 'A');
+    const getTime = (code: string, locType: string): string | undefined => {
+      const equip = events.find(e => e.eventCode === code && e.locationType === locType);
+      const trans = transportEvents.find(e => e.eventCode === code && e.locationType === locType);
+      return equip?.eventDateTime ?? trans?.eventTime;
+    };
+
+    // Origin milestones
+    steps.push({ label: this.i18n.t('milestone.gateIn'), eventCode: 'IG', phase: 'origin', completed: hasActualEquip('IG', 'POL'), time: getTime('IG', 'POL') });
+    steps.push({ label: this.i18n.t('milestone.loaded'), eventCode: 'AL', phase: 'origin', completed: hasActualEquip('AL', 'POL'), time: getTime('AL', 'POL') });
+    steps.push({ label: this.i18n.t('milestone.vesselDeparture'), eventCode: 'VD', phase: 'origin', completed: hasActualTransport('VD', 'POL') || hasActualEquip('VD', 'POL'), time: getTime('VD', 'POL') });
+
+    // Transit milestones (POT)
+    const potPorts = new Set(transportEvents.filter(e => e.locationType === 'POT').map(e => e.location.unLocationCode));
+    for (const potCode of potPorts) {
+      const portName = transportEvents.find(e => e.location.unLocationCode === potCode)?.location.unLocationName ?? potCode;
+      const hasArrival = transportEvents.some(e => e.eventCode === 'VA' && e.location.unLocationCode === potCode && e.timeType === 'A');
+      const hasDeparture = transportEvents.some(e => e.eventCode === 'VD' && e.location.unLocationCode === potCode && e.timeType === 'A');
+      steps.push({ label: this.i18n.t('milestone.transitArr', { port: portName }), eventCode: 'VA', phase: 'transit', completed: hasArrival, time: transportEvents.find(e => e.eventCode === 'VA' && e.location.unLocationCode === potCode)?.eventTime });
+      steps.push({ label: this.i18n.t('milestone.transitDep', { port: portName }), eventCode: 'VD', phase: 'transit', completed: hasDeparture, time: transportEvents.find(e => e.eventCode === 'VD' && e.location.unLocationCode === potCode)?.eventTime });
+    }
+
+    // Destination milestones
+    steps.push({ label: this.i18n.t('milestone.vesselArrival'), eventCode: 'VA', phase: 'destination', completed: hasActualTransport('VA', 'POD') || hasActualEquip('VA', 'POD'), time: getTime('VA', 'POD') });
+    steps.push({ label: this.i18n.t('milestone.unloaded'), eventCode: 'UV', phase: 'destination', completed: hasActualEquip('UV', 'POD'), time: getTime('UV', 'POD') });
+    steps.push({ label: this.i18n.t('milestone.gateOut'), eventCode: 'OG', phase: 'destination', completed: hasActualEquip('OG', 'POD'), time: getTime('OG', 'POD') });
+
+    return steps;
+  });
 
   private hasValidDate(event: ShipmentEvent): boolean {
     return !!event.eventDateTime && !isNaN(new Date(event.eventDateTime).getTime());
@@ -262,5 +350,9 @@ export class EventTimeline {
       );
     }
     return timeDetails;
+  }
+
+  private roundToOneDecimal(value: number): number {
+    return Math.round(value * 10) / 10;
   }
 }
