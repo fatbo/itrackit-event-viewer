@@ -49,6 +49,8 @@ export class EventTimeline {
   private eventDataService = inject(EventData);
   private document = inject(DOCUMENT);
   protected readonly i18n = inject(I18nService);
+  protected static readonly DWELL_ALERT_HOURS = 48;
+  protected readonly dwellAlertHours = EventTimeline.DWELL_ALERT_HOURS;
   private readonly indexDateFormatter = computed(
     () =>
       new Intl.DateTimeFormat(this.i18n.localeTag(), {
@@ -105,7 +107,7 @@ export class EventTimeline {
         const arrival = new Date(node.arrivalTime).getTime();
         const departure = new Date(node.departureTime).getTime();
         if (!isNaN(arrival) && !isNaN(departure) && departure > arrival) {
-          node.dwellTimeHours = Math.round(((departure - arrival) / (1000 * 60 * 60)) * 10) / 10;
+          node.dwellTimeHours = this.roundToOneDecimal((departure - arrival) / (1000 * 60 * 60));
         }
       }
     }
@@ -138,7 +140,7 @@ export class EventTimeline {
     const estimated = new Date(event.estimatedTime).getTime();
     if (isNaN(actual) || isNaN(estimated)) return null;
     const diffMs = actual - estimated;
-    const diffHours = Math.round((Math.abs(diffMs) / (1000 * 60 * 60)) * 10) / 10;
+    const diffHours = this.roundToOneDecimal(Math.abs(diffMs) / (1000 * 60 * 60));
     const direction = diffMs > 0
       ? this.i18n.t('eta.later')
       : this.i18n.t('eta.earlier');
@@ -348,5 +350,9 @@ export class EventTimeline {
       );
     }
     return timeDetails;
+  }
+
+  private roundToOneDecimal(value: number): number {
+    return Math.round(value * 10) / 10;
   }
 }

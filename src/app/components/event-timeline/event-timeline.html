@@ -33,7 +33,7 @@
                   <span class="port-time unknown">{{ i18n.t('timeline.departureShort') }}: —</span>
                 }
                 @if (port.dwellTimeHours != null) {
-                  <span class="port-dwell" [class.port-dwell-alert]="port.dwellTimeHours >= 48" [title]="port.dwellTimeHours >= 48 ? i18n.t('timeline.dwellAlert') : ''">
+                  <span class="port-dwell" [class.port-dwell-alert]="port.dwellTimeHours >= dwellAlertHours" [title]="port.dwellTimeHours >= dwellAlertHours ? i18n.t('timeline.dwellAlert') : ''">
                     ⏱ {{ i18n.t('timeline.dwellTime', { hours: port.dwellTimeHours }) }}
                   </span>
                 }
