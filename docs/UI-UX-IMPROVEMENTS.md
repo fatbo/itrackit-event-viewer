@@ -5,7 +5,7 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 ## Guiding Principles
 - Follow Angular 21 standalone component patterns with signals.
 - Route all user-facing text through `I18nService.t()` with `en` and `zh-Hant` strings.
-- Use theme tokens from `src/styles.css` (no hard-coded colours).
+- Use theme tokens from `src/styles.css` (no hard-coded colors).
 - Respect the two themes: **Night Bridge** (default) and **Harbour Dawn** (light).
 
 ---
