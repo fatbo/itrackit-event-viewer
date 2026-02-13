@@ -66,12 +66,31 @@ export class EventTimeline {
     const data = this.primaryEvent();
     const transportEvents = data?.transportEvents as OpTransportEvent[] | undefined;
     if (!transportEvents || transportEvents.length === 0) return [];
+    const getPortKey = (event: OpTransportEvent) =>
+      `${event.locationType}:${event.location.unLocationCode}`;
 
-    // Sort by seq if available, otherwise by eventTime
+    const preferredSeqByPort = new Map<string, { seq: number; priority: number }>();
+    for (const event of transportEvents) {
+      if (event.seq == null) continue;
+      const portKey = getPortKey(event);
+      const priority = event.DataProviderPriority ?? Number.MAX_SAFE_INTEGER;
+      const current = preferredSeqByPort.get(portKey);
+      if (
+        !current ||
+        priority < current.priority ||
+        (priority === current.priority && event.seq < current.seq)
+      ) {
+        preferredSeqByPort.set(portKey, { seq: event.seq, priority });
+      }
+    }
+
+    // Sort by preferred seq (resolved by DataProviderPriority), otherwise by eventTime
     const sorted = [...transportEvents].sort((a, b) => {
-      if (a.seq != null && b.seq != null) return a.seq - b.seq;
-      if (a.seq != null) return -1;
-      if (b.seq != null) return 1;
+      const aSeq = preferredSeqByPort.get(getPortKey(a))?.seq ?? a.seq ?? null;
+      const bSeq = preferredSeqByPort.get(getPortKey(b))?.seq ?? b.seq ?? null;
+      if (aSeq != null && bSeq != null) return aSeq - bSeq;
+      if (aSeq != null) return -1;
+      if (bSeq != null) return 1;
       return new Date(a.eventTime).getTime() - new Date(b.eventTime).getTime();
     });
 

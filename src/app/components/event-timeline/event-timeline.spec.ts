@@ -184,6 +184,131 @@ describe('EventTimeline', () => {
     expect(sgPort.dwellTimeHours).toBe(36);
   });
 
+  it('resolves seq conflicts using higher-priority data provider values', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+      transportEvents: [
+        {
+          seq: 1,
+          eventCode: 'VD',
+          locationType: 'POL',
+          eventTime: '2025-02-05T15:29:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore' },
+          DataProvider: 'provider-a',
+          DataProviderPriority: 1,
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-12T02:12:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'HKHKG', unLocationName: 'Hong Kong,CN' },
+          DataProvider: 'provider-b',
+          DataProviderPriority: 5,
+        },
+        {
+          seq: 3,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-12T02:12:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'HKHKG', unLocationName: 'Hong Kong,CN' },
+          DataProvider: 'provider-a',
+          DataProviderPriority: 1,
+        },
+        {
+          seq: 3,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-06T05:55:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'MYPKG', unLocationName: 'Port Klang,MY' },
+          DataProvider: 'provider-b',
+          DataProviderPriority: 5,
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-06T05:55:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'MYPKG', unLocationName: 'Port Klang,MY' },
+          DataProvider: 'provider-a',
+          DataProviderPriority: 1,
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const ports = (fixture.componentInstance as any).portTransition();
+    expect(ports.map((port: any) => port.locationCode)).toEqual(['SGSIN', 'MYPKG', 'HKHKG']);
+  });
+
+  it('treats missing DataProviderPriority as lower priority during seq conflict resolution', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+      transportEvents: [
+        {
+          seq: 1,
+          eventCode: 'VD',
+          locationType: 'POL',
+          eventTime: '2025-02-05T15:29:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore' },
+          DataProviderPriority: 1,
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-12T02:12:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'HKHKG', unLocationName: 'Hong Kong,CN' },
+        },
+        {
+          seq: 3,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-12T02:12:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'HKHKG', unLocationName: 'Hong Kong,CN' },
+          DataProviderPriority: 1,
+        },
+        {
+          seq: 3,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-06T05:55:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'MYPKG', unLocationName: 'Port Klang,MY' },
+        },
+        {
+          seq: 2,
+          eventCode: 'VA',
+          locationType: 'POD',
+          eventTime: '2025-02-06T05:55:00+08:00',
+          timeType: 'A',
+          location: { unLocationCode: 'MYPKG', unLocationName: 'Port Klang,MY' },
+          DataProviderPriority: 1,
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const ports = (fixture.componentInstance as any).portTransition();
+    expect(ports.map((port: any) => port.locationCode)).toEqual(['SGSIN', 'MYPKG', 'HKHKG']);
+  });
+
   it('computes ETA variance when both actual and estimated times exist', () => {
     const fixture = TestBed.createComponent(EventTimeline);
     const component = fixture.componentInstance;
