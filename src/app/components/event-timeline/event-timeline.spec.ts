@@ -380,4 +380,27 @@ describe('EventTimeline', () => {
     const vaAtPod = milestones.find((m: any) => m.eventCode === 'VA' && m.phase === 'destination');
     expect(vaAtPod?.completed).toBe(false);
   });
+
+  it('includes POC ports in transit milestones', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [],
+      transportEvents: [
+        { eventCode: 'VD', locationType: 'POL', eventTime: '2025-01-10T14:00:00Z', timeType: 'A', location: { unLocationCode: 'ARBUE', unLocationName: 'Buenos Aires' } },
+        { eventCode: 'VA', locationType: 'POC', eventTime: '2025-02-05T11:18:00Z', timeType: 'A', location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore' } },
+        { eventCode: 'VD', locationType: 'POC', eventTime: '2025-02-07T20:46:00Z', timeType: 'A', location: { unLocationCode: 'SGSIN', unLocationName: 'Singapore' } },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const milestones = (fixture.componentInstance as any).milestones();
+    const transitArrival = milestones.find((m: any) => m.eventCode === 'VA' && m.phase === 'transit' && m.label.includes('Singapore'));
+    const transitDeparture = milestones.find((m: any) => m.eventCode === 'VD' && m.phase === 'transit' && m.label.includes('Singapore'));
+
+    expect(transitArrival?.completed).toBe(true);
+    expect(transitDeparture?.completed).toBe(true);
+  });
 });
