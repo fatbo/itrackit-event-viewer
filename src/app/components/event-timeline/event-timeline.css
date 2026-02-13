@@ -21,6 +21,14 @@ h2 {
   gap: 16px;
 }
 
+.timeline-index-accordion {
+  display: contents;
+}
+
+.timeline-index-summary {
+  display: none;
+}
+
 .timeline-index {
   position: sticky;
   top: 12px;
@@ -130,7 +138,13 @@ h2 {
   align-items: center;
   justify-content: center;
   font-size: 1.1em;
+  color: var(--accent-cyan);
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.15);
+}
+
+.timeline-icon .icon {
+  width: 1em;
+  height: 1em;
 }
 
 .timeline-content {
@@ -260,6 +274,14 @@ h2 {
   color: var(--text-secondary);
   margin: 0 0 14px 0;
   font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.port-transition-title .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .port-transition-track {
@@ -385,6 +407,14 @@ h2 {
   padding: 1px 6px;
   white-space: nowrap;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vessel-change-badge .icon {
+  width: 0.9em;
+  height: 0.9em;
 }
 
 /* Location type color coding */
@@ -403,6 +433,29 @@ h2 {
 @media (max-width: 900px) {
   .timeline-layout {
     grid-template-columns: 1fr;
+  }
+
+  .timeline-index-accordion {
+    display: block;
+  }
+
+  .timeline-index-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+
+  .timeline-index-title {
+    display: none;
   }
 
   .timeline-index {
@@ -425,6 +478,14 @@ h2 {
   color: var(--accent-amber);
   margin: 0 0 4px 0;
   font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.undated-events-title .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .undated-events-hint {
@@ -454,7 +515,15 @@ h2 {
 }
 
 .timeline-icon-inline {
-  font-size: 1.1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-amber);
+}
+
+.timeline-icon-inline .icon {
+  width: 1em;
+  height: 1em;
 }
 
 /* Dwell Time */
@@ -465,6 +534,9 @@ h2 {
   padding: 1px 6px;
   border-radius: var(--radius-sm);
   margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .port-dwell-alert {
@@ -480,6 +552,9 @@ h2 {
   border-radius: var(--radius-sm);
   margin: 6px 0;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .eta-variance-green {
@@ -512,6 +587,14 @@ h2 {
   color: var(--text-secondary);
   margin: 0 0 14px 0;
   font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.milestone-tracker-title .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .milestone-track {

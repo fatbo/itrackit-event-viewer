@@ -1,6 +1,6 @@
 # Feature Roadmap & Improvement Proposals
 
-This document outlines proposed enhancements to the iTrackiT Shipment Viewer based on analysis of the current shipment data model (`OpShipmentEventRaw`) and UI capabilities.
+This document outlines proposed enhancements to the iTrackiT Shipment Viewer based on analysis of the current shipment data model (`OpShipmentEventRaw`) and UI capabilities. For the dedicated UI/UX task checklist, see [docs/UI-UX-IMPROVEMENTS.md](UI-UX-IMPROVEMENTS.md).
 
 ---
 
@@ -77,6 +77,11 @@ This document outlines proposed enhancements to the iTrackiT Shipment Viewer bas
 Each step shows a coloured dot (emerald for origin, amber for transit, coral for destination) that fills in when the corresponding Actual event is recorded.
 
 **Implementation:** The `milestones` computed signal dynamically builds the milestone list from equipment and transport events. It checks for actual events at each milestone and marks them as completed.
+
+### 10. UI/UX Visual Refresh (Phase 1)
+**Problem:** The UI relied on emoji icons and had limited visual depth or mobile affordances.
+
+**Solution:** Introduced themed SVG iconography, wave-inspired background gradients, typography scale adjustments, and mobile-friendly accordion navigation for the timeline index. Added themed loading and error states for the input and comparison panels.
 
 ---
 

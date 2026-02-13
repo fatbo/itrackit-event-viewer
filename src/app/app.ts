@@ -15,9 +15,7 @@ export class App {
   protected readonly themeService = inject(ThemeService);
   protected readonly title = computed(() => this.i18n.t('app.title'));
   protected readonly showInput = signal(false);
-  protected readonly themeIcon = computed(() =>
-    this.themeService.theme() === 'dark' ? '☀️' : '🌙'
-  );
+  protected readonly isDarkTheme = computed(() => this.themeService.theme() === 'dark');
 
   setLocale(locale: Locale): void {
     this.i18n.setLocale(locale);

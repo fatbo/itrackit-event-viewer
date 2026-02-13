@@ -239,14 +239,14 @@ export class EventTimeline {
   
   getEventIcon(event: ShipmentEvent): string {
     const code = event.eventCode?.toUpperCase();
-    if (code === 'VD' || code === 'RD') return '🚢';
-    if (code === 'VA' || code === 'RA') return '🏁';
-    if (code === 'AL') return '📦';
-    if (code === 'UV' || code === 'PD') return '📭';
-    if (code === 'OG' || code === 'IG') return '🚪';
+    if (code === 'VD' || code === 'RD') return 'icon-ship';
+    if (code === 'VA' || code === 'RA') return 'icon-flag';
+    if (code === 'AL') return 'icon-box';
+    if (code === 'UV' || code === 'PD') return 'icon-box';
+    if (code === 'OG' || code === 'IG') return 'icon-gate';
     const type = event.eventType.toLowerCase();
-    if (type.includes('customs')) return '🛃';
-    return '📍';
+    if (type.includes('customs')) return 'icon-customs';
+    return 'icon-pin';
   }
 
   protected getEventTypeLabel(event: ShipmentEvent): string {

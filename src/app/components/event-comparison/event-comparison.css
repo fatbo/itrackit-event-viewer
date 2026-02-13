@@ -51,6 +51,11 @@ h3 {
   bottom: -1px;
 }
 
+.tab-btn .icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
 .tab-btn:hover {
   color: var(--text-primary);
   background: var(--bg-surface);
@@ -116,6 +121,14 @@ h3 {
   font-size: 0.82em;
   font-weight: 500;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-title .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .config-fields {
@@ -163,6 +176,14 @@ h3 {
   color: var(--accent-emerald);
   font-size: 1em;
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.no-alerts .icon {
+  width: 1em;
+  height: 1em;
 }
 
 .alert-section {
@@ -186,6 +207,14 @@ h3 {
   font-size: 0.88em;
   font-family: var(--font-display);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.alert-section-title .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .warning-title {
@@ -236,8 +265,15 @@ h3 {
 
 .alert-icon {
   flex-shrink: 0;
-  font-size: 0.9em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1.5;
+}
+
+.alert-icon .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .alert-category {
@@ -301,6 +337,14 @@ h3 {
   color: var(--accent-emerald);
   font-size: 1.1em;
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.no-differences .icon {
+  width: 1em;
+  height: 1em;
 }
 
 /* Details panel */
@@ -385,6 +429,14 @@ h3 {
   color: var(--text-secondary);
   font-size: 0.9em;
   margin-top: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-location .icon {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .no-comparison {
@@ -396,6 +448,14 @@ h3 {
 .no-comparison p {
   font-size: 1.1em;
   line-height: 1.6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.no-comparison .icon {
+  width: 1em;
+  height: 1em;
 }
 
 @keyframes fadeIn {

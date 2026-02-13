@@ -6,13 +6,17 @@
     </div>
     <div class="header-actions">
       <button
-        class="theme-toggle-btn"
+        class="theme-toggle-btn icon-hover"
         type="button"
         (click)="toggleTheme()"
         [title]="i18n.t('app.toggleTheme')"
         [attr.aria-label]="i18n.t('app.toggleTheme')"
       >
-        {{ themeIcon() }}
+        @if (isDarkTheme()) {
+          <span class="icon icon-sun" aria-hidden="true"></span>
+        } @else {
+          <span class="icon icon-moon" aria-hidden="true"></span>
+        }
       </button>
       <div class="language-switch" aria-label="{{ i18n.t('app.language') }}">
         <span class="language-label">{{ i18n.t('app.language') }}</span>
@@ -36,19 +40,22 @@
         </button>
       </div>
       @if (!showInput()) {
-        <button class="input-toggle-btn" (click)="toggleInput()">
-          📋 {{ i18n.t('app.loadData') }}
+        <button class="input-toggle-btn icon-hover" (click)="toggleInput()">
+          <span class="icon icon-clipboard" aria-hidden="true"></span>
+          {{ i18n.t('app.loadData') }}
         </button>
       }
     </div>
   </header>
 
   <nav class="app-nav" aria-label="Main navigation">
-    <a class="nav-tab" routerLink="/timeline" routerLinkActive="nav-tab-active">
-      🕐 {{ i18n.t('nav.timeline') }}
+    <a class="nav-tab icon-hover" routerLink="/timeline" routerLinkActive="nav-tab-active">
+      <span class="icon icon-clock" aria-hidden="true"></span>
+      {{ i18n.t('nav.timeline') }}
     </a>
-    <a class="nav-tab" routerLink="/comparison" routerLinkActive="nav-tab-active">
-      ⚖️ {{ i18n.t('nav.comparison') }}
+    <a class="nav-tab icon-hover" routerLink="/comparison" routerLinkActive="nav-tab-active">
+      <span class="icon icon-compare" aria-hidden="true"></span>
+      {{ i18n.t('nav.comparison') }}
     </a>
   </nav>
   
