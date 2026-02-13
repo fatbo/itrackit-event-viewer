@@ -193,8 +193,12 @@ export class EventTimeline {
     steps.push({ label: this.i18n.t('milestone.loaded'), eventCode: 'AL', phase: 'origin', completed: hasActualEquip('AL', 'POL'), time: getTime('AL', 'POL') });
     steps.push({ label: this.i18n.t('milestone.vesselDeparture'), eventCode: 'VD', phase: 'origin', completed: hasActualTransport('VD', 'POL') || hasActualEquip('VD', 'POL'), time: getTime('VD', 'POL') });
 
-    // Transit milestones (POT)
-    const potPorts = new Set(transportEvents.filter(e => e.locationType === 'POT').map(e => e.location.unLocationCode));
+    // Transit milestones (POT/POC)
+    const potPorts = new Set(
+      transportEvents
+        .filter(e => e.locationType === 'POT' || e.locationType === 'POC')
+        .map(e => e.location.unLocationCode),
+    );
     for (const potCode of potPorts) {
       const portName = transportEvents.find(e => e.location.unLocationCode === potCode)?.location.unLocationName ?? potCode;
       const hasArrival = transportEvents.some(e => e.eventCode === 'VA' && e.location.unLocationCode === potCode && e.timeType === 'A');
