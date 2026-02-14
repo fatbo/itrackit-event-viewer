@@ -89,7 +89,7 @@ Each step shows a coloured dot (emerald for origin, amber for transit, coral for
 **Solution:** Applied [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) design system guidelines to redesign the app layout:
 - **Unified toolbar** — merged the header and navigation into a single sticky top bar using CSS Grid (brand | nav | actions) for a cleaner dashboard-style layout
 - **Sticky header** — the top bar stays visible while scrolling for constant access to navigation
-- **Improved responsive design** — three breakpoints (768px, 1024px, 1440px) instead of one, with progressive layout adaptation
+- **Improved responsive design** — two breakpoints (768px, 1024px) instead of one, with progressive layout adaptation
 - **Keyboard accessibility** — added `:focus-visible` outlines for all interactive elements
 - **Reduced motion** — added `prefers-reduced-motion` media query to disable animations for users who prefer it
 - **Better visual hierarchy** — tighter spacing, consistent transitions, and proper `margin-top: auto` footer placement
