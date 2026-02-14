@@ -296,6 +296,10 @@ src/
 
 See [docs/FEATURES.md](docs/FEATURES.md) for a detailed list of implemented enhancements and future improvement proposals, including intelligent event types, UI refinements, and analytics features. The UI/UX delivery checklist lives in [docs/UI-UX-IMPROVEMENTS.md](docs/UI-UX-IMPROVEMENTS.md).
 
+## Design System
+
+Layout and UI decisions are guided by the [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) design skill, installed at `.github/prompts/ui-ux-pro-max/`. Use the `/ui-ux-pro-max` workflow in GitHub Copilot to generate design recommendations.
+
 ## Technology Stack
 
 - **Angular 21**: Modern web framework with standalone components and signals

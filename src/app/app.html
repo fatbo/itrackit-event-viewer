@@ -1,9 +1,19 @@
 <div class="app-container">
   <header class="app-header">
-    <div class="header-content">
+    <div class="header-brand">
       <h1>{{ title() }}</h1>
       <p class="subtitle">{{ i18n.t('app.subtitle') }}</p>
     </div>
+    <nav class="header-nav" aria-label="Main navigation">
+      <a class="nav-tab icon-hover" routerLink="/timeline" routerLinkActive="nav-tab-active">
+        <span class="icon icon-clock" aria-hidden="true"></span>
+        {{ i18n.t('nav.timeline') }}
+      </a>
+      <a class="nav-tab icon-hover" routerLink="/comparison" routerLinkActive="nav-tab-active">
+        <span class="icon icon-compare" aria-hidden="true"></span>
+        {{ i18n.t('nav.comparison') }}
+      </a>
+    </nav>
     <div class="header-actions">
       <button
         class="theme-toggle-btn icon-hover"
@@ -48,17 +58,6 @@
     </div>
   </header>
 
-  <nav class="app-nav" aria-label="Main navigation">
-    <a class="nav-tab icon-hover" routerLink="/timeline" routerLinkActive="nav-tab-active">
-      <span class="icon icon-clock" aria-hidden="true"></span>
-      {{ i18n.t('nav.timeline') }}
-    </a>
-    <a class="nav-tab icon-hover" routerLink="/comparison" routerLinkActive="nav-tab-active">
-      <span class="icon icon-compare" aria-hidden="true"></span>
-      {{ i18n.t('nav.comparison') }}
-    </a>
-  </nav>
-  
   <div class="input-panel" [class.input-panel-hidden]="!showInput()">
     <app-event-input [onClose]="closeInput.bind(this)"></app-event-input>
   </div>
@@ -66,7 +65,7 @@
   <main class="app-main">
     <router-outlet />
   </main>
-  
+
   <footer class="app-footer">
     <p>{{ i18n.t('app.footer') }}</p>
   </footer>
