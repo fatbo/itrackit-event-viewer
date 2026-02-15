@@ -58,7 +58,7 @@
     </div>
   </header>
 
-  <div class="input-panel" [class.input-panel-hidden]="!showInput()">
+  <div class="input-panel" [class.input-panel-hidden]="!showInput()" #inputPanel>
     <app-event-input [onClose]="closeInput.bind(this)"></app-event-input>
   </div>
 
