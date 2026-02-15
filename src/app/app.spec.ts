@@ -52,4 +52,17 @@ describe('App', () => {
 
     expect(inputPanel.classList.contains('input-panel-hidden')).toBe(true);
   });
+
+  it('should define viewport-width styles for header and footer', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const styles = Array.from(document.head.querySelectorAll('style'))
+      .map((style) => style.textContent ?? '')
+      .join('\n');
+
+    expect(/inline-size:\s*100dvw/.test(styles)).toBe(true);
+    expect(/margin-inline:\s*calc\(50%\s*-\s*50dvw\)/.test(styles)).toBe(true);
+  });
 });
