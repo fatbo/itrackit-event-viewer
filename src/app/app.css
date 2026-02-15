@@ -30,6 +30,7 @@
   top: 0;
   z-index: 200;
   animation: fadeIn 0.4s ease-out;
+  width: 100%;
 }
 
 .app-header::after {
@@ -209,6 +210,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
 }
 
 .input-panel-hidden {
@@ -235,6 +237,7 @@
   text-align: center;
   padding: 14px;
   margin-top: auto;
+  width: 100%;
 }
 
 .app-footer p {
