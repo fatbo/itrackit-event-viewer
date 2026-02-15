@@ -53,7 +53,7 @@ describe('App', () => {
     expect(inputPanel.classList.contains('input-panel-hidden')).toBe(true);
   });
 
-  it('should define viewport-width styles for header, input panel, and footer', async () => {
+  it('should define full-width styles for header, input panel, and footer', async () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -62,8 +62,8 @@ describe('App', () => {
       .map((style) => style.textContent ?? '')
       .join('\n');
 
-    expect(/\.app-header[^{]*\{[^}]*inline-size:\s*100dvw[^}]*margin-inline:\s*calc\(50%\s*-\s*50dvw\)/s.test(styles)).toBe(true);
-    expect(/\.input-panel[^{]*\{[^}]*inline-size:\s*100dvw[^}]*margin-inline:\s*calc\(50%\s*-\s*50dvw\)/s.test(styles)).toBe(true);
-    expect(/\.app-footer[^{]*\{[^}]*inline-size:\s*100dvw[^}]*margin-inline:\s*calc\(50%\s*-\s*50dvw\)/s.test(styles)).toBe(true);
+    expect(/\.app-header[^{]*\{[^}]*inline-size:\s*100%[^}]*margin-inline:\s*0/s.test(styles)).toBe(true);
+    expect(/\.input-panel[^{]*\{[^}]*inline-size:\s*100%[^}]*margin-inline:\s*0/s.test(styles)).toBe(true);
+    expect(/\.app-footer[^{]*\{[^}]*inline-size:\s*100%[^}]*margin-inline:\s*0/s.test(styles)).toBe(true);
   });
 });
