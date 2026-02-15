@@ -7,6 +7,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   background:
     radial-gradient(120% 55% at 50% -20%, var(--accent-cyan-dim) 0%, transparent 55%),
     radial-gradient(120% 50% at 50% 120%, var(--accent-amber-dim) 0%, transparent 60%),
