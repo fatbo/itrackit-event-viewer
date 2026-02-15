@@ -67,6 +67,13 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Mobile-friendly timeline index accordion plus themed loading/error states
 - Full mobile-responsive layout (≤480px) with compact timeline markers, smaller port nodes/milestones, and optimised spacing across all components
 
+### 8. AI Insights (TensorFlow.js Predictions)
+- On-device TensorFlow.js models to provide **predictive ETAs** that adjust as dwell times, carrier performance, or port congestion change
+- **Risk flags** for likely delays or missed handoffs, based on patterns learned from historical event sequences and current timeline gaps
+- **Anomaly detection** for outlier dwell times, route deviations, or missing milestone events, surfaced as contextual badges on the timeline and comparison alerts
+- Runs entirely in the browser for data privacy; models can be refreshed via static assets without backend dependencies
+- Demo shipment (January route) auto-loads with AI predicted arrival badges to showcase the feature on the landing page
+
 ## Getting Started
 
 ### Prerequisites

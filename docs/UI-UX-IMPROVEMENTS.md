@@ -51,4 +51,8 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 - [ ] Multi-shipment dashboard with router tabs.
 - [ ] Analytics view for delays and event counts.
 - [ ] Comments/notes on events with form validation.
-- [ ] AI insights (TensorFlow.js predictions).
+- [ ] AI insights (TensorFlow.js predictions):
+  - [ ] UI hooks for predictive ETA badges and delay-risk chips on timeline cards.
+  - [ ] Comparison-view alerts that explain why a prediction changed (dwell spike, vessel handoff gap).
+  - [ ] Toggleable “AI insights” panel describing model freshness, confidence band, and privacy note (all inference in-browser).
+  - [ ] Empty/error states for when the model file is unavailable or inputs are insufficient.

@@ -110,6 +110,21 @@ All horizontal scroll tracks (port transition, milestone tracker) remain touch-s
 
 ## Future Proposals
 
+### AI Insights (TensorFlow.js Predictions)
+- **What users want:** Predictive ETAs that update automatically, early warning on likely delays, and anomaly flags (unusual dwell time, route deviations, missing milestones) similar to capabilities seen in leading visibility tools (Shippeo, Blume, Oracle TMS).
+- **Data inputs:** Existing timeline data (`equipmentEvents`, `transportEvents`), dwell time calculations, ETA variance history, carrier/port identifiers, and optional weather/port congestion feeds when available.
+- **Planned outputs:**
+  - **Predictive ETA** per leg and overall arrival window with confidence band
+  - **Delay likelihood score** surfaced as badges in the timeline and comparison views
+  - **Anomaly detection** for outlier dwell, sequence gaps, or vessel handoff issues
+- **Why TensorFlow.js:** Runs fully in-browser to preserve data privacy and avoid backend changes; models can be shipped as static assets and updated on deploys.
+- **MVP implementation plan:**
+  1) Feature engineering in the parser (leg duration deltas, dwell buckets, carrier/port embeddings)  
+  2) Lightweight TF.js classification/regression heads for delay risk and ETA adjustment  
+  3) UI surfacing via timeline badges + comparison alerts with i18n labels and confidence messaging
+- **Success metrics:** Reduce ETA variance vs. actuals, increase early-warning lead time for delays, and minimise false positives on anomaly flags.
+- **Out of scope (for now):** Multi-shipment fleet analytics and carbon/ESG estimations; if needed, document in future proposals once multi-shipment data is available.
+
 ### Multi-Container View
 Support loading multiple containers from the same BL, displaying a summary table and allowing drill-down into individual container timelines.
 
