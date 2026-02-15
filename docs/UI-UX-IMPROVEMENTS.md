@@ -10,6 +10,41 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 
 ---
 
+## Recent Updates
+
+### Mobile Responsive Enhancements (2026-02-15)
+
+**Issue**: Header and footer appeared narrow when zoomed out on mobile because horizontal scrolling components (Port Transition and Milestone Tracker) created a wider viewport than intended.
+
+**Solution Implemented**:
+1. **Constrained Horizontal Scrolling**: Added `max-width: 100%` to `.port-transition-track` and `.milestone-track` to ensure they don't exceed parent container width
+2. **Smooth Scrolling**: Added `-webkit-overflow-scrolling: touch` and `scroll-snap-type: x proximity` for better mobile scrolling experience
+3. **Visual Scroll Hints**: Added gradient overlays on the right side of scrollable containers to indicate more content
+4. **Extra Small Breakpoint (375px)**: Added comprehensive responsive styles for ultra-compact mobile layouts
+5. **Touch Target Improvements**: Ensured minimum touch target sizes of 32-44px for all interactive elements
+6. **Aggressive Font Scaling**: Font sizes range from 0.56em to 0.9em on extra small screens for better readability
+
+**Components Updated**:
+- `src/app/app.css`: Header, footer, navigation, and action buttons
+- `src/app/components/event-timeline/event-timeline.css`: Timeline, port transitions, milestones
+- `src/app/components/event-summary/event-summary.css`: Summary cards and pills
+- `src/app/components/event-input/event-input.css`: Input forms and buttons
+
+**Responsive Breakpoints**:
+- `1024px`: Tablet header layout (2-row grid)
+- `900px`: Timeline grid stacks to single column
+- `768px`: Mobile header fully stacked
+- `480px`: Compact mobile layout
+- `375px`: **NEW** - Ultra-compact for small screens
+- `320px`: Supported via 375px styles
+
+**Touch Target Guidelines**:
+- Minimum 32x32px for small buttons (language switcher)
+- Minimum 36x36px for medium buttons (theme toggle, input toggle)
+- Minimum 40-44px for primary interactive elements (nav tabs, action buttons)
+
+---
+
 ## Phase 0 — Planning & Foundations
 - [x] Capture the UI/UX improvement plan and checklist (this document).
 - [x] Audit current UI for accessibility gaps (contrast, ARIA, keyboard focus states).
@@ -32,8 +67,12 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 - [x] Replace emoji icons with themed SVGs and add hover motion (pulse/scale).
 - [x] Improve responsive layout with CSS Grid/Flex and mobile accordions.
 - [x] Add themed loading and error states for inputs and comparisons.
+- [x] **Mobile Responsive Enhancements**: Fix viewport overflow, add 375px breakpoint, improve touch targets.
 
 ## Phase 2 — UX Flow & Accessibility
+- [x] **Smooth Scrolling**: Add touch-friendly scrolling for horizontal components.
+- [x] **Visual Scroll Indicators**: Add gradient hints for scrollable content.
+- [x] **Touch Target Compliance**: Ensure minimum 32-44px touch targets.
 - [ ] Add onboarding modal with i18n copy and dismissal persistence.
 - [ ] Implement sticky header navigation for quick section access.
 - [ ] Enhance hover/click affordances and keyboard interactions.
