@@ -31,6 +31,8 @@
   z-index: 200;
   animation: fadeIn 0.4s ease-out;
   width: 100%;
+  inline-size: 100dvw;
+  margin-inline: calc(50% - 50dvw);
 }
 
 .app-header::after {
@@ -211,6 +213,8 @@
   top: 0;
   z-index: 100;
   width: 100%;
+  inline-size: 100dvw;
+  margin-inline: calc(50% - 50dvw);
 }
 
 .input-panel-hidden {
@@ -238,6 +242,8 @@
   padding: 14px;
   margin-top: auto;
   width: 100%;
+  inline-size: 100dvw;
+  margin-inline: calc(50% - 50dvw);
 }
 
 .app-footer p {
