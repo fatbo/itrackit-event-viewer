@@ -337,6 +337,18 @@ export class EventTimeline {
     }
   }
 
+  protected hasAdditionalDetails(event: ShipmentEvent): boolean {
+    return !!(
+      event.modeOfTransport ||
+      event.vessel ||
+      event.voyage ||
+      event.containerStatus ||
+      event.status ||
+      event.facilityName ||
+      event.dataProvider
+    );
+  }
+
 
   protected scrollToSection(anchorId: string): void {
     const target = this.document.getElementById(anchorId);

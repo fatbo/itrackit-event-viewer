@@ -12,6 +12,22 @@ This document tracks the UI/UX improvement plan for the iTrackiT Shipment Viewer
 
 ## Recent Updates
 
+### Mobile Timeline Readability Refinement (2026-02-15)
+
+**Issue**: On mobile screens, timeline cards still felt dense (font size and detail density), and users had to scan many attributes in a single row.
+
+**Solution Implemented**:
+1. **Important-first timeline details**: Kept core fields (location, event code, location type) visible by default
+2. **Vertical expandable details**: Moved secondary attributes (transport mode, vessel, voyage, status/facility/provider metadata) into a native `<details>` section
+3. **Smaller mobile typography**: Reduced detail/time font sizes at 480px and 375px breakpoints
+4. **No mobile horizontal card scrolling**: Enforced wrapping and `overflow-wrap` for timeline/detail content; changed port transition and milestone tracks to wrapping rows on compact screens
+
+**Additional UI/UX Improvement Areas to Consider**:
+- Add a compact/comfortable density toggle so operations teams can switch information density based on context
+- Provide sticky per-card quick actions (copy event code / copy location / open raw payload) for faster triage
+- Add a “critical-only” mobile filter mode to show delay, status-change, and exception events first
+- Introduce skeleton loaders for timeline cards to improve perceived performance on slow devices
+
 ### Mobile Responsive Enhancements (2026-02-15)
 
 **Issue**: Header and footer appeared narrow when zoomed out on mobile because horizontal scrolling components (Port Transition and Milestone Tracker) created a wider viewport than intended.
