@@ -110,6 +110,7 @@ h2 {
   margin-bottom: 16px;
   display: flex;
   align-items: flex-start;
+  min-width: 0;
 }
 
 .timeline-group-label {
@@ -149,6 +150,7 @@ h2 {
 
 .timeline-content {
   flex: 1;
+  min-width: 0;
   background: var(--bg-secondary);
   padding: 12px;
   border-radius: var(--radius-md);
@@ -243,10 +245,31 @@ h2 {
 .detail-item {
   color: var(--text-muted);
   font-size: 0.8em;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .detail-item strong {
   color: var(--text-secondary);
+}
+
+.event-details-primary {
+  gap: 6px 10px;
+}
+
+.event-details-expand {
+  margin-top: 8px;
+}
+
+.event-details-expand > summary {
+  cursor: pointer;
+  font-size: 0.78em;
+  color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.event-details-secondary {
+  margin-top: 8px;
 }
 
 .no-events {
@@ -536,23 +559,48 @@ h2 {
   }
 
   .event-details {
-    gap: 4px 8px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .detail-item {
-    font-size: 0.72em;
+    font-size: 0.68em;
   }
 
   .time-item {
-    font-size: 0.72em;
+    font-size: 0.68em;
+  }
+
+  .event-details-expand > summary {
+    font-size: 0.7em;
   }
 
   .port-transition {
     padding: 10px;
   }
 
+  .port-transition::after,
+  .milestone-tracker::after {
+    display: none;
+  }
+
+  .port-transition-track,
+  .milestone-track {
+    overflow-x: visible;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
   .port-node {
-    min-width: 90px;
+    min-width: 0;
+    flex: 1 1 140px;
+    align-items: flex-start;
+  }
+
+  .port-info {
+    align-items: flex-start;
+    text-align: left;
   }
 
   .port-name {
@@ -568,7 +616,7 @@ h2 {
   }
 
   .port-connector {
-    min-width: 24px;
+    display: none;
   }
 
   .milestone-tracker {
@@ -576,7 +624,8 @@ h2 {
   }
 
   .milestone-step {
-    min-width: 70px;
+    min-width: 0;
+    flex: 1 1 120px;
   }
 
   .milestone-dot {
@@ -591,8 +640,7 @@ h2 {
   }
 
   .milestone-connector {
-    min-width: 12px;
-    margin-top: 8px;
+    display: none;
   }
 
   .eta-variance {
@@ -656,11 +704,15 @@ h2 {
   }
 
   .detail-item {
-    font-size: 0.7em;
+    font-size: 0.66em;
   }
 
   .time-item {
-    font-size: 0.7em;
+    font-size: 0.66em;
+  }
+
+  .event-details-expand > summary {
+    font-size: 0.68em;
   }
 
   .port-transition {
@@ -668,7 +720,7 @@ h2 {
   }
 
   .port-node {
-    min-width: 80px;
+    flex-basis: 120px;
   }
 
   .port-name {
@@ -684,7 +736,7 @@ h2 {
   }
 
   .port-connector {
-    min-width: 20px;
+    display: none;
   }
 
   .milestone-tracker {
@@ -692,7 +744,7 @@ h2 {
   }
 
   .milestone-step {
-    min-width: 65px;
+    flex-basis: 105px;
   }
 
   .milestone-dot {
@@ -707,7 +759,7 @@ h2 {
   }
 
   .milestone-connector {
-    min-width: 10px;
+    display: none;
   }
 
   .undated-events {

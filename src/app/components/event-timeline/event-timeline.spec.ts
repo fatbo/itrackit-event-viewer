@@ -354,6 +354,39 @@ describe('EventTimeline', () => {
     expect((component as any).getEtaVariance(eventNoEst)).toBeNull();
   });
 
+  it('renders expandable secondary details only when additional metadata exists', () => {
+    const fixture = TestBed.createComponent(EventTimeline);
+    const eventData = TestBed.inject(EventData);
+    const shipment: ShipmentData = {
+      events: [
+        {
+          eventType: 'Loaded',
+          eventDateTime: '2025-01-10T10:00:00Z',
+          description: 'test',
+          location: 'Singapore',
+          eventCode: 'AL',
+          locationType: 'POL',
+        },
+        {
+          eventType: 'Departure',
+          eventDateTime: '2025-01-11T10:00:00Z',
+          description: 'test',
+          location: 'Singapore',
+          eventCode: 'VD',
+          locationType: 'POL',
+          vessel: 'VESSEL A',
+        },
+      ],
+    };
+
+    eventData.setPrimaryEvent(shipment);
+    fixture.detectChanges();
+
+    const details = fixture.nativeElement.querySelectorAll('.timeline-item .event-details-expand');
+    expect(details.length).toBe(1);
+    expect(details[0].open).toBe(false);
+  });
+
   it('builds milestone steps from equipment and transport events', () => {
     const fixture = TestBed.createComponent(EventTimeline);
     const eventData = TestBed.inject(EventData);

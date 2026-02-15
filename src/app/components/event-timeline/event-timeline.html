@@ -149,7 +149,7 @@
                   </div>
                 }
               
-              <div class="event-details">
+              <div class="event-details event-details-primary">
                 @if (event.location) {
                   <span class="detail-item">
                     <strong>{{ i18n.t('timeline.detail.location') }}</strong> {{ event.location }}
@@ -165,42 +165,49 @@
                     <strong>{{ i18n.t('timeline.detail.locationType') }}</strong> {{ getLocationTypeLabel(event.locationType) }}
                   </span>
                 }
-                @if (event.modeOfTransport) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.transportMode') }}</strong> {{ event.modeOfTransport }}
-                  </span>
-                }
-                @if (event.vessel) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.vessel') }}</strong> {{ event.vessel }}
-                  </span>
-                }
-                @if (event.voyage) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.voyage') }}</strong> {{ event.voyage }}
-                  </span>
-                }
-                @if (event.containerStatus) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.containerStatus') }}</strong> {{ getContainerStatusLabel(event.containerStatus) }}
-                  </span>
-                }
-                @if (event.status) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.status') }}</strong> {{ getStatusLabel(event) }}
-                  </span>
-                }
-                @if (event.facilityName) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.facility') }}</strong> {{ event.facilityName }}
-                  </span>
-                }
-                @if (event.dataProvider) {
-                  <span class="detail-item">
-                    <strong>{{ i18n.t('timeline.detail.dataProvider') }}</strong> {{ event.dataProvider }}
-                  </span>
-                }
               </div>
+              @if (hasAdditionalDetails(event)) {
+                <details class="event-details-expand">
+                  <summary>{{ i18n.t('timeline.moreDetails') }}</summary>
+                  <div class="event-details event-details-secondary">
+                    @if (event.modeOfTransport) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.transportMode') }}</strong> {{ event.modeOfTransport }}
+                      </span>
+                    }
+                    @if (event.vessel) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.vessel') }}</strong> {{ event.vessel }}
+                      </span>
+                    }
+                    @if (event.voyage) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.voyage') }}</strong> {{ event.voyage }}
+                      </span>
+                    }
+                    @if (event.containerStatus) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.containerStatus') }}</strong> {{ getContainerStatusLabel(event.containerStatus) }}
+                      </span>
+                    }
+                    @if (event.status) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.status') }}</strong> {{ getStatusLabel(event) }}
+                      </span>
+                    }
+                    @if (event.facilityName) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.facility') }}</strong> {{ event.facilityName }}
+                      </span>
+                    }
+                    @if (event.dataProvider) {
+                      <span class="detail-item">
+                        <strong>{{ i18n.t('timeline.detail.dataProvider') }}</strong> {{ event.dataProvider }}
+                      </span>
+                    }
+                  </div>
+                </details>
+              }
             </div>
           </div>
         }
