@@ -24,6 +24,9 @@ export interface ShipmentEvent {
   plannedTime?: string;
   timeDetails?: string;
   [key: string]: any; // Allow additional properties
+  // AI prediction metadata
+  aiPrediction?: AiPrediction;
+  predictedTime?: string;
 }
 
 // Legacy interface for backward compatibility, extended with OpShipmentEventRaw fields
@@ -49,6 +52,7 @@ export interface ShipmentData {
   dmg?: string[];
   transportEvents?: OpTransportEvent[];
   terminalData?: TerminalData;
+  aiInsights?: AiInsights;
   [key: string]: any; // Allow additional properties
 }
 
@@ -156,4 +160,20 @@ export interface OpShipmentEventRaw {
   pol?: Location;
   pod?: Location;
   terminalData?: TerminalData;
+}
+
+export interface AiPrediction {
+  targetEventCode: string;
+  locationCode?: string;
+  predictedTime: string;
+  delayHours: number;
+  riskLevel: 'low' | 'medium' | 'high';
+  confidence: number;
+  drivers?: string[];
+}
+
+export interface AiInsights {
+  modelVersion: string;
+  generatedAt: string;
+  predictions: AiPrediction[];
 }

@@ -138,6 +138,21 @@
                       <strong>{{ i18n.t('time.planned') }}:</strong> {{ event.plannedTime | date:'medium' }}
                     </div>
                   }
+                  @if (!event.actualTime && event.aiPrediction) {
+                    <div class="time-item ai-predicted">
+                      <strong>{{ i18n.t('ai.predicted') }}:</strong>
+                      {{ event.aiPrediction.predictedTime | date:'medium' }}
+                      <span class="ai-risk-chip" [ngClass]="'ai-risk-' + event.aiPrediction.riskLevel">
+                        {{ i18n.t('ai.risk.' + event.aiPrediction.riskLevel) }}
+                      </span>
+                      <span class="ai-confidence">
+                        {{ i18n.t('ai.confidence', { value: (event.aiPrediction.confidence * 100).toFixed(0) }) }}
+                      </span>
+                      <span class="ai-adjust">
+                        {{ i18n.t('ai.delayAdjust', { hours: event.aiPrediction.delayHours }) }}
+                      </span>
+                    </div>
+                  }
                 </div>
               }
 

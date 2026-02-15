@@ -6,6 +6,7 @@ import { JsonEditor } from '../json-editor/json-editor';
 import { ShipmentData, OpShipmentEventRaw } from '../../models/shipment-event.model';
 import { ShipmentParser } from '../../services/shipment-parser';
 import { I18nService } from '../../services/i18n.service';
+import { AiInsightsService } from '../../services/ai-insights.service';
 
 @Component({
   selector: 'app-event-input',
@@ -28,7 +29,7 @@ export class EventInput implements OnInit {
     "version": 1,
     "egateNo": "OP-00052919",
     "eventId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-    "eventTime": "2025-02-18T08:00+08:00",
+    "eventTime": "2026-01-05T08:00:00+08:00",
     "source": "oneport",
     "blNo": "AMQ0325766",
     "bookingNo": "BOOK0325766",
@@ -43,8 +44,8 @@ export class EventInput implements OnInit {
     "sealNo": ["CMA22309", "SEAL12345", "LOCK00789"],
     "dg": ["3/1234", "8/2809"],
     "dmg": ["DENT-LEFT", "SCRATCH-ROOF"],
-    "createDate": "2025-02-17T10:00:00+08:00",
-    "modifyDate": "2025-03-05T12:00:00+08:00",
+    "createDate": "2026-01-04T10:00:00+08:00",
+    "modifyDate": "2026-01-15T12:00:00+08:00",
     "pol": {
       "facilityCode": "YICT",
       "facilityName": "YANTIAN INTERNATIONAL CONTAINER TERMINAL",
@@ -63,7 +64,7 @@ export class EventInput implements OnInit {
         "eventCode": "VD",
         "eventName": "Vessel Departure",
         "locationType": "POL",
-        "eventTime": "2025-02-18T14:00:00+08:00",
+        "eventTime": "2026-01-06T18:00:00+08:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -84,7 +85,7 @@ export class EventInput implements OnInit {
         "eventCode": "VA",
         "eventName": "Vessel Arrival",
         "locationType": "POT",
-        "eventTime": "2025-02-21T06:30:00+08:00",
+        "eventTime": "2026-01-09T03:00:00+08:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -105,7 +106,7 @@ export class EventInput implements OnInit {
         "eventCode": "VD",
         "eventName": "Vessel Departure",
         "locationType": "POT",
-        "eventTime": "2025-02-22T20:00:00+08:00",
+        "eventTime": "2026-01-10T14:00:00+08:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -126,7 +127,7 @@ export class EventInput implements OnInit {
         "eventCode": "VA",
         "eventName": "Vessel Arrival",
         "locationType": "POT",
-        "eventTime": "2025-02-28T09:15:00+03:00",
+        "eventTime": "2026-01-16T02:00:00+03:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -147,7 +148,7 @@ export class EventInput implements OnInit {
         "eventCode": "VD",
         "eventName": "Vessel Departure",
         "locationType": "POT",
-        "eventTime": "2025-03-01T04:00:00+03:00",
+        "eventTime": "2026-01-18T06:00:00+03:00",
         "timeType": "A",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -168,7 +169,7 @@ export class EventInput implements OnInit {
         "eventCode": "VA",
         "eventName": "Vessel Arrival",
         "locationType": "POD",
-        "eventTime": "2025-03-06T08:00:00+01:00",
+        "eventTime": "2026-01-24T08:00:00+01:00",
         "timeType": "E",
         "modeOfTransport": "Ocean",
         "conveyanceInfo": {
@@ -190,7 +191,7 @@ export class EventInput implements OnInit {
         "eventCode": "IG",
         "eventName": "Gate In",
         "locationType": "POL",
-        "eventTime": "2025-02-17T15:00:00+08:00",
+        "eventTime": "2026-01-05T09:00:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Truck",
@@ -207,7 +208,7 @@ export class EventInput implements OnInit {
         "eventCode": "AL",
         "eventName": "Loaded on Vessel",
         "locationType": "POL",
-        "eventTime": "2025-02-18T10:30:00+08:00",
+        "eventTime": "2026-01-06T14:30:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
@@ -228,7 +229,7 @@ export class EventInput implements OnInit {
         "eventCode": "UV",
         "eventName": "Unloaded From Vessel",
         "locationType": "POT",
-        "eventTime": "2025-02-21T10:00:00+08:00",
+        "eventTime": "2026-01-09T07:00:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
@@ -249,7 +250,7 @@ export class EventInput implements OnInit {
         "eventCode": "AL",
         "eventName": "Loaded on Vessel",
         "locationType": "POT",
-        "eventTime": "2025-02-22T16:00:00+08:00",
+        "eventTime": "2026-01-10T10:00:00+08:00",
         "timeType": "A",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
@@ -270,7 +271,7 @@ export class EventInput implements OnInit {
         "eventCode": "UV",
         "eventName": "Unloaded From Vessel",
         "locationType": "POD",
-        "eventTime": "2025-03-06T14:00:00+01:00",
+        "eventTime": "2026-01-24T12:00:00+01:00",
         "timeType": "E",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
@@ -291,7 +292,7 @@ export class EventInput implements OnInit {
         "eventCode": "UV",
         "eventName": "Unloaded From Vessel",
         "locationType": "POD",
-        "eventTime": "2025-03-06T16:30:00+01:00",
+        "eventTime": "2026-01-24T15:00:00+01:00",
         "timeType": "G",
         "containerStatus": "F",
         "modeOfTransport": "Ocean",
@@ -312,7 +313,7 @@ export class EventInput implements OnInit {
         "eventCode": "OG",
         "eventName": "Gate Out",
         "locationType": "POD",
-        "eventTime": "2025-03-07T09:00:00+01:00",
+        "eventTime": "2026-01-25T10:00:00+01:00",
         "timeType": "E",
         "containerStatus": "F",
         "modeOfTransport": "Truck",
@@ -330,7 +331,8 @@ export class EventInput implements OnInit {
   
   constructor(
     private eventDataService: EventData,
-    private parser: ShipmentParser
+    private parser: ShipmentParser,
+    private aiInsights: AiInsightsService
   ) {}
 
   ngOnInit(): void {
@@ -384,6 +386,8 @@ export class EventInput implements OnInit {
         return;
       }
       
+      shipmentData = this.aiInsights.enrichShipment(shipmentData);
+      
       // Validate that it has events array
       if (!shipmentData.events || !Array.isArray(shipmentData.events)) {
         this.errorMessage.set(this.i18n.t('input.error.noEvents'));
@@ -418,7 +422,9 @@ export class EventInput implements OnInit {
 
   loadDemoData(): void {
     try {
-      const shipmentData = this.parser.parseOpShipmentEventRaw(this.DEMO_DATA);
+      const shipmentData = this.aiInsights.enrichShipment(
+        this.parser.parseOpShipmentEventRaw(this.DEMO_DATA)
+      );
       this.eventDataService.setPrimaryEvent(shipmentData);
       this.isDemoData.set(true);
       this.errorMessage.set('');

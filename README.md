@@ -72,6 +72,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - **Risk flags** for likely delays or missed handoffs, based on patterns learned from historical event sequences and current timeline gaps
 - **Anomaly detection** for outlier dwell times, route deviations, or missing milestone events, surfaced as contextual badges on the timeline and comparison alerts
 - Runs entirely in the browser for data privacy; models can be refreshed via static assets without backend dependencies
+- Demo shipment (January route) auto-loads with AI predicted arrival badges to showcase the feature on the landing page
 
 ## Getting Started
 
