@@ -330,3 +330,53 @@ h2 {
     font-size: 0.7em;
   }
 }
+
+/* Extra small mobile: ultra-compact summary for <375px */
+@media (max-width: 375px) {
+  .event-summary-container {
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 0.9em;
+  }
+
+  .pill {
+    font-size: 0.58em;
+    padding: 2px 6px;
+  }
+
+  .summary-item {
+    padding: 5px 7px;
+  }
+
+  .label {
+    font-size: 0.68em;
+  }
+
+  .value {
+    font-size: 0.8em;
+  }
+
+  .seal-tag {
+    font-size: 0.75em;
+    padding: 2px 7px;
+  }
+
+  .reefer-label {
+    min-width: 75px;
+    font-size: 0.7em;
+  }
+
+  .reefer-value {
+    font-size: 0.8em;
+  }
+
+  .status-note {
+    font-size: 0.7em;
+  }
+
+  .progress-text {
+    font-size: 0.68em;
+  }
+}
