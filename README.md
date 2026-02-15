@@ -65,6 +65,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Wave-inspired background gradients aligned with Night Bridge and Harbour Dawn themes
 - SVG-based icon system with hover motion cues for primary actions
 - Mobile-friendly timeline index accordion plus themed loading/error states
+- Full mobile-responsive layout (≤480px) with compact timeline markers, smaller port nodes/milestones, and optimised spacing across all components
 
 ## Getting Started
 

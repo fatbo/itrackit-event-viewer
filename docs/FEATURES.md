@@ -94,6 +94,18 @@ Each step shows a coloured dot (emerald for origin, amber for transit, coral for
 - **Reduced motion** — added `prefers-reduced-motion` media query to disable animations for users who prefer it
 - **Better visual hierarchy** — tighter spacing, consistent transitions, and proper `margin-top: auto` footer placement
 
+### 12. Mobile-Responsive Layout
+**Problem:** While the app had tablet breakpoints at 900px and 768px for the header and main grid, the timeline cards, port transition track, milestone tracker, and event summary were not optimised for small mobile screens (≤480px). Font sizes, padding, and icon dimensions were too large for phone viewports.
+
+**Solution:** Added a comprehensive `@media (max-width: 480px)` breakpoint across all components:
+- **App header** — compact buttons, hidden language label, tighter spacing
+- **Event timeline** — smaller timeline markers (26px), reduced left padding, stacked event header (title above date), smaller port nodes (90px), compact milestone dots (18px)
+- **Event summary** — reduced container padding, smaller pill badges, tighter summary item spacing, compact reefer detail labels
+- **Event input** — reduced padding and font sizes for the data loading panel
+- **Timeline view** — reduced grid gap for stacked layout
+
+All horizontal scroll tracks (port transition, milestone tracker) remain touch-scrollable. Existing tablet breakpoints (768px, 900px, 1024px) are preserved.
+
 ---
 
 ## Future Proposals
