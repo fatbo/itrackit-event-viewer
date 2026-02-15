@@ -345,3 +345,40 @@ h3 {
     font-size: 0.82em;
   }
 }
+
+/* Extra small mobile: ultra-compact input for <375px */
+@media (max-width: 375px) {
+  .event-input-container {
+    padding: 10px;
+  }
+
+  .input-header h2 {
+    font-size: 0.9em;
+  }
+
+  .usage-tips {
+    font-size: 0.76em;
+    padding: 7px 10px;
+  }
+
+  .demo-banner {
+    padding: 7px 10px;
+    font-size: 0.82em;
+  }
+
+  .demo-content {
+    font-size: 0.8em;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 8px 14px;
+    font-size: 0.82em;
+    /* Ensure minimum touch target */
+    min-height: 40px;
+  }
+}

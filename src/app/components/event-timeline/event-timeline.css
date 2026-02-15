@@ -266,6 +266,22 @@ h2 {
   background: var(--bg-secondary);
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
+  position: relative;
+}
+
+/* Scroll hint indicator for mobile */
+@media (max-width: 768px) {
+  .port-transition::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    background: linear-gradient(to right, transparent, var(--bg-secondary));
+    pointer-events: none;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
 }
 
 .port-transition-title {
@@ -289,6 +305,11 @@ h2 {
   align-items: flex-start;
   overflow-x: auto;
   padding: 8px 0;
+  /* Ensure container doesn't exceed parent width */
+  max-width: 100%;
+  /* Add smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
 }
 
 .port-node {
@@ -588,6 +609,116 @@ h2 {
   }
 }
 
+/* Extra small mobile: ultra-compact layout for <375px screens */
+@media (max-width: 375px) {
+  .event-timeline-container {
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+
+  .timeline {
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    left: 10px;
+  }
+
+  .timeline-marker {
+    left: -22px;
+  }
+
+  .timeline-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.85em;
+  }
+
+  .timeline-content {
+    padding: 8px;
+  }
+
+  .event-type {
+    font-size: 0.82em;
+  }
+
+  .event-date {
+    font-size: 0.7em;
+  }
+
+  .event-description {
+    font-size: 0.78em;
+  }
+
+  .detail-item {
+    font-size: 0.7em;
+  }
+
+  .time-item {
+    font-size: 0.7em;
+  }
+
+  .port-transition {
+    padding: 8px;
+  }
+
+  .port-node {
+    min-width: 80px;
+  }
+
+  .port-name {
+    font-size: 0.7em;
+  }
+
+  .port-code {
+    font-size: 0.62em;
+  }
+
+  .port-time {
+    font-size: 0.6em;
+  }
+
+  .port-connector {
+    min-width: 20px;
+  }
+
+  .milestone-tracker {
+    padding: 8px;
+  }
+
+  .milestone-step {
+    min-width: 65px;
+  }
+
+  .milestone-dot {
+    width: 16px;
+    height: 16px;
+    font-size: 0.55em;
+  }
+
+  .milestone-label {
+    font-size: 0.56em;
+    max-width: 65px;
+  }
+
+  .milestone-connector {
+    min-width: 10px;
+  }
+
+  .undated-events {
+    padding: 8px;
+  }
+
+  .undated-event-card {
+    padding: 6px 8px;
+  }
+}
+
 /* Undated Events */
 .undated-events {
   margin-top: 20px;
@@ -704,6 +835,22 @@ h2 {
   background: var(--bg-secondary);
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
+  position: relative;
+}
+
+/* Scroll hint indicator for mobile */
+@media (max-width: 768px) {
+  .milestone-tracker::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 30px;
+    background: linear-gradient(to right, transparent, var(--bg-secondary));
+    pointer-events: none;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
 }
 
 .milestone-tracker-title {
@@ -727,6 +874,11 @@ h2 {
   align-items: flex-start;
   overflow-x: auto;
   padding: 8px 0;
+  /* Ensure container doesn't exceed parent width */
+  max-width: 100%;
+  /* Add smooth scrolling on mobile */
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
 }
 
 .milestone-step {
