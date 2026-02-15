@@ -22,3 +22,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .main-grid {
+    gap: 10px;
+  }
+}
