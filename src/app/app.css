@@ -319,3 +319,59 @@
     padding: 12px;
   }
 }
+
+/* Small mobile: tighten spacing further */
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0 10px;
+  }
+
+  .header-brand h1 {
+    font-size: 0.95em;
+  }
+
+  .subtitle {
+    font-size: 0.62em;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .language-switch {
+    font-size: 0.72em;
+    gap: 4px;
+  }
+
+  .language-label {
+    display: none;
+  }
+
+  .language-btn {
+    padding: 3px 8px;
+    font-size: 0.78em;
+  }
+
+  .theme-toggle-btn {
+    padding: 5px 8px;
+    font-size: 0.82em;
+  }
+
+  .input-toggle-btn {
+    padding: 5px 12px;
+    font-size: 0.78em;
+  }
+
+  .nav-tab {
+    padding: 8px 10px;
+    font-size: 0.78em;
+  }
+
+  .app-main {
+    padding: 8px;
+  }
+
+  .app-footer p {
+    font-size: 0.7em;
+  }
+}

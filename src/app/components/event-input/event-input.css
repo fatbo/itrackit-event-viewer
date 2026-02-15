@@ -321,3 +321,27 @@ h3 {
     padding-top: 0;
   }
 }
+
+@media (max-width: 480px) {
+  .event-input-container {
+    padding: 12px;
+  }
+
+  .input-header h2 {
+    font-size: 0.95em;
+  }
+
+  .usage-tips {
+    font-size: 0.78em;
+    padding: 8px 12px;
+  }
+
+  .demo-banner {
+    padding: 8px 12px;
+    font-size: 0.85em;
+  }
+
+  .demo-content {
+    font-size: 0.82em;
+  }
+}

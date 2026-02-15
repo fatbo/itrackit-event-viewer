@@ -463,6 +463,131 @@ h2 {
   }
 }
 
+/* Mobile: compact timeline and horizontal tracks */
+@media (max-width: 480px) {
+  .event-timeline-container {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 0.95em;
+    margin-bottom: 12px;
+  }
+
+  .timeline {
+    padding-left: 34px;
+  }
+
+  .timeline::before {
+    left: 12px;
+  }
+
+  .timeline-marker {
+    left: -24px;
+  }
+
+  .timeline-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.9em;
+  }
+
+  .timeline-content {
+    padding: 10px;
+  }
+
+  .event-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .event-type {
+    font-size: 0.85em;
+  }
+
+  .event-date {
+    font-size: 0.72em;
+  }
+
+  .event-description {
+    font-size: 0.8em;
+  }
+
+  .event-details {
+    gap: 4px 8px;
+  }
+
+  .detail-item {
+    font-size: 0.72em;
+  }
+
+  .time-item {
+    font-size: 0.72em;
+  }
+
+  .port-transition {
+    padding: 10px;
+  }
+
+  .port-node {
+    min-width: 90px;
+  }
+
+  .port-name {
+    font-size: 0.72em;
+  }
+
+  .port-code {
+    font-size: 0.65em;
+  }
+
+  .port-time {
+    font-size: 0.62em;
+  }
+
+  .port-connector {
+    min-width: 24px;
+  }
+
+  .milestone-tracker {
+    padding: 10px;
+  }
+
+  .milestone-step {
+    min-width: 70px;
+  }
+
+  .milestone-dot {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6em;
+  }
+
+  .milestone-label {
+    font-size: 0.58em;
+    max-width: 70px;
+  }
+
+  .milestone-connector {
+    min-width: 12px;
+    margin-top: 8px;
+  }
+
+  .eta-variance {
+    font-size: 0.7em;
+    padding: 3px 6px;
+  }
+
+  .undated-events {
+    padding: 10px;
+  }
+
+  .undated-event-card {
+    padding: 8px 10px;
+  }
+}
+
 /* Undated Events */
 .undated-events {
   margin-top: 20px;

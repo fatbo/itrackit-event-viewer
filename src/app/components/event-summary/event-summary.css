@@ -280,3 +280,53 @@ h2 {
   font-size: 0.78em;
   color: var(--text-muted);
 }
+
+/* Mobile: compact summary layout */
+@media (max-width: 480px) {
+  .event-summary-container {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 0.95em;
+  }
+
+  .pill {
+    font-size: 0.6em;
+    padding: 2px 6px;
+  }
+
+  .summary-item {
+    padding: 6px 8px;
+  }
+
+  .label {
+    font-size: 0.7em;
+  }
+
+  .value {
+    font-size: 0.82em;
+  }
+
+  .seal-tag {
+    font-size: 0.78em;
+    padding: 2px 8px;
+  }
+
+  .reefer-label {
+    min-width: 80px;
+    font-size: 0.72em;
+  }
+
+  .reefer-value {
+    font-size: 0.82em;
+  }
+
+  .status-note {
+    font-size: 0.72em;
+  }
+
+  .progress-text {
+    font-size: 0.7em;
+  }
+}
