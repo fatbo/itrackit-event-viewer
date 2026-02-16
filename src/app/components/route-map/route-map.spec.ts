@@ -88,4 +88,56 @@ describe('RouteMap', () => {
     expect(fixture.componentInstance['routePoints']().length).toBe(0);
     expect(fixture.componentInstance['missingLocations']()).toContain('Unknown Port');
   });
+
+  it('treats ports with actual events as arrived for solid route segments', () => {
+    const fixture = TestBed.createComponent(RouteMap);
+    const component = fixture.componentInstance as any;
+
+    expect(
+      component['hasArrived']({
+        name: 'Singapore',
+        lat: 1,
+        lng: 2,
+        events: [],
+        transportEvents: [{ eventCode: 'VA', timeType: 'A' }],
+      })
+    ).toBe(true);
+
+    expect(
+      component['hasArrived']({
+        name: 'Singapore',
+        lat: 1,
+        lng: 2,
+        events: [],
+        transportEvents: [{ eventCode: 'VA', timeType: 'E' }],
+      })
+    ).toBe(false);
+  });
+
+  it('includes estimated arrival and departure in popup when actual events are missing', () => {
+    const fixture = TestBed.createComponent(RouteMap);
+    const component = fixture.componentInstance as any;
+    const popup = component['buildPopupContent']({
+      name: 'Singapore',
+      code: 'SGSIN',
+      lat: 1,
+      lng: 2,
+      events: [],
+      transportEvents: [
+        {
+          eventCode: 'VA',
+          timeType: 'E',
+          eventTime: '2025-02-22T10:00:00+08:00',
+        },
+        {
+          eventCode: 'VD',
+          timeType: 'E',
+          eventTime: '2025-02-23T11:00:00+08:00',
+        },
+      ],
+    });
+
+    expect(popup).toContain('Estimated Vessel Arrival');
+    expect(popup).toContain('Estimated Vessel Departure');
+  });
 });
