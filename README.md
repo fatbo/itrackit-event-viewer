@@ -9,6 +9,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Upload JSON files from your computer
 - Support for switching between primary and secondary events for comparison
 - Auto-loads demo data on startup so users can explore the UI immediately
+- **Shipment History** — recently viewed shipments are cached in browser storage for one-click reload, individual deletion, or full history clear
 
 ### 2. Shipment Summary
 - Displays key shipment metadata: shipment ID, BL number, booking number, container number, size/type, ISO code, shipment type, shipping line, origin (POL), destination (POD), and source
@@ -273,6 +274,7 @@ src/
 │   │   ├── event-summary/      # Summary display with voyage progress
 │   │   ├── event-timeline/     # Timeline, milestones, port transition, ETA tracking
 │   │   ├── event-comparison/   # Comparison component with alerts
+│   │   ├── shipment-history/   # Local history list for previously viewed shipments
 │   │   └── json-editor/        # JSON editor component
 │   ├── models/
 │   │   └── shipment-event.model.ts  # TypeScript interfaces
@@ -281,6 +283,7 @@ src/
 │   │   ├── shipment-parser.ts        # Parser for OpShipmentEventRaw → ShipmentData
 │   │   ├── i18n.service.ts           # Internationalization (EN + zh-Hant)
 │   │   ├── theme.service.ts          # Theme toggling (Night Bridge / Harbour Dawn)
+│   │   ├── history.service.ts        # Local/session storage history cache
 │   │   └── comparison-alert.service.ts # Comparison alert logic
 │   ├── views/
 │   │   ├── timeline-view/      # Timeline page layout

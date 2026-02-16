@@ -6,10 +6,12 @@ import { JsonEditor } from '../json-editor/json-editor';
 import { ShipmentData, OpShipmentEventRaw } from '../../models/shipment-event.model';
 import { ShipmentParser } from '../../services/shipment-parser';
 import { I18nService } from '../../services/i18n.service';
+import { ShipmentHistory } from '../shipment-history/shipment-history';
+import { HistoryService } from '../../services/history.service';
 
 @Component({
   selector: 'app-event-input',
-  imports: [CommonModule, FormsModule, JsonEditor],
+  imports: [CommonModule, FormsModule, JsonEditor, ShipmentHistory],
   templateUrl: './event-input.html',
   styleUrl: './event-input.css',
 })
@@ -330,7 +332,8 @@ export class EventInput implements OnInit {
   
   constructor(
     private eventDataService: EventData,
-    private parser: ShipmentParser
+    private parser: ShipmentParser,
+    private historyService: HistoryService
   ) {}
 
   ngOnInit(): void {
@@ -371,34 +374,21 @@ export class EventInput implements OnInit {
     this.isLoading.set(true);
     try {
       const parsedData = JSON.parse(jsonString);
-      let shipmentData: ShipmentData;
-      
-      // Check if it's OpShipmentEventRaw format
-      if (this.parser.isOpShipmentEventRaw(parsedData)) {
-        shipmentData = this.parser.parseOpShipmentEventRaw(parsedData);
-      } else if (this.parser.isShipmentData(parsedData)) {
-        // Already in ShipmentData format
-        shipmentData = parsedData;
-      } else {
-        this.errorMessage.set(this.i18n.t('input.error.invalidFormat'));
-        return;
-      }
-      
-      // Validate that it has events array
-      if (!shipmentData.events || !Array.isArray(shipmentData.events)) {
-        this.errorMessage.set(this.i18n.t('input.error.noEvents'));
-        return;
-      }
-      
-      if (this.isPrimary()) {
-        this.eventDataService.setPrimaryEvent(shipmentData);
-      } else {
-        this.eventDataService.setSecondaryEvent(shipmentData);
-      }
-      
-      this.errorMessage.set('');
+      this.applyShipmentData(parsedData);
     } catch (error) {
       this.errorMessage.set(this.i18n.t('input.error.invalidJson'));
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  onHistoryLoad(data: unknown): void {
+    this.isDemoData.set(false);
+    this.isLoading.set(true);
+    try {
+      this.applyShipmentData(data);
+    } catch {
+      this.errorMessage.set(this.i18n.t('input.error.invalidFormat'));
     } finally {
       this.isLoading.set(false);
     }
@@ -425,5 +415,32 @@ export class EventInput implements OnInit {
     } catch (error) {
       console.error('Failed to load demo data:', error);
     }
+  }
+
+  private applyShipmentData(parsedData: unknown): void {
+    let shipmentData: ShipmentData;
+
+    if (this.parser.isOpShipmentEventRaw(parsedData)) {
+      shipmentData = this.parser.parseOpShipmentEventRaw(parsedData);
+    } else if (this.parser.isShipmentData(parsedData)) {
+      shipmentData = parsedData;
+    } else {
+      this.errorMessage.set(this.i18n.t('input.error.invalidFormat'));
+      return;
+    }
+
+    if (!shipmentData.events || !Array.isArray(shipmentData.events)) {
+      this.errorMessage.set(this.i18n.t('input.error.noEvents'));
+      return;
+    }
+
+    if (this.isPrimary()) {
+      this.eventDataService.setPrimaryEvent(shipmentData);
+    } else {
+      this.eventDataService.setSecondaryEvent(shipmentData);
+    }
+
+    this.historyService.addEntry(parsedData);
+    this.errorMessage.set('');
   }
 }

@@ -82,6 +82,8 @@
       {{ errorMessage() }}
     </div>
   }
+
+  <app-shipment-history (loadShipment)="onHistoryLoad($event)"></app-shipment-history>
   
   <div class="actions">
     <button (click)="clearAll()" class="clear-btn">
