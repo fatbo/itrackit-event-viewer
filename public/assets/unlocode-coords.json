@@ -1,0 +1,12 @@
+{
+  "AEDXB": { "name": "Dubai", "coordinates": "2516N 05518E" },
+  "CNSHA": { "name": "Shanghai", "coordinates": "3114N 12129E" },
+  "CNYTN": { "name": "Yantian", "coordinates": "2233N 11416E" },
+  "HKHKG": { "name": "Hong Kong", "coordinates": "2217N 11410E" },
+  "JPTYO": { "name": "Tokyo", "coordinates": "3539N 13946E" },
+  "KRPUS": { "name": "Busan", "coordinates": "3506N 12902E" },
+  "NLRTM": { "name": "Rotterdam", "coordinates": "5155N 00429E" },
+  "SAJED": { "name": "Jeddah", "coordinates": "2128N 03910E" },
+  "SGSIN": { "name": "Singapore", "coordinates": "0120N 10351E" },
+  "USLAX": { "name": "Los Angeles", "coordinates": "3359N 11816W" }
+}

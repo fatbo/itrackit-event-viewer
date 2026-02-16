@@ -10,11 +10,18 @@
 }
 
 .main-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   animation: fadeSlideUp 0.5s ease-out 0.25s both;
 }
 
 .main-right {
   animation: fadeSlideUp 0.5s ease-out 0.35s both;
+}
+
+.route-map-placeholder {
+  min-height: 1px;
 }
 
 @media (max-width: 900px) {
