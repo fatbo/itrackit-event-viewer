@@ -106,6 +106,15 @@ Each step shows a coloured dot (emerald for origin, amber for transit, coral for
 
 All horizontal scroll tracks (port transition, milestone tracker) remain touch-scrollable. Existing tablet breakpoints (768px, 900px, 1024px) are preserved.
 
+### 13. Shipment View History
+**Problem:** Users who monitor multiple shipments repeatedly had to re-paste or re-upload JSON every time they switched context.
+
+**Solution:** Added a local browser history panel in the input area with:
+- localStorage-backed caching (sessionStorage fallback)
+- metadata preview (shipment/container/POL/POD), viewed timestamp, and newest-first ordering
+- one-click reload, per-entry delete, and clear-all actions
+- automatic de-duplication by shipment identity and max 15-entry pruning
+
 ---
 
 ## Future Proposals

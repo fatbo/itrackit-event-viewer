@@ -1,0 +1,59 @@
+<section class="history-section">
+  <button
+    type="button"
+    class="history-toggle-btn"
+    (click)="toggleExpanded()"
+    [attr.aria-expanded]="isExpanded()"
+    [attr.aria-label]="i18n.t('history.toggleAria')"
+  >
+    <span>{{ i18n.t('history.title') }}</span>
+    <span class="history-count">({{ entries().length }})</span>
+  </button>
+
+  @if (isExpanded()) {
+    <div class="history-content" role="region" [attr.aria-label]="i18n.t('history.title')">
+      @if (entries().length === 0) {
+        <p class="history-empty">{{ i18n.t('history.empty') }}</p>
+      } @else {
+        <div class="history-list" role="list">
+          @for (entry of entries(); track entry.key) {
+            <article class="history-item" role="listitem" tabindex="0" [attr.aria-label]="getEntryTitle(entry)">
+              <h4>{{ getEntryTitle(entry) }}</h4>
+              <p class="history-meta">{{ getEntryDetails(entry) }}</p>
+              <p class="history-time">{{ i18n.t('history.viewedAt') }}: {{ formatViewedAt(entry.viewedAt) }}</p>
+              <div class="history-actions">
+                <button
+                  type="button"
+                  class="history-load-btn"
+                  (click)="loadEntry(entry)"
+                  [attr.aria-label]="i18n.t('history.loadAria')"
+                >
+                  {{ i18n.t('history.load') }}
+                </button>
+                <button
+                  type="button"
+                  class="history-delete-btn"
+                  (click)="removeEntry(entry.key)"
+                  [attr.aria-label]="i18n.t('history.deleteAria')"
+                >
+                  {{ i18n.t('history.delete') }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+
+        <div class="history-footer">
+          <button
+            type="button"
+            class="history-clear-btn"
+            (click)="clearHistory()"
+            [attr.aria-label]="i18n.t('history.clearAria')"
+          >
+            {{ i18n.t('history.clearAll') }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</section>

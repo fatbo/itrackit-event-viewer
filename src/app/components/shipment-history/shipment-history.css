@@ -1,0 +1,121 @@
+.history-section {
+  margin-top: 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  overflow: hidden;
+}
+
+.history-toggle-btn {
+  width: 100%;
+  border: 0;
+  background: var(--accent-cyan-dim);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.95em;
+  text-align: left;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.history-count {
+  color: var(--accent-cyan);
+  font-family: var(--font-body);
+}
+
+.history-content {
+  padding: 10px 12px 12px;
+}
+
+.history-empty {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.history-list {
+  display: grid;
+  gap: 8px;
+  animation: fadeIn 0.25s ease;
+}
+
+.history-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  background:
+    radial-gradient(circle at right top, var(--accent-cyan-dim) 0%, transparent 50%),
+    linear-gradient(170deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover,
+.history-item:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.history-item h4 {
+  margin: 0 0 4px;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 0.9em;
+}
+
+.history-meta,
+.history-time {
+  margin: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.82em;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.history-time {
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+.history-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.history-load-btn,
+.history-delete-btn,
+.history-clear-btn {
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.8em;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.history-load-btn {
+  background: var(--accent-emerald);
+  color: var(--text-inverse);
+}
+
+.history-delete-btn,
+.history-clear-btn {
+  background: var(--accent-coral);
+  color: var(--text-inverse);
+}
+
+.history-load-btn:hover,
+.history-delete-btn:hover,
+.history-clear-btn:hover {
+  opacity: 0.88;
+}
+
+.history-footer {
+  margin-top: 10px;
+  text-align: right;
+}
