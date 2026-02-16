@@ -115,6 +115,13 @@ All horizontal scroll tracks (port transition, milestone tracker) remain touch-s
 - one-click reload, per-entry delete, and clear-all actions
 - automatic de-duplication by shipment identity and max 15-entry pruning
 
+### 14. Interactive Route Map (Leaflet)
+**Problem:** Route context was only available in timeline-style cards, making geographic progress harder to explain at a glance.
+
+**Solution:** Added a toggleable Route Map section under Shipment Summary using Leaflet with OpenStreetMap tiles and a bundled UN/LOCODE lookup dataset. The map plots shipment locations as markers, draws an animated dashed route line, supports click-to-center popups with event details, and stores zoom/center preferences in browser storage.
+
+**Fallback Behavior:** Locations without mapped coordinates are listed as unmapped while valid route points continue to render.
+
 ---
 
 ## Future Proposals

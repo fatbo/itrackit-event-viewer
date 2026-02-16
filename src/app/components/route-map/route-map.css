@@ -1,0 +1,118 @@
+.route-map-panel {
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.route-map-panel summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-weight: 600;
+  list-style: none;
+}
+
+.route-map-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.route-map-panel[open] summary .icon {
+  color: var(--accent-cyan);
+}
+
+.route-map-content {
+  margin-top: 10px;
+  position: relative;
+}
+
+.route-map-frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: radial-gradient(circle at 20% 20%, var(--accent-cyan-dim), transparent 50%),
+    var(--bg-secondary);
+}
+
+.route-map-frame::after {
+  content: '';
+  position: absolute;
+  inset: auto -40% -50% -40%;
+  height: 120%;
+  background: radial-gradient(circle, var(--accent-cyan-dim) 0%, transparent 65%);
+  animation: route-wave 4.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.route-map-canvas {
+  height: 320px;
+  inline-size: 100%;
+}
+
+.route-map-message {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+
+.route-map-message-muted {
+  margin-top: 8px;
+  color: var(--text-muted);
+}
+
+:host ::ng-deep .leaflet-popup-content-wrapper,
+:host ::ng-deep .leaflet-popup-tip {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+:host ::ng-deep .leaflet-container {
+  background: var(--bg-input);
+}
+
+:host ::ng-deep .route-line-animated {
+  animation: route-dash 1.4s linear infinite;
+}
+
+:host ::ng-deep .route-map-popup ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+:host ::ng-deep .route-map-popup li {
+  margin: 3px 0;
+}
+
+@keyframes route-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+@keyframes route-wave {
+  0%,
+  100% {
+    transform: translateX(-8%);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateX(8%);
+    opacity: 0.45;
+  }
+}
+
+@media (max-width: 480px) {
+  .route-map-panel {
+    padding: 10px;
+  }
+
+  .route-map-canvas {
+    height: 250px;
+  }
+}

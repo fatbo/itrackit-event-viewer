@@ -2,6 +2,11 @@
   <div class="main-grid">
     <div class="main-left">
       <app-event-summary></app-event-summary>
+      @defer (on idle) {
+        <app-route-map></app-route-map>
+      } @placeholder {
+        <div class="route-map-placeholder"></div>
+      }
     </div>
     <div class="main-right">
       <app-event-timeline></app-event-timeline>

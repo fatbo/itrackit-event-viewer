@@ -1,0 +1,28 @@
+@if (primaryEvent()) {
+  <details class="route-map-panel" (toggle)="onMapToggle($event)">
+    <summary>
+      <span class="icon icon-pin" aria-hidden="true"></span>
+      {{ i18n.t('routeMap.title') }}
+    </summary>
+
+    <div class="route-map-content">
+      @if (!hasAnyLocationData()) {
+        <p class="route-map-message">{{ i18n.t('routeMap.noLocations') }}</p>
+      } @else {
+        @if (hasPoints()) {
+          <div class="route-map-frame">
+            <div #mapContainer class="route-map-canvas"></div>
+          </div>
+        } @else {
+          <p class="route-map-message">{{ i18n.t('routeMap.noMappedLocations') }}</p>
+        }
+
+        @if (missingLocations().length > 0) {
+          <p class="route-map-message route-map-message-muted">
+            {{ i18n.t('routeMap.unmappedLocations') }}: {{ missingLocations().join(', ') }}
+          </p>
+        }
+      }
+    </div>
+  </details>
+}

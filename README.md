@@ -26,14 +26,21 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - **Dwell Time** — calculates how long the container stays at each port (arrival → departure); ports with ≥ 48 hours dwell time are highlighted with an amber alert
 - **Vessel Change Detection** — a 🔄 badge appears between ports when the container transfers to a different vessel
 
-### 4. Shipment Milestones
+### 4. Interactive Route Map (Leaflet)
+- Toggleable **Route Map** panel below Shipment Summary
+- Uses bundled UN/LOCODE coordinate dataset (`public/assets/unlocode-coords.json`) for offline lookup
+- Plots route markers and animated dashed voyage path on OpenStreetMap tiles (no API key)
+- Clickable markers show location/event details and ETA delay hints when Actual vs Estimated times are available
+- Gracefully handles unmapped locations and caches map zoom/center preferences in browser storage
+
+### 5. Shipment Milestones
 - Visual milestone tracker above the timeline grouping events into three phases:
   - **Origin** (emerald): Gate In → Loaded → Vessel Departure at POL
   - **Transit** (amber): Arrival → Departure at each POT
   - **Destination** (coral): Vessel Arrival → Unloaded → Gate Out at POD
 - Steps fill in as Actual events are recorded, providing at-a-glance progress
 
-### 5. Event Timeline
+### 6. Event Timeline
 - Chronological display of all equipment events grouped by date
 - Visual timeline with contextual icons for each event type (🚢 departure, 📦 loaded, 📭 unloaded, 🚪 gate, etc.)
 - **Time grouping** — when the same event has Actual, Estimated, and Planned times they are displayed together in a single card
@@ -42,7 +49,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
 - Clickable date index for quick navigation
 - **Location-Type Color Coding** — timeline card borders are coloured by location type (emerald for POL, coral for POD, amber for POT)
 
-### 6. Event Comparison
+### 7. Event Comparison
 - Load two different shipments for side-by-side comparison
 - Automatic detection of key differences (carrier, origin, destination, event count)
 - Visual comparison of event counts and timelines
@@ -62,7 +69,7 @@ An Angular frontend application for viewing and comparing ocean shipment event t
    - Missing data or the presence of actual events suppress warnings.
    - Route alerts compare only the count of unique POT ports (not the exact ports or sequence).
 
-### 7. UI/UX Enhancements
+### 8. UI/UX Enhancements
 - Wave-inspired background gradients aligned with Night Bridge and Harbour Dawn themes
 - SVG-based icon system with hover motion cues for primary actions
 - Mobile-friendly timeline index accordion plus themed loading/error states
@@ -272,6 +279,7 @@ src/
 │   ├── components/
 │   │   ├── event-input/        # Input component for JSON data
 │   │   ├── event-summary/      # Summary display with voyage progress
+│   │   ├── route-map/          # Leaflet route visualization with event popups
 │   │   ├── event-timeline/     # Timeline, milestones, port transition, ETA tracking
 │   │   ├── event-comparison/   # Comparison component with alerts
 │   │   ├── shipment-history/   # Local history list for previously viewed shipments
@@ -282,6 +290,7 @@ src/
 │   │   ├── event-data.ts             # Shared data service
 │   │   ├── shipment-parser.ts        # Parser for OpShipmentEventRaw → ShipmentData
 │   │   ├── i18n.service.ts           # Internationalization (EN + zh-Hant)
+│   │   ├── location-lookup.service.ts # UN/LOCODE coordinate lookup
 │   │   ├── theme.service.ts          # Theme toggling (Night Bridge / Harbour Dawn)
 │   │   ├── history.service.ts        # Local/session storage history cache
 │   │   └── comparison-alert.service.ts # Comparison alert logic
