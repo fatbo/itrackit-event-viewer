@@ -11,7 +11,7 @@ import {
   signal,
 } from '@angular/core';
 import * as L from 'leaflet';
-import { ShipmentData, ShipmentEvent } from '../../models/shipment-event.model';
+import { OpTransportEvent, ShipmentData, ShipmentEvent } from '../../models/shipment-event.model';
 import { EventData } from '../../services/event-data';
 import { I18nService } from '../../services/i18n.service';
 import { LocationLookupService } from '../../services/location-lookup.service';
@@ -21,6 +21,7 @@ interface RouteCandidate {
   name: string;
   locationType?: string;
   events: ShipmentEvent[];
+  transportEvents: OpTransportEvent[];
 }
 
 interface RoutePoint extends RouteCandidate {
@@ -63,7 +64,7 @@ export class RouteMap implements AfterViewInit {
 
   private map?: L.Map;
   private markersLayer?: L.LayerGroup;
-  private routeLayer?: L.Polyline;
+  private routeLayer?: L.LayerGroup;
   private prefersReducedMotion = false;
   private routeBuildToken = 0;
 
@@ -169,6 +170,7 @@ export class RouteMap implements AfterViewInit {
         name: item.name,
         locationType: item.locationType,
         events: this.getEventsForLocation(shipment, item.code, item.name),
+        transportEvents: this.getTransportEventsForLocation(shipment, item.code, item.name),
       });
     }
 
@@ -187,6 +189,21 @@ export class RouteMap implements AfterViewInit {
         return false;
       })
       .slice(0, this.maxEventsPerLocation);
+  }
+
+  private getTransportEventsForLocation(
+    shipment: ShipmentData,
+    locationCode?: string,
+    locationName?: string
+  ): OpTransportEvent[] {
+    return (shipment.transportEvents ?? [])
+      .filter((event) => {
+        const eventCode = event.location?.unLocationCode?.toUpperCase();
+        if (locationCode && eventCode === locationCode) return true;
+        if (!locationCode && locationName && event.location?.unLocationName === locationName) return true;
+        return false;
+      })
+      .sort((a, b) => new Date(a.eventTime).getTime() - new Date(b.eventTime).getTime());
   }
 
   private async ensureMapReady(): Promise<void> {
@@ -243,16 +260,24 @@ export class RouteMap implements AfterViewInit {
     this.markersLayer.addTo(this.map);
 
     if (points.length >= 2) {
-      this.routeLayer = L.polyline(
-        points.map((point) => [point.lat, point.lng]),
-        {
-          color: lineColor,
-          weight: 3,
-          opacity: 0.8,
-          dashArray: this.prefersReducedMotion ? undefined : '10 12',
-          className: this.prefersReducedMotion ? '' : 'route-line-animated',
-        }
-      );
+      this.routeLayer = L.layerGroup();
+      for (let index = 1; index < points.length; index++) {
+        const isArrived = this.hasArrived(points[index]);
+        const segment = L.polyline(
+          [
+            [points[index - 1].lat, points[index - 1].lng],
+            [points[index].lat, points[index].lng],
+          ],
+          {
+            color: lineColor,
+            weight: 3,
+            opacity: 0.8,
+            dashArray: isArrived ? undefined : '10 12',
+            className: !isArrived && !this.prefersReducedMotion ? 'route-line-animated' : '',
+          }
+        );
+        this.routeLayer.addLayer(segment);
+      }
       this.routeLayer.addTo(this.map);
     }
   }
@@ -283,17 +308,50 @@ export class RouteMap implements AfterViewInit {
     }
   }
 
+  private hasArrived(point: RoutePoint): boolean {
+    if (point.transportEvents.some((event) => event.timeType === 'A')) return true;
+    return point.events.some((event) => event.timeType === 'A' || !!event.actualTime);
+  }
+
+  private getPendingEstimatedTransportEvents(point: RoutePoint): ShipmentEvent[] {
+    const pending: ShipmentEvent[] = [];
+    for (const eventCode of ['VA', 'VD'] as const) {
+      const hasActual = point.transportEvents.some(
+        (event) => event.eventCode === eventCode && event.timeType === 'A'
+      );
+      if (hasActual) continue;
+      const estimatedEvent = point.transportEvents.find(
+        (event) => event.eventCode === eventCode && (event.timeType === 'E' || event.timeType === 'G')
+      );
+      if (!estimatedEvent) continue;
+      pending.push({
+        eventType: `${this.i18n.getTimeTypeLabel(estimatedEvent.timeType)} ${this.i18n.getEventCodeLabel(eventCode)}`,
+        eventDateTime: estimatedEvent.eventTime,
+        description: '',
+        eventCode,
+        timeType: estimatedEvent.timeType,
+      });
+    }
+    return pending;
+  }
+
+  private formatEventDate(eventDateTime?: string): string {
+    if (!eventDateTime) return this.i18n.t('routeMap.timeUnknown');
+    const eventDate = new Date(eventDateTime);
+    if (Number.isNaN(eventDate.getTime())) return this.i18n.t('routeMap.timeUnknown');
+    return eventDate.toLocaleString(this.i18n.localeTag());
+  }
+
+  private buildPopupEventListItem(event: ShipmentEvent): string {
+    const delay = this.getDelayLabel(event);
+    return `<li>${this.escapeHtml(event.eventType)} — ${this.escapeHtml(this.formatEventDate(event.eventDateTime))}${
+      delay ? ` (${this.escapeHtml(delay)})` : ''
+    }</li>`;
+  }
+
   private buildPopupContent(point: RoutePoint): string {
-    const eventItems = point.events
-      .map((event) => {
-        const date = event.eventDateTime
-          ? new Date(event.eventDateTime).toLocaleString(this.i18n.localeTag())
-          : this.i18n.t('routeMap.timeUnknown');
-        const delay = this.getDelayLabel(event);
-        return `<li>${this.escapeHtml(event.eventType)} — ${this.escapeHtml(date)}${
-          delay ? ` (${this.escapeHtml(delay)})` : ''
-        }</li>`;
-      })
+    const eventItems = [...point.events, ...this.getPendingEstimatedTransportEvents(point)]
+      .map((event) => this.buildPopupEventListItem(event))
       .join('');
 
     const locationName = this.escapeHtml(point.name);
